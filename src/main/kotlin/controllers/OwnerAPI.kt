@@ -14,4 +14,10 @@ class OwnerAPI {
         owners.removeIf { owner -> owner.PPS == indexToDelete }
     }
 
+    fun findOwner(id: Int): Owner? {
+        return owners.find { owner -> owner.PPS == id }
+    }
+
+
+
 }
