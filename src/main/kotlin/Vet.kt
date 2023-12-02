@@ -1,6 +1,6 @@
 import java.time.LocalDate
 
-class Vet(
+data class Vet(
     var vetID: Int,
     var name: String,
     var dateQualified: LocalDate,
