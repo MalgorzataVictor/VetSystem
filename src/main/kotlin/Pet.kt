@@ -10,4 +10,11 @@ data class Pet (
     var PPS: Int
 
 
-)
+) {
+    override fun toString(): String {
+        return "PetID: $petID, Name: $name, Breed: $breed, DOB: $DOB, Vaccinated: $isVaccinated,  "
+
+    }
+
+
+}
