@@ -1,7 +1,6 @@
 package controllers
 
 import models.Owner
-import models.Vet
 
 class OwnerAPI {
     private var owners = ArrayList<Owner>()
@@ -35,4 +34,10 @@ class OwnerAPI {
 
         return false
     }
+
+    fun formatListString(notesToFormat: List<Owner>): String =
+        notesToFormat
+            .joinToString(separator = "\n") { owner ->
+                "        📌 " + owners.indexOf(owner).toString() + ": " + owner.toString()
+            }
 }
