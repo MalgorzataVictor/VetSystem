@@ -9,4 +9,9 @@ class OwnerAPI {
     fun addOwner(owner: Owner): Boolean {
         return owners.add(owner)
     }
+
+    fun deleteOwner(indexToDelete: Int) {
+        owners.removeIf { owner -> owner.PPS == indexToDelete }
+    }
+
 }
