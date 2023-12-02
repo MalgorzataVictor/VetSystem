@@ -5,11 +5,13 @@ plugins {
     id("org.jetbrains.dokka") version "1.9.10"
     // Code coverage tool
     jacoco
+    // Plugin for Ktlint
+    id("org.jlleitschuh.gradle.ktlint") version "11.3.1"
     application
 }
 
 group = "me.20102772"
-version = "1.0-SNAPSHOT"
+version = "1.0"
 
 repositories {
     mavenCentral()
@@ -29,11 +31,9 @@ dependencies {
     implementation("org.jetbrains.dokka:dokka-gradle-plugin:1.9.10")
 }
 
-
-
 tasks.test {
     useJUnitPlatform()
-    //report is always generated after tests run
+    // report is always generated after tests run
     finalizedBy(tasks.jacocoTestReport)
 }
 
