@@ -15,4 +15,8 @@ class PetAPI {
         pets.removeIf { pet -> pet.petID == indexToDelete }
     }
 
+    fun findPet(id: Int): Pet? {
+        return pets.find { pet -> pet.petID == id }
+    }
+
 }
