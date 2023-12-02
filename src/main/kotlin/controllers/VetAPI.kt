@@ -1,7 +1,7 @@
 package controllers
 
 
-import models.Pet
+
 import models.Vet
 
 class VetAPI {
@@ -10,4 +10,10 @@ class VetAPI {
     fun addVet(vet: Vet): Boolean {
         return vets.add(vet)
     }
+
+    fun deleteVet(indexToDelete: Int) {
+        vets.removeIf { vet -> vet.vetID == indexToDelete }
+    }
+
+
 }
