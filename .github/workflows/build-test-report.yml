@@ -25,9 +25,10 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
       
-       # Runs the Gradle build task
+      # Runs the Gradle build task, but without running the JUnit tests
       - name: Run the Gradle Build
-        run: ./gradlew build
+        run: ./gradlew build -x test
+
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
