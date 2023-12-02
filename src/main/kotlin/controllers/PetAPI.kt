@@ -35,4 +35,6 @@ class PetAPI {
 
         return false
     }
+
+    fun numberOfPets(): Int = pets.size
 }
