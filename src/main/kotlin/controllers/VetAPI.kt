@@ -1,7 +1,5 @@
 package controllers
 
-
-
 import models.Vet
 
 class VetAPI {
@@ -38,5 +36,9 @@ class VetAPI {
         return false
     }
 
-
+    fun formatListString(notesToFormat: List<Vet>): String =
+        notesToFormat
+            .joinToString(separator = "\n") { vet ->
+                "        📌 " + vets.indexOf(vet).toString() + ": " + vet.toString()
+            }
 }
