@@ -18,6 +18,8 @@ class VetAPI {
         return vets.find { vet -> vet.vetID == id }
     }
 
+    fun numberOfVets(): Int = vets.size
+
 
 
 }
