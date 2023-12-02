@@ -5,8 +5,6 @@ import models.Pet
 class PetAPI {
     private var pets = ArrayList<Pet>()
 
-
-
     fun addPet(pet: Pet): Boolean {
         return pets.add(pet)
     }
@@ -37,4 +35,10 @@ class PetAPI {
     }
 
     fun numberOfPets(): Int = pets.size
+
+    fun formatListString(notesToFormat: List<Pet>): String =
+        notesToFormat
+            .joinToString(separator = "\n") { pet ->
+                "        📌 " + pets.indexOf(pet).toString() + ": " + pet.toString()
+            }
 }
