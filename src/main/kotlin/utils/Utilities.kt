@@ -1,4 +1,3 @@
 package utils
 
-class Utilities {
-}
+class Utilities

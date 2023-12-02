@@ -1,4 +1,3 @@
 package controllers
 
-class OwnerAPITest {
-}
+class OwnerAPITest
