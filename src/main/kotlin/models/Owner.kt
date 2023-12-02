@@ -1,4 +1,4 @@
-
+package models
 
 data class Owner(
     var PPS: Int,
