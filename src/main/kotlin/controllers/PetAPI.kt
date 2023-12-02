@@ -7,9 +7,12 @@ class PetAPI {
 
 
 
-    fun add(pet: Pet): Boolean {
+    fun addPet(pet: Pet): Boolean {
         return pets.add(pet)
     }
 
+    fun deletePet(indexToDelete: Int) {
+        pets.removeIf { pet -> pet.petID == indexToDelete }
+    }
 
 }
