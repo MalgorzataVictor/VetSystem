@@ -20,4 +20,19 @@ class OwnerAPI {
 
     fun numberOfOwners(): Int = owners.size
 
+    fun updateOwner(indexToUpdate: Int, owner: Owner?): Boolean {
+        val foundOwner = findOwner(indexToUpdate)
+
+        if ((foundOwner != null) && (owner != null)) {
+            foundOwner.PPS = owner.PPS
+            foundOwner.name = owner.name
+            foundOwner.phoneNumber = owner.phoneNumber
+            foundOwner.email = owner.email
+            foundOwner.petsList = owner.petsList
+
+            return true
+        }
+
+        return false
+    }
 }
