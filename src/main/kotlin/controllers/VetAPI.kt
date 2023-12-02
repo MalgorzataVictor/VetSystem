@@ -14,6 +14,10 @@ class VetAPI {
     fun deleteVet(indexToDelete: Int) {
         vets.removeIf { vet -> vet.vetID == indexToDelete }
     }
+    fun findVet(id: Int): Vet? {
+        return vets.find { vet -> vet.vetID == id }
+    }
+
 
 
 }
