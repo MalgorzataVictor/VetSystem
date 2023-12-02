@@ -18,6 +18,6 @@ class OwnerAPI {
         return owners.find { owner -> owner.PPS == id }
     }
 
-
+    fun numberOfOwners(): Int = owners.size
 
 }
