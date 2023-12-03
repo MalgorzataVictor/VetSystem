@@ -39,6 +39,11 @@ class PetAPI(serializerType: Serializer) {
         return pets.find { pet -> pet.petID == id }
     }
 
+    fun searchByName(searchString: String) =
+        formatListString(
+            pets.filter { pet -> pet.name.contains(searchString, ignoreCase = true) }
+        )
+
     fun updatePet(indexToUpdate: Int, pet: Pet?): Boolean {
         val foundPet = findPet(indexToUpdate)
 

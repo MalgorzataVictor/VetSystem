@@ -79,7 +79,7 @@ fun runPetMenu() {
             3 -> listAllPets()
             4 -> updatePet()
             5 -> numberOfPets()
-            6 -> searchPet
+            6 -> searchPet()
             0 -> runMainMenu()
             else -> println("Invalid option entered: $option")
         }
@@ -205,6 +205,18 @@ fun deletePet() {
 fun numberOfPets() {
     val petSize = petAPI.numberOfPets()
     println("Number of Pets in the system: $petSize pets")
+}
+
+fun searchPet() {
+    val searchName = readNextLine("Enter the Pet Name to search by: ")
+    val searchResults = petAPI.searchByName(searchName)
+    if (searchResults.isEmpty()) {
+        println()
+        println("❗ No notes found")
+    } else {
+        println()
+        println(searchResults)
+    }
 }
 
 fun listAllPets() = println(petAPI.listAllPets())
