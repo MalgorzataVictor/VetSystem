@@ -1,6 +1,7 @@
 package controllers
 
 import models.Pet
+import models.Vet
 import persistence.Serializer
 import utils.Utilities
 
@@ -13,6 +14,10 @@ class PetAPI(serializerType: Serializer) {
             return 1
         }
         return pets.last().petID + 1
+    }
+
+    fun getAllPets(): ArrayList<Pet> {
+        return pets
     }
 
     fun listAllPets(): String =

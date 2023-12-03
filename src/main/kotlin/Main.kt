@@ -1,6 +1,7 @@
 import controllers.OwnerAPI
 import controllers.PetAPI
 import controllers.VetAPI
+import controllers.GmailAPI
 import models.Owner
 import models.Pet
 import models.Vet
@@ -19,6 +20,7 @@ import kotlin.system.exitProcess
 private val petAPI = PetAPI(XMLSerializer(File("pets.xml")))
 private val vetAPI = VetAPI(XMLSerializer(File("vets.xml")))
 private val ownerAPI = OwnerAPI(XMLSerializer(File("owners.xml")))
+private val GmailApi = GmailAPI
 fun main(args: Array<String>) {
     loadAll()
     runMainMenu()
@@ -66,6 +68,7 @@ fun petMenu(): Int {
         ┃  4) Update Pet                    ┃
         ┃  5) Number Of Pet                 ┃
         ┃  6) Search Pet                    
+           7) Sent notification                
         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         ┃  0) Exit                          ┃
         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -82,6 +85,7 @@ fun runPetMenu() {
             4 -> updatePet()
             5 -> numberOfPets()
             6 -> searchPet()
+            7 -> sendNotification()
             0 -> runMainMenu()
             else -> println("Invalid option entered: $option")
         }
@@ -293,6 +297,18 @@ fun deleteOwner() {
             println("❌ Delete NOT Successful")
         }
     }
+}
+
+fun sendNotification(){
+    val sickPets = petAPI.getAllPets().filter { !it.isVaccinated }
+    sickPets.forEach{pet ->
+
+        val emailGroup = ownerAPI.findOwner(pet.ownerPPS)?.email
+        GmailApi.sendEmail("$emailGroup","VACCINATION REMINDER","We are reminding about vaccination for ${pet.name} . Please book an appointment with our Clinic")
+    }
+
+
+
 }
 
 fun numberOfPets() {

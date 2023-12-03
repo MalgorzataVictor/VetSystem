@@ -27,14 +27,14 @@ import javax.mail.Message.RecipientType.TO;
 //Todo could make it a class and instance in API layer
 object GmailAPI {
     //ToDo Update with project name
-    private const val APPLICATION_NAME = "GMAILTEST"
+    private const val APPLICATION_NAME = "VetSystem"
 
     //ToDo Ensure that client secrets/keys/credentials are NOT pushed to github
     private const val TOKENS_DIRECTORY_PATH = "tokens"
     private const val CREDENTIALS_FILE_PATH = "/credentials.json"
 
     //ToDo replace with email to use
-    private const val TEST_EMAIL = "oisinivory@gmail.com"
+    private const val TEST_EMAIL = "malgorzatavictor@gmail.com"
 
     private var gmailService:Gmail
 
