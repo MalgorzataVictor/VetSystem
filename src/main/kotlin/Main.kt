@@ -1,6 +1,7 @@
 import controllers.OwnerAPI
 import controllers.PetAPI
 import controllers.VetAPI
+import models.Owner
 import models.Pet
 import models.Vet
 import persistence.XMLSerializer
@@ -146,13 +147,13 @@ fun ownerMenu(): Int {
 fun runOwnerMenu() {
     do {
         when (val option = ownerMenu()) {
-            /*   1 -> //addOwner()
-             2 -> deleteOwner()
-              3 -> listAllOwners()
-              4 -> updateOwner()
-              5 -> numberOfOwners()
-              6 -> searchOwner
-              0 -> runMainMenu()*/
+            1 -> addOwner()
+            2 -> deleteOwner()
+            3 -> listAllOwners()
+            4 -> updateOwner()
+            5 -> numberOfOwners()
+            6 -> searchOwner
+            0 -> runMainMenu()
             else -> println("Invalid option entered: $option")
         }
     } while (true)
@@ -215,6 +216,30 @@ fun addVet() {
             specialisations,
             salary,
             position,
+            mutableListOf()
+        )
+    )
+    if (isAdded) {
+        println()
+        println("✔ Added Successfully")
+    } else {
+        println()
+        println("❌ Add Failed")
+    }
+}
+
+fun addOwner() {
+    val PPS = readNextInt("Enter Owner PPS: ")
+    val name = Utilities.capitalizeFirstLetter(readNextLine("Enter Owner Name: "))
+    val phoneNumber = Utilities.capitalizeFirstLetter(readNextLine("Enter Owner Phone Number: "))
+    val email = Utilities.capitalizeFirstLetter(readNextLine("Enter Owner Email: "))
+
+    val isAdded = ownerAPI.addOwner(
+        Owner(
+            PPS,
+            name,
+            phoneNumber,
+            email,
             mutableListOf()
         )
     )
