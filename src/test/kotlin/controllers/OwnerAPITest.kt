@@ -3,7 +3,6 @@ package controllers
 import models.Owner
 import models.Pet
 import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -12,7 +11,6 @@ import java.io.File
 import java.time.LocalDate
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
-import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class OwnerAPITest {
@@ -160,11 +158,11 @@ class OwnerAPITest {
 
         @Test
         fun `deleting a Vet that exists delete and returns deleted object`() {
-            assertNotNull(populatedOwners!!.findOwner(987654321))
-            val number1 = populatedOwners!!.numberOfOwners()
-            populatedOwners!!.deleteOwner(987654321)
-            assertEquals(number1 - 1, populatedOwners!!.numberOfOwners())
-            assertNull(populatedOwners!!.findOwner(987654321))
+            assertEquals(3, populatedOwners!!.numberOfOwners())
+            assertEquals(owner1, populatedOwners!!.deleteOwner(0))
+            assertEquals(2, populatedOwners!!.numberOfOwners())
+            assertEquals(owner3, populatedOwners!!.deleteOwner(1))
+            assertEquals(1, populatedOwners!!.numberOfOwners())
         }
     }
 

@@ -2,6 +2,8 @@ package controllers
 
 import models.Owner
 import persistence.Serializer
+import utils.Utilities
+
 class OwnerAPI(serializerType: Serializer) {
     private var serializer: Serializer = serializerType
     private var owners = ArrayList<Owner>()
@@ -10,8 +12,12 @@ class OwnerAPI(serializerType: Serializer) {
         return owners.add(owner)
     }
 
-    fun deleteOwner(indexToDelete: Int) {
-        owners.removeIf { owner -> owner.PPS == indexToDelete }
+    fun deleteOwner(indexToDelete: Int): Owner? {
+        return if (Utilities.isValidListIndex(indexToDelete, owners)) {
+            owners.removeAt(indexToDelete)
+        } else {
+            null
+        }
     }
 
     fun findOwner(id: Int): Owner? {

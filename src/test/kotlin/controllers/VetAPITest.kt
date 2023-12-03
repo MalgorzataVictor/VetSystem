@@ -3,7 +3,6 @@ package controllers
 import models.Pet
 import models.Vet
 import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -12,7 +11,6 @@ import java.io.File
 import java.time.LocalDate
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
-import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class VetAPITest {
@@ -168,11 +166,11 @@ class VetAPITest {
 
         @Test
         fun `deleting a Vet that exists delete and returns deleted object`() {
-            assertNotNull(populatedVets!!.findVet(3))
-            val number1 = populatedVets!!.numberOfVets()
-            populatedVets!!.deleteVet(3)
-            assertEquals(number1 - 1, populatedVets!!.numberOfVets())
-            assertNull(populatedVets!!.findVet(3))
+            assertEquals(4, populatedVets!!.numberOfVets())
+            assertEquals(vet1, populatedVets!!.deleteVet(0))
+            assertEquals(3, populatedVets!!.numberOfVets())
+            assertEquals(vet4, populatedVets!!.deleteVet(2))
+            assertEquals(2, populatedVets!!.numberOfVets())
         }
     }
 

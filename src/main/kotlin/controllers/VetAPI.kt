@@ -2,6 +2,8 @@ package controllers
 
 import models.Vet
 import persistence.Serializer
+import utils.Utilities
+
 class VetAPI(serializerType: Serializer) {
     private var serializer: Serializer = serializerType
     private var vets = ArrayList<Vet>()
@@ -10,9 +12,14 @@ class VetAPI(serializerType: Serializer) {
         return vets.add(vet)
     }
 
-    fun deleteVet(indexToDelete: Int) {
-        vets.removeIf { vet -> vet.vetID == indexToDelete }
+    fun deleteVet(indexToDelete: Int): Vet? {
+        return if (Utilities.isValidListIndex(indexToDelete, vets)) {
+            vets.removeAt(indexToDelete)
+        } else {
+            null
+        }
     }
+
     fun findVet(id: Int): Vet? {
         return vets.find { vet -> vet.vetID == id }
     }
