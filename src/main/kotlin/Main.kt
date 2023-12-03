@@ -4,6 +4,7 @@ import controllers.VetAPI
 import persistence.XMLSerializer
 import utils.ScannerInput
 import java.io.File
+import java.util.*
 import kotlin.system.exitProcess
 
 private val petAPI = PetAPI(XMLSerializer(File("pets.xml")))
@@ -67,13 +68,13 @@ fun petMenu(): Int {
 fun runPetMenu() {
     do {
         when (val option = petMenu()) {
-            /*   1 -> //addPet()
-             2 -> deletePet()
-              3 -> listAllPets()
-              4 -> updatePet()
-              5 -> numberOfPets()
-              6 -> searchPet
-              0 -> runMainMenu()*/
+            1 -> addPet()
+            2 -> deletePet()
+            3 -> listAllPets()
+            4 -> updatePet()
+            5 -> numberOfPets()
+            6 -> searchPet
+            0 -> runMainMenu()
             else -> println("Invalid option entered: $option")
         }
     } while (true)
@@ -148,6 +149,11 @@ fun runOwnerMenu() {
         }
     } while (true)
 }
+
+/*fun addPet() {
+    val
+
+}*/
 
 fun saveAll() {
     try {

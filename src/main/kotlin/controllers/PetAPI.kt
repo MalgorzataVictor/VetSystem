@@ -8,7 +8,15 @@ class PetAPI(serializerType: Serializer) {
     private var serializer: Serializer = serializerType
     private var pets = ArrayList<Pet>()
 
+    private fun getPetID(): Int {
+        if (pets.isEmpty()) {
+            return 1
+        }
+        return pets.last().petID + 1
+    }
+
     fun addPet(pet: Pet): Boolean {
+        pet.petID = getPetID()
         return pets.add(pet)
     }
 
