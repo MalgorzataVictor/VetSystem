@@ -30,7 +30,7 @@ dependencies {
     // For generating a Dokka Site from KDoc
     implementation("org.jetbrains.dokka:dokka-gradle-plugin:1.9.10")
 
-    //for Gmail API
+    // for Gmail API
     implementation("com.google.api-client:google-api-client:2.2.0")
     implementation("com.google.auth:google-auth-library-oauth2-http:1.20.0")
     implementation("com.google.oauth-client:google-oauth-client-jetty:1.34.1")

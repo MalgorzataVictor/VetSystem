@@ -1,7 +1,7 @@
+import controllers.GmailAPI
 import controllers.OwnerAPI
 import controllers.PetAPI
 import controllers.VetAPI
-import controllers.GmailAPI
 import models.Owner
 import models.Pet
 import models.Vet
@@ -171,7 +171,8 @@ fun addPet() {
     listAllVets()
     val vetID = readNextInt("Enter index of Vet who you want to assign: ")
     listAllOwners()
-    val ownerPPS = readNextInt("Enter index of Owner you want to assign: ")
+    val ownerPPSIndex = readNextInt("Enter index of Owner you want to assign: ")
+    val ownerPPS = ownerAPI.findOwnerByIndex(ownerPPSIndex)?.PPS
 
     val pet = Pet(
         0,
@@ -180,12 +181,12 @@ fun addPet() {
         DOB,
         false,
         vetID,
-        ownerPPS
+        ownerPPS!!
     )
     val isAdded = petAPI.addPet(pet)
     if (isAdded) {
         vetAPI.assignPetToVet(vetID, pet)
-        ownerAPI.assignPetToOwner(ownerPPS, pet)
+        ownerAPI.assignPetToOwner(ownerPPSIndex, pet)
         println()
         println("✔ Added Successfully")
     } else {
@@ -299,16 +300,17 @@ fun deleteOwner() {
     }
 }
 
-fun sendNotification(){
+fun sendNotification() {
     val sickPets = petAPI.getAllPets().filter { !it.isVaccinated }
-    sickPets.forEach{pet ->
+    sickPets.forEach { pet ->
 
         val emailGroup = ownerAPI.findOwner(pet.ownerPPS)?.email
-        GmailApi.sendEmail("$emailGroup","VACCINATION REMINDER","We are reminding about vaccination for ${pet.name} . Please book an appointment with our Clinic")
+        GmailApi.sendEmail(
+            "$emailGroup",
+            "VACCINATION REMINDER \uD83D\uDC89 ❗",
+            "We are reminding about vaccination for ${pet.name}.\n Please book an appointment with our Clinic \uD83D\uDC15"
+        )
     }
-
-
-
 }
 
 fun numberOfPets() {

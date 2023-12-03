@@ -1,7 +1,6 @@
 package controllers
 
 import models.Pet
-import models.Vet
 import persistence.Serializer
 import utils.Utilities
 

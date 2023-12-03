@@ -18,37 +18,33 @@ import java.io.IOException
 import java.io.InputStreamReader
 import java.nio.file.Paths
 import java.util.*
+import javax.mail.Message.RecipientType.TO
 import javax.mail.MessagingException
 import javax.mail.Session
 import javax.mail.internet.InternetAddress
 import javax.mail.internet.MimeMessage
-import javax.mail.Message.RecipientType.TO;
 
-//Todo could make it a class and instance in API layer
 object GmailAPI {
-    //ToDo Update with project name
+
     private const val APPLICATION_NAME = "VetSystem"
 
-    //ToDo Ensure that client secrets/keys/credentials are NOT pushed to github
     private const val TOKENS_DIRECTORY_PATH = "tokens"
     private const val CREDENTIALS_FILE_PATH = "/credentials.json"
 
-    //ToDo replace with email to use
     private const val TEST_EMAIL = "malgorzatavictor@gmail.com"
 
-    private var gmailService:Gmail
+    private var gmailService: Gmail
 
     /**
      * Configures the Gmail object which will be used to send emails in the class.
      */
-    init{
+    init {
         val httpTransport: NetHttpTransport = GoogleNetHttpTransport.newTrustedTransport()
         val gsonFactory: GsonFactory = GsonFactory.getDefaultInstance()
-        gmailService = Gmail.Builder(httpTransport, gsonFactory, getCredentials(httpTransport,gsonFactory))
+        gmailService = Gmail.Builder(httpTransport, gsonFactory, getCredentials(httpTransport, gsonFactory))
             .setApplicationName(APPLICATION_NAME)
             .build()
     }
-
 
     /**
      * Given a [httpTransport] and a [gsonFactory] load credentials generated in the tokens folder, or will make a http request to get them
@@ -60,7 +56,10 @@ object GmailAPI {
             GmailAPI::class.java.getResourceAsStream(CREDENTIALS_FILE_PATH)?.let { InputStreamReader(it) }
         )
         val flow = GoogleAuthorizationCodeFlow.Builder(
-            httpTransport, gsonFactory, clientSecrets, mutableSetOf(GMAIL_SEND)
+            httpTransport,
+            gsonFactory,
+            clientSecrets,
+            mutableSetOf(GMAIL_SEND)
         )
             .setDataStoreFactory(FileDataStoreFactory(Paths.get(TOKENS_DIRECTORY_PATH).toFile()))
             .setAccessType("offline")
@@ -72,38 +71,37 @@ object GmailAPI {
     /**
      * Given a [recipientEmailAddress], creates and sends and email with a given [subject] and [body]
      */
-    //ToDo Decide what it should return
+
     @Throws(MessagingException::class, IOException::class)
     fun sendEmail(
         recipientEmailAddress: String?,
-        subject:String?,
-        body:String?
+        subject: String?,
+        body: String?
     ): Boolean {
-        //Create a new mail Session
+        // Create a new mail Session
         val props = Properties()
         val session = Session.getDefaultInstance(props, null)
 
-        //Create and configure the email to be sent to
-        //ToDo maybe add validation to email? (Regex)
+        // Create and configure the email to be sent to
+
         val email = MimeMessage(session)
         email.setFrom(InternetAddress(TEST_EMAIL))
         email.addRecipient(TO, InternetAddress(recipientEmailAddress))
         email.subject = subject
         email.setText(body)
 
-        //Get the email object in bytes.
+        // Get the email object in bytes.
         val buffer = ByteArrayOutputStream()
         email.writeTo(buffer)
         val rawMessageBytes = buffer.toByteArray()
-        //Encode email in order to send it
+        // Encode email in order to send it
         val encodedEmail = Base64.getEncoder().encodeToString(rawMessageBytes)
-        //Create new mesasge with the encoded bytes
+        // Create new message with the encoded bytes
         var msg = Message()
         msg.setRaw(encodedEmail)
 
-        //ToDo Decide on what to do on error
         try {
-            //Try to send the email using the gmailService
+            // Try to send the email using the gmailService
             msg = gmailService.users().messages().send("me", msg).execute()
             println("Message id: " + msg.id)
             println(msg.toPrettyString())
@@ -115,6 +113,6 @@ object GmailAPI {
                 return false
             }
         }
-        return true;
+        return true
     }
 }
