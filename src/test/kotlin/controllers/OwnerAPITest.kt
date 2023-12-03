@@ -4,7 +4,11 @@ import models.Owner
 import models.Pet
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Nested
+import org.junit.jupiter.api.Test
 import java.time.LocalDate
+import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class OwnerAPITest {
     private var owner1: Owner? = null
@@ -59,5 +63,43 @@ class OwnerAPITest {
         owner3 = null
         populatedOwners = null
         emptyOwners = null
+    }
+
+    @Nested
+    inner class AddOwners {
+
+        @Test
+        fun `adding a Owner to a populated list adds to ArrayList`() {
+            val newOwner = Owner(
+                135792468,
+                "Mark Davis",
+                "+1357924680",
+                "mark@example.com",
+                mutableListOf(
+                    Pet(6, "Coco", "Dog", LocalDate.of(2023, 3, 8), true, 4, 97531)
+                )
+            )
+            assertEquals(3, populatedOwners!!.numberOfOwners())
+            assertTrue(populatedOwners!!.addOwner(newOwner))
+            assertEquals(4, populatedOwners!!.numberOfOwners())
+            assertEquals(newOwner, populatedOwners!!.findOwner(135792468))
+        }
+
+        @Test
+        fun `adding a Owner to an empty list adds to ArrayList`() {
+            val newOwner = Owner(
+                135792468,
+                "Mark Davis",
+                "+1357924680",
+                "mark@example.com",
+                mutableListOf(
+                    Pet(6, "Coco", "Dog", LocalDate.of(2023, 3, 8), true, 4, 97531)
+                )
+            )
+            assertEquals(0, emptyOwners!!.numberOfOwners())
+            assertTrue(emptyOwners!!.addOwner(newOwner))
+            assertEquals(1, emptyOwners!!.numberOfOwners())
+            assertEquals(newOwner, emptyOwners!!.findOwner(newOwner.PPS))
+        }
     }
 }
