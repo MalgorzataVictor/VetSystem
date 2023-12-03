@@ -73,7 +73,7 @@ class PetAPI(serializerType: Serializer) {
     fun formatListString(notesToFormat: List<Pet>): String =
         notesToFormat
             .joinToString(separator = "\n") { pet ->
-                "        📌 " + pets.indexOf(pet).toString() + ": " + pet.toString()
+                "" + pets.indexOf(pet).toString() + ": " + pet.toString()
             }
 
     @Throws(Exception::class)

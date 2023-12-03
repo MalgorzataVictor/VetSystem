@@ -74,7 +74,7 @@ class OwnerAPI(serializerType: Serializer) {
     fun formatListString(notesToFormat: List<Owner>): String =
         notesToFormat
             .joinToString(separator = "\n") { owner ->
-                "        📌 " + owners.indexOf(owner).toString() + ": " + owner.toString()
+                "" + owners.indexOf(owner).toString() + ": " + owner.toString()
             }
 
     @Throws(Exception::class)
