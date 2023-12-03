@@ -307,6 +307,11 @@ fun numberOfVets() {
     println("Number of Vets in the system: $vetSize vets")
 }
 
+fun numberOfOwners() {
+    val ownerSize = ownerAPI.numberOfOwners()
+    println("Number of Owners in the system: $ownerSize owners")
+}
+
 fun searchPet() {
     val searchName = readNextLine("Enter the Pet Name to search by: ")
     val searchResults = petAPI.searchByName(searchName)
