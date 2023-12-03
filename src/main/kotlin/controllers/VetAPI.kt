@@ -21,8 +21,8 @@ class VetAPI {
     fun updateVet(indexToUpdate: Int, vet: Vet?): Boolean {
         val foundVet = findVet(indexToUpdate)
 
-        if ((foundVet != null) && (vet != null)) {
-            foundVet.vetID = vet.vetID
+        if (foundVet != null && vet != null) {
+            // Update the fields of the found vet with the new information
             foundVet.name = vet.name
             foundVet.dateQualified = vet.dateQualified
             foundVet.specialisation = vet.specialisation

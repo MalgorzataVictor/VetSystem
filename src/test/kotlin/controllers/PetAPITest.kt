@@ -139,7 +139,7 @@ class PetAPITest {
     @Nested
     inner class NumberOfPets {
         @Test
-        fun `numberOfPets returns the total number of notes in the ArrayList`() {
+        fun `numberOfPets returns the total number of pets in the ArrayList`() {
             assertEquals(5, populatedPets!!.numberOfPets())
             assertEquals(0, emptyPets!!.numberOfPets())
         }

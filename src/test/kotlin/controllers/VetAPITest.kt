@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
@@ -114,7 +115,7 @@ class VetAPITest {
     }
 
     @Nested
-    inner class deleteVets {
+    inner class DeleteVets {
         @Test
         fun `deleting a Vet that does not exist, returns null`() {
             val number1 = emptyVets!!.numberOfVets()
@@ -134,4 +135,83 @@ class VetAPITest {
             assertNull(populatedVets!!.findVet(3))
         }
     }
+
+    @Nested
+    inner class UpdateVets {
+        @Test
+        fun `updating a vet that does not exist returns false`() {
+            assertFalse(
+                populatedVets!!.updateVet(
+                    9,
+                    Vet(
+                        6,
+                        "Lee Chan",
+                        LocalDate.of(2022, 7, 1),
+                        mutableListOf("Orthopedics", "Cardiology"), // Specializations with some values
+                        7634.0,
+                        "Junior",
+                        mutableListOf() // Empty patient list
+                    )
+                )
+            )
+            assertFalse(
+                populatedVets!!.updateVet(
+                    -1,
+                    Vet(
+                        6,
+                        "Lee Chan",
+                        LocalDate.of(2022, 7, 1),
+                        mutableListOf("Orthopedics", "Cardiology"), // Specializations with some values
+                        7634.0,
+                        "Junior",
+                        mutableListOf() // Empty patient list
+                    )
+                )
+            )
+            assertFalse(
+                emptyVets!!.updateVet(
+                    0,
+                    Vet(
+                        6,
+                        "Lee Chan",
+                        LocalDate.of(2022, 7, 1),
+                        mutableListOf("Orthopedics", "Cardiology"), // Specializations with some values
+                        7634.0,
+                        "Junior",
+                        mutableListOf() // Empty patient list
+                    )
+                )
+            )
+        }
+
+        @Test
+        fun `updating a vet  that exists returns true and updates`() {
+            assertEquals(vet2, populatedVets!!.findVet(2))
+            assertEquals("Dr. Johnson", populatedVets!!.findVet(2)!!.name)
+            assertEquals(LocalDate.of(2020, 5, 10), populatedVets!!.findVet(2)!!.dateQualified)
+            assertEquals(75000.0, populatedVets!!.findVet(2)!!.salary)
+            assertEquals(mutableListOf(Pet(1, "PetName", "PetType", LocalDate.of(2022, 2, 2), false, 1, 12345)), populatedVets!!.findVet(2)!!.patientList)
+            assertEquals("Junior", populatedVets!!.findVet(2)!!.position)
+
+            assertTrue(
+                populatedVets!!.updateVet(
+                    4,
+                    Vet(
+                        2,
+                        "Dr. Tina",
+                        LocalDate.of(1999, 5, 10),
+                        mutableListOf(),
+                        90000.0,
+                        "Senior",
+                        mutableListOf(Pet(1, "PetName", "PetType", LocalDate.of(2022, 2, 2), false, 1, 12345)) // Patient list with one pet
+                    )
+                )
+            )
+            assertEquals("Dr. Tina", populatedVets!!.findVet(4)!!.name)
+            assertEquals(90000.0, populatedVets!!.findVet(4)!!.salary)
+            assertEquals("Senior", populatedVets!!.findVet(4)!!.position)
+        }
+    }
+
+
 }
