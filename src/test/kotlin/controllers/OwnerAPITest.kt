@@ -207,4 +207,13 @@ class OwnerAPITest {
              ), populatedOwners!!.findOwner(987654321)!!.petsList)
         }*/
     }
+
+    @Nested
+    inner class NumberOfOwners {
+        @Test
+        fun `NumberOfOwners returns the total number of owners in the ArrayList`() {
+            assertEquals(3, populatedOwners!!.numberOfOwners())
+            assertEquals(0, emptyOwners!!.numberOfOwners())
+        }
+    }
 }
