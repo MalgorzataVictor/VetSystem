@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import persistence.XMLSerializer
+import java.io.File
 import java.time.LocalDate
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -18,8 +20,8 @@ class VetAPITest {
     private var vet2: Vet? = null
     private var vet3: Vet? = null
     private var vet4: Vet? = null
-    private var populatedVets: VetAPI? = VetAPI()
-    private var emptyVets: VetAPI? = VetAPI()
+    private var populatedVets: VetAPI? = VetAPI(XMLSerializer(File("vets.xml")))
+    private var emptyVets: VetAPI? = VetAPI(XMLSerializer(File("vets.xml")))
 
     @BeforeEach
     fun setup() {

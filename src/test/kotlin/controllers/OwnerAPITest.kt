@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import persistence.XMLSerializer
+import java.io.File
 import java.time.LocalDate
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -17,8 +19,8 @@ class OwnerAPITest {
     private var owner1: Owner? = null
     private var owner2: Owner? = null
     private var owner3: Owner? = null
-    private var populatedOwners: OwnerAPI? = OwnerAPI()
-    private var emptyOwners: OwnerAPI? = OwnerAPI()
+    private var populatedOwners: OwnerAPI? = OwnerAPI(XMLSerializer(File("owners.xml")))
+    private var emptyOwners: OwnerAPI? = OwnerAPI(XMLSerializer(File("owners.xml")))
 
     @BeforeEach
     fun setup() {
