@@ -171,18 +171,19 @@ fun addPet() {
     listAllOwners()
     val ownerPPS = readNextInt("Enter index of Owner you want to assign: ")
 
-    val isAdded = petAPI.addPet(
-        Pet(
-            0,
-            name,
-            breed,
-            DOB,
-            false,
-            vetID,
-            ownerPPS
-        )
+    val pet = Pet(
+        0,
+        name,
+        breed,
+        DOB,
+        false,
+        vetID,
+        ownerPPS
     )
+    val isAdded = petAPI.addPet(pet)
     if (isAdded) {
+        vetAPI.assignPetToVet(vetID, pet)
+        ownerAPI.assignPetToOwner(ownerPPS, pet)
         println()
         println("✔ Added Successfully")
     } else {
@@ -410,15 +411,19 @@ fun updatePet() {
 
                     4 -> {
                         listAllVets()
-                        val vetID = readNextInt("Enter ID of Vet who you want to assign: ")
+                        val vetID = readNextInt("Enter index of Vet who you want to assign: ")
+                        val oldVetID = newPet.vetID
                         newPet.vetID = vetID
+                        vetAPI.unAssignPetFromVet(oldVetID, vetID, newPet)
                         return
                     }
 
                     5 -> {
                         listAllOwners()
                         val ownerPPS = readNextInt("Enter PPS of Owner you want to assign: ")
+                        val oldOwnerPPS = newPet.ownerPPS
                         newPet.ownerPPS = ownerPPS
+                        ownerAPI.unAssignPetFromOwner(oldOwnerPPS, ownerPPS, newPet)
                         return
                     }
 

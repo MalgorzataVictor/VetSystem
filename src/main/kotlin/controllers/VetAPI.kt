@@ -72,9 +72,13 @@ class VetAPI(serializerType: Serializer) {
         return Utilities.isValidListIndex(index, vets)
     }
 
-    fun assignPetToVet(index: Int,pet: Pet):Boolean? {
-        return  findVetByIndex(index)?.patientList?.add(pet)
+    fun assignPetToVet(index: Int, pet: Pet): Boolean? {
+        return findVetByIndex(index)?.patientList?.add(pet)
+    }
 
+    fun unAssignPetFromVet(oldIndex: Int, newIndex: Int, pet: Pet) {
+        findVetByIndex(oldIndex)?.patientList?.remove(pet)
+        findVetByIndex(newIndex)?.patientList?.add(pet)
     }
 
     fun formatListString(notesToFormat: List<Vet>): String =

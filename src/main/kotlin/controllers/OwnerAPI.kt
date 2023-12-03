@@ -1,6 +1,7 @@
 package controllers
 
 import models.Owner
+import models.Pet
 import persistence.Serializer
 import utils.Utilities
 
@@ -55,6 +56,14 @@ class OwnerAPI(serializerType: Serializer) {
 
     fun isValidIndex(index: Int): Boolean {
         return Utilities.isValidListIndex(index, owners)
+    }
+    fun assignPetToOwner(index: Int, pet: Pet): Boolean? {
+        return findOwnerByIndex(index)?.petsList?.add(pet)
+    }
+
+    fun unAssignPetFromOwner(oldIndex: Int, newIndex: Int, pet: Pet) {
+        findOwnerByIndex(oldIndex)?.petsList?.remove(pet)
+        findOwnerByIndex(newIndex)?.petsList?.add(pet)
     }
 
     fun searchByName(searchString: String) =
