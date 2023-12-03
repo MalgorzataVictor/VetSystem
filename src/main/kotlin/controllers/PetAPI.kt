@@ -15,6 +15,10 @@ class PetAPI(serializerType: Serializer) {
         return pets.last().petID + 1
     }
 
+    fun getAllPets(): ArrayList<Pet> {
+        return pets
+    }
+
     fun listAllPets(): String =
         if (pets.isEmpty()) {
             "No pets stored"

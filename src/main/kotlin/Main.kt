@@ -1,3 +1,4 @@
+import controllers.GmailAPI
 import controllers.OwnerAPI
 import controllers.PetAPI
 import controllers.VetAPI
@@ -19,6 +20,7 @@ import kotlin.system.exitProcess
 private val petAPI = PetAPI(XMLSerializer(File("pets.xml")))
 private val vetAPI = VetAPI(XMLSerializer(File("vets.xml")))
 private val ownerAPI = OwnerAPI(XMLSerializer(File("owners.xml")))
+private val GmailApi = GmailAPI
 fun main(args: Array<String>) {
     loadAll()
     runMainMenu()
@@ -66,6 +68,7 @@ fun petMenu(): Int {
         ┃  4) Update Pet                    ┃
         ┃  5) Number Of Pet                 ┃
         ┃  6) Search Pet                    
+           7) Sent notification                
         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         ┃  0) Exit                          ┃
         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -82,6 +85,7 @@ fun runPetMenu() {
             4 -> updatePet()
             5 -> numberOfPets()
             6 -> searchPet()
+            7 -> sendNotification()
             0 -> runMainMenu()
             else -> println("Invalid option entered: $option")
         }
@@ -167,7 +171,8 @@ fun addPet() {
     listAllVets()
     val vetID = readNextInt("Enter index of Vet who you want to assign: ")
     listAllOwners()
-    val ownerPPS = readNextInt("Enter index of Owner you want to assign: ")
+    val ownerPPSIndex = readNextInt("Enter index of Owner you want to assign: ")
+    val ownerPPS = ownerAPI.findOwnerByIndex(ownerPPSIndex)?.PPS
 
     val pet = Pet(
         0,
@@ -176,12 +181,12 @@ fun addPet() {
         DOB,
         false,
         vetID,
-        ownerPPS
+        ownerPPS!!
     )
     val isAdded = petAPI.addPet(pet)
     if (isAdded) {
         vetAPI.assignPetToVet(vetID, pet)
-        ownerAPI.assignPetToOwner(ownerPPS, pet)
+        ownerAPI.assignPetToOwner(ownerPPSIndex, pet)
         println()
         println("✔ Added Successfully")
     } else {
@@ -292,6 +297,19 @@ fun deleteOwner() {
             println()
             println("❌ Delete NOT Successful")
         }
+    }
+}
+
+fun sendNotification() {
+    val sickPets = petAPI.getAllPets().filter { !it.isVaccinated }
+    sickPets.forEach { pet ->
+
+        val emailGroup = ownerAPI.findOwner(pet.ownerPPS)?.email
+        GmailApi.sendEmail(
+            "$emailGroup",
+            "VACCINATION REMINDER \uD83D\uDC89 ❗",
+            "We are reminding about vaccination for ${pet.name}.\n Please book an appointment with our Clinic \uD83D\uDC15"
+        )
     }
 }
 
