@@ -113,7 +113,7 @@ fun runVetMenu() {
             1 -> addVet()
             2 -> deleteVet()
             3 -> listAllVets()
-            4 -> updateVet()
+            // 4 -> updateVet()
             5 -> numberOfVets()
             6 -> searchVet()
             0 -> runMainMenu()
@@ -148,7 +148,7 @@ fun runOwnerMenu() {
             1 -> addOwner()
             2 -> deleteOwner()
             3 -> listAllOwners()
-            4 -> updateOwner()
+            // 4 -> updateOwner()
             5 -> numberOfOwners()
             6 -> searchOwner()
             0 -> runMainMenu()
@@ -371,12 +371,14 @@ fun updatePet() {
         }
     }
 }
+/*
 
 fun updateVet() {
 }
 
 fun updateOwner() {
 }
+*/
 
 fun listAllPets() = println(petAPI.listAllPets())
 fun listAllVets() = println(vetAPI.listAllVets())
