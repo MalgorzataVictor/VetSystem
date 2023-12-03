@@ -49,6 +49,14 @@ class OwnerAPI(serializerType: Serializer) {
         return false
     }
 
+    fun findOwnerByIndex(id: Int): Owner? {
+        return owners.get(id)
+    }
+
+    fun isValidIndex(index: Int): Boolean {
+        return Utilities.isValidListIndex(index, owners)
+    }
+
     fun searchByName(searchString: String) =
         formatListString(
             owners.filter { owner -> owner.name.contains(searchString, ignoreCase = true) }

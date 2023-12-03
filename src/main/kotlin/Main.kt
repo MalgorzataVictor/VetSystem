@@ -553,6 +553,95 @@ fun updateVet() {
     }
 }
 
+fun updateOwner() {
+    listAllOwners()
+    if (ownerAPI.numberOfOwners() > 0) {
+        val indexToUpdate = readNextInt("Enter the Index of the Owner you wish to update: ")
+        if (ownerAPI.isValidIndex(indexToUpdate)) {
+            val owner1 = ownerAPI.findOwnerByIndex(indexToUpdate)
+            val newOwner =
+                Owner(
+                    owner1!!.PPS,
+                    owner1.name,
+                    owner1.phoneNumber,
+                    owner1.email,
+                    owner1.petsList
+
+                )
+
+            println(
+                """ 
+            
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    ┃        Owner        ┃
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    ┃   Update:                             ┃
+    ┃   𝟭. Owner PPS                       ┃
+    ┃   𝟮. Owner Name                       ┃
+    ┃   𝟯. Owner Phone Number                           ┃
+    ┃   𝟰. Owner Email                       ┃
+    ┃   𝟱. Owner Pet List                  ┃
+    ┃                                       ┃
+    ┃  -𝟭. Exit                             ┃
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+         
+    Enter Option ➡️ """
+
+            )
+
+            var choice: Int
+
+            do {
+                choice = readLine()!!.toInt()
+                when (choice) {
+                    1 -> {
+                        newOwner.PPS = readNextInt("Enter Owner PPS: ")
+                        return
+                    }
+
+                    2 -> {
+                        newOwner.name = Utilities.capitalizeFirstLetter(readNextLine("Enter Owner Name: "))
+                        return
+                    }
+
+                    3 -> {
+                        newOwner.phoneNumber = Utilities.capitalizeFirstLetter(readNextLine("Enter Owner Phone Number: "))
+                        return
+                    }
+
+                    4 -> {
+                        newOwner.email = Utilities.capitalizeFirstLetter(readNextLine("Enter Owner Email: "))
+                        return
+                    }
+
+                    5 -> {
+                        println(newOwner.formatListStringPatientList())
+                        val input2 = readNextInt("Enter an index of Pet you want to delete: ")
+                        newOwner.petsList.removeAt(input2)
+                    }
+
+                    else -> println("Invalid Value")
+                }
+            } while (choice != -1)
+
+            if (ownerAPI.updateOwner(
+                    indexToUpdate,
+                    newOwner
+                )
+            ) {
+                println()
+                println("✔ Update Successful")
+            } else {
+                println()
+                println(" ❌ Update Failed")
+            }
+        } else {
+            println()
+            print("❗ No vets found")
+        }
+    }
+}
+
 fun listAllPets() = println(petAPI.listAllPets())
 fun listAllVets() = println(vetAPI.listAllVets())
 fun listAllOwners() = println(ownerAPI.listAllOwners())
