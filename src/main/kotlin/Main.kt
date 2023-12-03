@@ -162,14 +162,14 @@ fun runOwnerMenu() {
 fun addPet() {
     val name = Utilities.capitalizeFirstLetter(readNextLine("Enter Pet Name: "))
     val breed = Utilities.capitalizeFirstLetter(readNextLine("Enter Pet Breed: "))
-    val dobInput = readNextLine("Enter Pet DOB (MM-YY format): ")
-    val formatter = DateTimeFormatter.ofPattern("MM-yy", Locale.ENGLISH)
+    val dobInput = readNextLine("Enter Pet DOB (DD-MM-yy format): ")
+    val formatter = DateTimeFormatter.ofPattern("DD-MM-yy", Locale.ENGLISH)
     val DOB = LocalDate.parse(dobInput, formatter)
     println()
     listAllVets()
-    val vetID = readNextInt("Enter ID of Vet who you want to assign: ")
+    val vetID = readNextInt("Enter index of Vet who you want to assign: ")
     listAllOwners()
-    val ownerPPS = readNextInt("Enter PPS of Owner you want to assign: ")
+    val ownerPPS = readNextInt("Enter index of Owner you want to assign: ")
 
     val isAdded = petAPI.addPet(
         Pet(
@@ -193,10 +193,10 @@ fun addPet() {
 
 fun addVet() {
     val name = Utilities.capitalizeFirstLetter(readNextLine("Enter Vet Name: "))
-    val dobInput = readNextLine("Enter Date Qualified (MM-YY format): ")
-    val formatter = DateTimeFormatter.ofPattern("MM-yy", Locale.ENGLISH)
+    val dobInput = readNextLine("Enter Date Qualified (DD-MM-yy format): ")
+    val formatter = DateTimeFormatter.ofPattern("DD-MM-yy", Locale.ENGLISH)
     val dateQualified = LocalDate.parse(dobInput, formatter)
-    var specialisations: MutableList<String> = mutableListOf()
+    val specialisations: MutableList<String> = mutableListOf()
     var input = ""
     do {
         input = Utilities.capitalizeFirstLetter(readNextLine("Enter specialisation, type 'F' to finish"))

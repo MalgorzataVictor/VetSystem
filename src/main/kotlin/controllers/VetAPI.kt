@@ -1,5 +1,6 @@
 package controllers
 
+import models.Pet
 import models.Vet
 import persistence.Serializer
 import utils.Utilities
@@ -69,6 +70,11 @@ class VetAPI(serializerType: Serializer) {
 
     fun isValidIndex(index: Int): Boolean {
         return Utilities.isValidListIndex(index, vets)
+    }
+
+    fun assignPetToVet(index: Int,pet: Pet):Boolean? {
+        return  findVetByIndex(index)?.patientList?.add(pet)
+
     }
 
     fun formatListString(notesToFormat: List<Vet>): String =
