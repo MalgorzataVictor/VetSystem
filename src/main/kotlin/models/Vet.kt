@@ -9,7 +9,7 @@ data class Vet(
     var specialisation: MutableList<String> = mutableListOf(),
     var salary: Double,
     var position: String,
-    var patientList: MutableList<Pet> = mutableListOf()
+    var patientList: MutableList<Int> = mutableListOf()
 ) {
     fun formatListStringSpecialisation() {
         specialisation.joinToString("\n") { it.toString() }
