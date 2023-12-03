@@ -186,6 +186,22 @@ fun addPet() {
         println("❌ Add Failed")
     }
 }
+
+fun deletePet() {
+    listAllPets()
+    if (petAPI.numberOfPets() > 0) {
+        val indexToDelete = readNextInt("Enter the index of the Pet to delete: ")
+        val petToDelete = petAPI.deletePet(indexToDelete)
+        if (petToDelete != null) {
+            println()
+            println("✔ Delete Successful! Deleted note: ${petToDelete.name}")
+        } else {
+            println()
+            println("❌ Delete NOT Successful")
+        }
+    }
+}
+
 fun listAllPets() = println(petAPI.listAllPets())
 fun listAllVets() = println(vetAPI.listAllVets())
 fun listAllOwners() = println(ownerAPI.listAllOwners())
