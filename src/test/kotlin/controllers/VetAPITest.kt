@@ -213,5 +213,12 @@ class VetAPITest {
         }
     }
 
-
+    @Nested
+    inner class NumberOfVets {
+        @Test
+        fun `numberOfVets returns the total number of vets in the ArrayList`() {
+            assertEquals(4, populatedVets!!.numberOfVets())
+            assertEquals(0, emptyVets!!.numberOfVets())
+        }
+    }
 }
