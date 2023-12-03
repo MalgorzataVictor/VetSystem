@@ -202,6 +202,11 @@ fun deletePet() {
     }
 }
 
+fun numberOfPets() {
+    val petSize = petAPI.numberOfPets()
+    println("Number of Pets in the system: $petSize pets")
+}
+
 fun listAllPets() = println(petAPI.listAllPets())
 fun listAllVets() = println(vetAPI.listAllVets())
 fun listAllOwners() = println(ownerAPI.listAllOwners())
