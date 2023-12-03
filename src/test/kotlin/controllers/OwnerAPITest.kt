@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import persistence.XMLSerializer
+import java.io.File
 import java.time.LocalDate
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -17,8 +19,8 @@ class OwnerAPITest {
     private var owner1: Owner? = null
     private var owner2: Owner? = null
     private var owner3: Owner? = null
-    private var populatedOwners: OwnerAPI? = OwnerAPI()
-    private var emptyOwners: OwnerAPI? = OwnerAPI()
+    private var populatedOwners: OwnerAPI? = OwnerAPI(XMLSerializer(File("owners.xml")))
+    private var emptyOwners: OwnerAPI? = OwnerAPI(XMLSerializer(File("owners.xml")))
 
     @BeforeEach
     fun setup() {
@@ -66,6 +68,44 @@ class OwnerAPITest {
         owner3 = null
         populatedOwners = null
         emptyOwners = null
+    }
+
+    @Nested
+    inner class PersistenceTests {
+        @Nested
+        inner class XMLPersistence {
+            @Test
+            fun `saving and loading an empty collection in XML doesn't crash app`() {
+                val saveOwners = OwnerAPI(XMLSerializer(File("owners-test.xml")))
+                saveOwners.saveOwners()
+
+                val loadedPets = OwnerAPI(XMLSerializer(File("owners-test.xml")))
+                loadedPets.loadOwners()
+
+                assertEquals(0, saveOwners.numberOfOwners())
+                assertEquals(0, loadedPets.numberOfOwners())
+                assertEquals(saveOwners.numberOfOwners(), loadedPets.numberOfOwners())
+            }
+
+            @Test
+            fun `saving and loading an loaded collection in XML doesn't loose data`() {
+                val saveOwners = OwnerAPI(XMLSerializer(File("owners-test.xml")))
+                saveOwners.addOwner(owner1!!)
+                saveOwners.addOwner(owner2!!)
+                saveOwners.addOwner(owner3!!)
+                saveOwners.saveOwners()
+
+                val loadedPets = OwnerAPI(XMLSerializer(File("owners-test.xml")))
+                loadedPets.loadOwners()
+
+                assertEquals(3, saveOwners.numberOfOwners())
+                assertEquals(3, loadedPets.numberOfOwners())
+                assertEquals(saveOwners.numberOfOwners(), loadedPets.numberOfOwners())
+                assertEquals(saveOwners.findOwner(0), loadedPets.findOwner(0))
+                assertEquals(saveOwners.findOwner(1), loadedPets.findOwner(1))
+                assertEquals(saveOwners.findOwner(2), loadedPets.findOwner(2))
+            }
+        }
     }
 
     @Nested

@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import persistence.XMLSerializer
+import java.io.File
 import java.time.LocalDate
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -18,8 +20,8 @@ class PetAPITest {
     private var cat1: Pet? = null
     private var cat2: Pet? = null
     private var bunny1: Pet? = null
-    private var populatedPets: PetAPI? = PetAPI()
-    private var emptyPets: PetAPI? = PetAPI()
+    private var populatedPets: PetAPI? = PetAPI(XMLSerializer(File("pets.xml")))
+    private var emptyPets: PetAPI? = PetAPI(XMLSerializer(File("pets.xml")))
 
     @BeforeEach
     fun setup() {
@@ -45,6 +47,44 @@ class PetAPITest {
         bunny1 = null
         populatedPets = null
         emptyPets = null
+    }
+
+    @Nested
+    inner class PersistenceTests {
+        @Nested
+        inner class XMLPersistence {
+            @Test
+            fun `saving and loading an empty collection in XML doesn't crash app`() {
+                val storingPets = PetAPI(XMLSerializer(File("pets-test.xml")))
+                storingPets.savePets()
+
+                val loadedPets = PetAPI(XMLSerializer(File("pets-test.xml")))
+                loadedPets.loadPets()
+
+                assertEquals(0, storingPets.numberOfPets())
+                assertEquals(0, loadedPets.numberOfPets())
+                assertEquals(storingPets.numberOfPets(), loadedPets.numberOfPets())
+            }
+
+            @Test
+            fun `saving and loading an loaded collection in XML doesn't loose data`() {
+                val storingPets = PetAPI(XMLSerializer(File("pets-test.xml")))
+                storingPets.addPet(dog1!!)
+                storingPets.addPet(cat2!!)
+                storingPets.addPet(bunny1!!)
+                storingPets.savePets()
+
+                val loadedPets = PetAPI(XMLSerializer(File("pets-test.xml")))
+                loadedPets.loadPets()
+
+                assertEquals(3, storingPets.numberOfPets())
+                assertEquals(3, loadedPets.numberOfPets())
+                assertEquals(storingPets.numberOfPets(), loadedPets.numberOfPets())
+                assertEquals(storingPets.findPet(0), loadedPets.findPet(0))
+                assertEquals(storingPets.findPet(1), loadedPets.findPet(1))
+                assertEquals(storingPets.findPet(2), loadedPets.findPet(2))
+            }
+        }
     }
 
     @Nested

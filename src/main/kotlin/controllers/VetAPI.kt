@@ -1,8 +1,9 @@
 package controllers
 
 import models.Vet
-
-class VetAPI {
+import persistence.Serializer
+class VetAPI(serializerType: Serializer) {
+    private var serializer: Serializer = serializerType
     private var vets = ArrayList<Vet>()
 
     fun addVet(vet: Vet): Boolean {
@@ -41,4 +42,14 @@ class VetAPI {
             .joinToString(separator = "\n") { vet ->
                 "        📌 " + vets.indexOf(vet).toString() + ": " + vet.toString()
             }
+
+    @Throws(Exception::class)
+    fun loadVets() {
+        vets = serializer.read() as ArrayList<Vet>
+    }
+
+    @Throws(Exception::class)
+    fun saveVets() {
+        serializer.write(vets)
+    }
 }

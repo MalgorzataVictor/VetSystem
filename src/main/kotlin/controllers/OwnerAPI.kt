@@ -1,8 +1,9 @@
 package controllers
 
 import models.Owner
-
-class OwnerAPI {
+import persistence.Serializer
+class OwnerAPI(serializerType: Serializer) {
+    private var serializer: Serializer = serializerType
     private var owners = ArrayList<Owner>()
 
     fun addOwner(owner: Owner): Boolean {
@@ -40,4 +41,14 @@ class OwnerAPI {
             .joinToString(separator = "\n") { owner ->
                 "        📌 " + owners.indexOf(owner).toString() + ": " + owner.toString()
             }
+
+    @Throws(Exception::class)
+    fun loadOwners() {
+        owners = serializer.read() as ArrayList<Owner>
+    }
+
+    @Throws(Exception::class)
+    fun saveOwners() {
+        serializer.write(owners)
+    }
 }
