@@ -31,6 +31,9 @@ class OwnerAPI(serializerType: Serializer) {
         }
     }
 
+    fun findOwnerIndex(owner: Owner): Int {
+        return owners.indexOf(owner)
+    }
     fun findOwner(id: Int): Owner? {
         return owners.find { owner -> owner.PPS == id }
     }
@@ -38,6 +41,9 @@ class OwnerAPI(serializerType: Serializer) {
     fun numberOfOwners(): Int = owners.size
 
     fun updateOwner(indexToUpdate: Int, owner: Owner?): Boolean {
+        if (!Utilities.isValidListIndex(indexToUpdate, owners)) {
+            return false
+        }
         val foundOwner = findOwnerByIndex(indexToUpdate)
 
         if ((foundOwner != null) && (owner != null)) {

@@ -1,6 +1,5 @@
 package controllers
 
-import models.Pet
 import models.Vet
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
@@ -39,7 +38,7 @@ class VetAPITest {
             mutableListOf(), // Empty specializations list
             75000.0,
             "Junior",
-            mutableListOf(Pet(1, "PetName", "PetType", LocalDate.of(2022, 2, 2), false, 1, 12345)) // Patient list with one pet
+            mutableListOf(1) // Patient list with one pet
         )
         vet3 = Vet(
             3,
@@ -48,7 +47,7 @@ class VetAPITest {
             mutableListOf("General Checkups"), // Specializations with some values
             70000.0,
             "Senior",
-            mutableListOf(Pet(2, "AnotherPet", "AnotherType", LocalDate.of(2023, 3, 3), true, 2, 54321)) // Patient list with one pet
+            mutableListOf(2) // Patient list with one pet
         )
         vet4 = Vet(
             4,
@@ -228,12 +227,12 @@ class VetAPITest {
             assertEquals("Dr. Johnson", populatedVets!!.findVet(2)!!.name)
             assertEquals(LocalDate.of(2020, 5, 10), populatedVets!!.findVet(2)!!.dateQualified)
             assertEquals(75000.0, populatedVets!!.findVet(2)!!.salary)
-            assertEquals(mutableListOf(Pet(1, "PetName", "PetType", LocalDate.of(2022, 2, 2), false, 1, 12345)), populatedVets!!.findVet(2)!!.patientList)
+            assertEquals(mutableListOf(1), populatedVets!!.findVet(2)!!.patientList)
             assertEquals("Junior", populatedVets!!.findVet(2)!!.position)
 
             assertTrue(
                 populatedVets!!.updateVet(
-                    4,
+                    populatedVets!!.findVetIndex(vet4!!),
                     Vet(
                         2,
                         "Dr. Tina",
@@ -241,7 +240,7 @@ class VetAPITest {
                         mutableListOf(),
                         90000.0,
                         "Senior",
-                        mutableListOf(Pet(1, "PetName", "PetType", LocalDate.of(2022, 2, 2), false, 1, 12345)) // Patient list with one pet
+                        mutableListOf(0) // Patient list with one pet
                     )
                 )
             )

@@ -34,11 +34,13 @@ class PetAPI(serializerType: Serializer) {
             null
         }
     }
-
+    fun findPetIndex(pet: Pet): Int {
+        return pets.indexOf(pet)
+    }
     fun findPet(id: Int): Pet? {
         return pets.find { pet -> pet.petID == id }
     }
-    fun findPetByIndex(id: Int): Pet? {
+    private fun findPetByIndex(id: Int): Pet {
         return pets.get(id)
     }
 
@@ -48,6 +50,9 @@ class PetAPI(serializerType: Serializer) {
         )
 
     fun updatePet(indexToUpdate: Int, pet: Pet?): Boolean {
+        if (!Utilities.isValidListIndex(indexToUpdate, pets)) {
+            return false
+        }
         val foundPet = findPetByIndex(indexToUpdate)
 
         if ((foundPet != null) && (pet != null)) {

@@ -40,6 +40,10 @@ class VetAPI(serializerType: Serializer) {
         }
     }
 
+    fun findVetIndex(vet: Vet): Int {
+        return vets.indexOf(vet)
+    }
+
     fun findVet(id: Int): Vet? {
         return vets.find { vet -> vet.vetID == id }
     }
@@ -55,6 +59,9 @@ class VetAPI(serializerType: Serializer) {
         )
 
     fun updateVet(indexToUpdate: Int, vet: Vet?): Boolean {
+        if (!Utilities.isValidListIndex(indexToUpdate, vets)) {
+            return false
+        }
         val foundVet = findVetByIndex(indexToUpdate)
 
         if (foundVet != null && vet != null) {

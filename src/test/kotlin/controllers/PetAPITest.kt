@@ -164,7 +164,7 @@ class PetAPITest {
 
             assertTrue(
                 populatedPets!!.updatePet(
-                    4,
+                    populatedPets!!.findPetIndex(cat2!!),
                     Pet(4, "Update", "bunny", LocalDate.of(2023, 11, 30), false, 2, 12345)
                 )
             )
