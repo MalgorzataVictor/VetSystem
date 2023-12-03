@@ -1,8 +1,10 @@
 package controllers
 
 import models.Pet
+import persistence.Serializer
 
-class PetAPI {
+class PetAPI(serializerType: Serializer) {
+    private var serializer: Serializer = serializerType
     private var pets = ArrayList<Pet>()
 
     fun addPet(pet: Pet): Boolean {
@@ -41,4 +43,14 @@ class PetAPI {
             .joinToString(separator = "\n") { pet ->
                 "        📌 " + pets.indexOf(pet).toString() + ": " + pet.toString()
             }
+
+    @Throws(Exception::class)
+    fun loadPets() {
+        pets = serializer.read() as ArrayList<Pet>
+    }
+
+    @Throws(Exception::class)
+    fun savePets() {
+        serializer.write(pets)
+    }
 }
