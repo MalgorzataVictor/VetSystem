@@ -369,18 +369,13 @@ fun updatePet() {
             println()
             println("no pets")
         }
-
-
     }
 }
 
-
 fun updateVet() {
-
 }
 
 fun updateOwner() {
-
 }
 
 fun listAllPets() = println(petAPI.listAllPets())
