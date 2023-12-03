@@ -79,6 +79,44 @@ class VetAPITest {
     }
 
     @Nested
+    inner class PersistenceTests {
+        @Nested
+        inner class XMLPersistence {
+            @Test
+            fun `saving and loading an empty collection in XML doesn't crash app`() {
+                val storingVets = VetAPI(XMLSerializer(File("vets-test.xml")))
+                storingVets.saveVets()
+
+                val loadedPets = VetAPI(XMLSerializer(File("vets-test.xml")))
+                loadedPets.loadVets()
+
+                assertEquals(0, storingVets.numberOfVets())
+                assertEquals(0, loadedPets.numberOfVets())
+                assertEquals(storingVets.numberOfVets(), loadedPets.numberOfVets())
+            }
+
+            @Test
+            fun `saving and loading an loaded collection in XML doesn't loose data`() {
+                val storingVets = VetAPI(XMLSerializer(File("vets-test.xml")))
+                storingVets.addVet(vet1!!)
+                storingVets.addVet(vet2!!)
+                storingVets.addVet(vet3!!)
+                storingVets.saveVets()
+
+                val loadedPets = VetAPI(XMLSerializer(File("vets-test.xml")))
+                loadedPets.loadVets()
+
+                assertEquals(3, storingVets.numberOfVets())
+                assertEquals(3, loadedPets.numberOfVets())
+                assertEquals(storingVets.numberOfVets(), loadedPets.numberOfVets())
+                assertEquals(storingVets.findVet(0), loadedPets.findVet(0))
+                assertEquals(storingVets.findVet(1), loadedPets.findVet(1))
+                assertEquals(storingVets.findVet(2), loadedPets.findVet(2))
+            }
+        }
+    }
+
+    @Nested
     inner class AddVets {
 
         @Test
