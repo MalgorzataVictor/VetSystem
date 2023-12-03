@@ -16,4 +16,10 @@ object Utilities {
     fun isValidListIndex(index: Int, list: List<Any>): Boolean {
         return (index >= 0 && index < list.size)
     }
+
+    @JvmStatic
+    fun capitalizeFirstLetter(input: String): String {
+        return input.ifEmpty { return input }
+            .substring(0, 1).uppercase(Locale.getDefault()) + input.substring(1).lowercase(Locale.getDefault())
+    }
 }
