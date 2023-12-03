@@ -2,6 +2,7 @@ package controllers
 
 import models.Pet
 import persistence.Serializer
+import utils.Utilities
 
 class PetAPI(serializerType: Serializer) {
     private var serializer: Serializer = serializerType
@@ -11,8 +12,12 @@ class PetAPI(serializerType: Serializer) {
         return pets.add(pet)
     }
 
-    fun deletePet(indexToDelete: Int) {
-        pets.removeIf { pet -> pet.petID == indexToDelete }
+    fun deletePet(indexToDelete: Int): Pet? {
+        return if (Utilities.isValidListIndex(indexToDelete, pets)) {
+            pets.removeAt(indexToDelete)
+        } else {
+            null
+        }
     }
 
     fun findPet(id: Int): Pet? {
