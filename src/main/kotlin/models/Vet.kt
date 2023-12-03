@@ -6,7 +6,7 @@ data class Vet(
     var vetID: Int,
     var name: String,
     var dateQualified: LocalDate,
-    var specialisation: MutableList<Pet> = mutableListOf(),
+    var specialisation: MutableList<String> = mutableListOf(),
     var salary: Double,
     var position: String,
     var patientList: MutableList<Pet> = mutableListOf()
