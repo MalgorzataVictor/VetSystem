@@ -22,7 +22,7 @@ class OwnerAPITest {
 
     @BeforeEach
     fun setup() {
-        val owner1 = Owner(
+        owner1 = Owner(
             123456789,
             "John Doe",
             "+1234567890",
@@ -33,7 +33,7 @@ class OwnerAPITest {
             )
         )
 
-        val owner2 = Owner(
+        owner2 = Owner(
             987654321,
             "Jane Smith",
             "+9876543210",
@@ -43,7 +43,7 @@ class OwnerAPITest {
             )
         )
 
-        val owner3 = Owner(
+        owner3 = Owner(
             246813579,
             "Alice Johnson",
             "+2468135790",
@@ -54,9 +54,9 @@ class OwnerAPITest {
             )
         )
 
-        populatedOwners!!.addOwner(owner1)
-        populatedOwners!!.addOwner(owner2)
-        populatedOwners!!.addOwner(owner3)
+        populatedOwners!!.addOwner(owner1!!)
+        populatedOwners!!.addOwner(owner2!!)
+        populatedOwners!!.addOwner(owner3!!)
     }
 
     @AfterEach
@@ -176,36 +176,41 @@ class OwnerAPITest {
             )
         }
 
-/* @Test
+        @Test
         fun `updating a owner  that exists returns true and updates`() {
-            assertEquals(owner1, populatedOwners!!.findOwner(123456789,))
-            assertEquals("Jane Smith", populatedOwners!!.findOwner(987654321,)!!.name)
-             assertEquals("+9876543210", populatedOwners!!.findOwner(987654321)!!.phoneNumber)
-             assertEquals(mutableListOf(
-                 Pet(3, "Max", "Dog", LocalDate.of(2018, 3, 5), false, 1, 67890)
-             ), populatedOwners!!.findOwner(987654321,)!!.petsList)
+            assertEquals(owner2, populatedOwners!!.findOwner(987654321))
+            assertEquals("Jane Smith", populatedOwners!!.findOwner(987654321)!!.name)
+            assertEquals("+9876543210", populatedOwners!!.findOwner(987654321)!!.phoneNumber)
+            assertEquals(
+                mutableListOf(
+                    Pet(3, "Max", "Dog", LocalDate.of(2018, 3, 5), false, 1, 67890)
+                ),
+                populatedOwners!!.findOwner(987654321)!!.petsList
+            )
 
-
-             assertTrue(
-                 populatedOwners!!.updateOwner(
-                     4,
-                     Owner(
-                         987654321,
-                         "Mark Davis",
-                         "+1357924680",
-                         "mark@example.com",
-                         mutableListOf(
-                             Pet(6, "Coco", "Dog", LocalDate.of(2023, 3, 8), true, 4, 97531)
-                         )
-                     )
-                 )
-             )
-             assertEquals("Mark Davis", populatedOwners!!.findOwner(987654321)!!.name)
-             assertEquals("+1357924680", populatedOwners!!.findOwner(987654321)!!.phoneNumber)
-             assertEquals(mutableListOf(
-                 Pet(6, "Coco", "Dog", LocalDate.of(2023, 3, 8), true, 4, 97531)
-             ), populatedOwners!!.findOwner(987654321)!!.petsList)
-        }*/
+            assertTrue(
+                populatedOwners!!.updateOwner(
+                    987654321,
+                    Owner(
+                        987654321,
+                        "Mark Davis",
+                        "+1357924680",
+                        "mark@example.com",
+                        mutableListOf(
+                            Pet(6, "Coco", "Dog", LocalDate.of(2023, 3, 8), true, 4, 97531)
+                        )
+                    )
+                )
+            )
+            assertEquals("Mark Davis", populatedOwners!!.findOwner(987654321)!!.name)
+            assertEquals("+1357924680", populatedOwners!!.findOwner(987654321)!!.phoneNumber)
+            assertEquals(
+                mutableListOf(
+                    Pet(6, "Coco", "Dog", LocalDate.of(2023, 3, 8), true, 4, 97531)
+                ),
+                populatedOwners!!.findOwner(987654321)!!.petsList
+            )
+        }
     }
 
     @Nested
