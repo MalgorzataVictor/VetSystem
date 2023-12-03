@@ -3,7 +3,11 @@ package controllers
 import models.Pet
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Nested
+import org.junit.jupiter.api.Test
 import java.time.LocalDate
+import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class PetAPITest {
     private var dog1: Pet? = null
@@ -38,5 +42,27 @@ class PetAPITest {
         bunny1 = null
         populatedPets = null
         emptyPets = null
+    }
+
+    @Nested
+    inner class AddPets {
+
+        @Test
+        fun `adding a Pet to a populated list adds to ArrayList`() {
+            val newPet = Pet(6, "Buba", "Bunny", LocalDate.of(2020, 7, 6), false, 2, 54123)
+            assertEquals(5, populatedPets!!.numberOfPets())
+            assertTrue(populatedPets!!.addPet(newPet))
+            assertEquals(6, populatedPets!!.numberOfPets())
+            assertEquals(newPet, populatedPets!!.findPet(populatedPets!!.numberOfPets()))
+        }
+
+        @Test
+        fun `adding a Pet to an empty list adds to ArrayList`() {
+            val newPet = Pet(6, "Buba", "Bunny", LocalDate.of(2020, 7, 6), false, 2, 54123)
+            assertEquals(0, emptyPets!!.numberOfPets())
+            assertTrue(emptyPets!!.addPet(newPet))
+            assertEquals(1, emptyPets!!.numberOfPets())
+            assertEquals(newPet, emptyPets!!.findPet(newPet.petID))
+        }
     }
 }
