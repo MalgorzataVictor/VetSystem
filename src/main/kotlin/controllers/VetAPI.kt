@@ -12,7 +12,7 @@ class VetAPI(serializerType: Serializer) {
         if (vets.isEmpty()) {
             return 1
         }
-        return vets.last().petID + 1
+        return vets.last().vetID + 1
     }
 
     fun listAllVets(): String =
@@ -39,7 +39,15 @@ class VetAPI(serializerType: Serializer) {
         return vets.find { vet -> vet.vetID == id }
     }
 
+    fun findVetByIndex(id: Int): Vet? {
+        return vets.get(id)
+    }
     fun numberOfVets(): Int = vets.size
+
+    fun searchByName(searchString: String) =
+        formatListString(
+            vets.filter { vet -> vet.name.contains(searchString, ignoreCase = true) }
+        )
 
     fun updateVet(indexToUpdate: Int, vet: Vet?): Boolean {
         val foundVet = findVet(indexToUpdate)
@@ -59,10 +67,14 @@ class VetAPI(serializerType: Serializer) {
         return false
     }
 
+    fun isValidIndex(index: Int): Boolean {
+        return Utilities.isValidListIndex(index, vets)
+    }
+
     fun formatListString(notesToFormat: List<Vet>): String =
         notesToFormat
             .joinToString(separator = "\n") { vet ->
-                "        📌 " + vets.indexOf(vet).toString() + ": " + vet.toString()
+                "" + vets.indexOf(vet).toString() + ": " + vet.toString()
             }
 
     @Throws(Exception::class)

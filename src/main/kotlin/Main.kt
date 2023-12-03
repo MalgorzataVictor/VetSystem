@@ -116,7 +116,7 @@ fun runVetMenu() {
             3 -> listAllVets()
             4 -> updateVet()
             5 -> numberOfVets()
-            6 -> searchVet
+            6 -> searchVet()
             0 -> runMainMenu()
             else -> println("Invalid option entered: $option")
         }
@@ -279,6 +279,18 @@ fun searchPet() {
     }
 }
 
+fun searchVet() {
+    val searchName = readNextLine("Enter the Vet Name to search by: ")
+    val searchResults = vetAPI.searchByName(searchName)
+    if (searchResults.isEmpty()) {
+        println()
+        println("❗ No notes found")
+    } else {
+        println()
+        println(searchResults)
+    }
+}
+
 fun updatePet() {
     listAllPets()
     if (petAPI.numberOfPets() > 0) {
@@ -363,14 +375,123 @@ fun updatePet() {
                 )
             ) {
                 println()
-                println("        ✔ Update Successful")
+                println("✔ Update Successful")
             } else {
                 println()
-                println("        ❌ Update Failed")
+                println("❌ Update Failed")
             }
         } else {
             println()
             print("❗ No notes found")
+        }
+    }
+}
+
+fun updateVet() {
+    listAllVets()
+    if (vetAPI.numberOfVets() > 0) {
+        val indexToUpdate = readNextInt("Enter the Index of the Vet you wish to update: ")
+        if (vetAPI.isValidIndex(indexToUpdate)) {
+            val vet1 = vetAPI.findVetByIndex(indexToUpdate)
+            val newVet =
+                Vet(
+                    vet1!!.vetID,
+                    vet1.name,
+                    vet1.dateQualified,
+                    vet1.specialisation,
+                    vet1.salary,
+                    vet1.position,
+                    vet1.patientList
+                )
+
+            println(
+                """ 
+            
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    ┃        Vet        ┃
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    ┃   Update:                             ┃
+    ┃   𝟭. Vet Name                       ┃
+    ┃   𝟮. Vet Date Qualified                        ┃
+    ┃   𝟯. Vet Specialisation                           ┃
+    ┃   𝟰. Vet Salary                      ┃
+    ┃   𝟱. Vet Position                  ┃
+    ┃   𝟱. Vet Patient list                   ┃
+    ┃                                       ┃
+    ┃  -𝟭. Exit                             ┃
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+         
+    Enter Option ➡️ """
+
+            )
+
+            var choice: Int
+
+            do {
+                choice = readLine()!!.toInt()
+                when (choice) {
+                    1 -> {
+                        newVet.name = Utilities.capitalizeFirstLetter(readNextLine("Enter Vet Name: "))
+                        return
+                    }
+
+                    2 -> {
+                        val dobInput = readNextLine("Enter Date Qualified (MM-YY format): ")
+                        val formatter = DateTimeFormatter.ofPattern("MM-yy", Locale.ENGLISH)
+                        val dateQualified = LocalDate.parse(dobInput, formatter)
+                        newVet.dateQualified = dateQualified
+                        return
+                    }
+
+                    3 -> {
+                        val input = Utilities.capitalizeFirstLetter(readNextLine("Enter 'A' to or 'D' to delete specialisation: "))
+                        println(newVet.formatListStringSpecialisation())
+                        if (input == "A") {
+                            val input2 = Utilities.capitalizeFirstLetter(readNextLine("Enter a specialisation: "))
+                            newVet.specialisation.add(input2)
+                        } else if (input == "D") {
+                            val input2 = readNextInt("Enter an index of specialisation you want to delete: ")
+                            newVet.specialisation.removeAt(input2)
+                        } else {
+                            return
+                        }
+                        return
+                    }
+
+                    4 -> {
+                        newVet.salary = readNextDouble("Enter Vet Salary: ")
+                        return
+                    }
+
+                    5 -> {
+                        newVet.position = Utilities.capitalizeFirstLetter(readNextLine("Enter Vet position: "))
+                        return
+                    }
+
+                    6 -> {
+                        println(newVet.formatListStringPatientList())
+                        val input2 = readNextInt("Enter an index of Pet you want to delete: ")
+                        newVet.patientList.removeAt(input2)
+                    }
+
+                    else -> println("Invalid Value")
+                }
+            } while (choice != -1)
+
+            if (vetAPI.updateVet(
+                    indexToUpdate,
+                    newVet
+                )
+            ) {
+                println()
+                println("✔ Update Successful")
+            } else {
+                println()
+                println(" ❌ Update Failed")
+            }
+        } else {
+            println()
+            print("❗ No vets found")
         }
     }
 }
