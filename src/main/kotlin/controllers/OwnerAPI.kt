@@ -1,12 +1,20 @@
 package controllers
 
 import models.Owner
+import models.Pet
 import persistence.Serializer
 import utils.Utilities
 
 class OwnerAPI(serializerType: Serializer) {
     private var serializer: Serializer = serializerType
     private var owners = ArrayList<Owner>()
+
+    fun listAllOwners(): String =
+        if (owners.isEmpty()) {
+            "No owners stored"
+        } else {
+            formatListString(owners)
+        }
 
     fun addOwner(owner: Owner): Boolean {
         return owners.add(owner)
@@ -42,10 +50,31 @@ class OwnerAPI(serializerType: Serializer) {
         return false
     }
 
+    fun findOwnerByIndex(id: Int): Owner? {
+        return owners.get(id)
+    }
+
+    fun isValidIndex(index: Int): Boolean {
+        return Utilities.isValidListIndex(index, owners)
+    }
+    fun assignPetToOwner(index: Int, pet: Pet): Boolean? {
+        return findOwnerByIndex(index)?.petsList?.add(pet)
+    }
+
+    fun unAssignPetFromOwner(oldIndex: Int, newIndex: Int, pet: Pet) {
+        findOwnerByIndex(oldIndex)?.petsList?.remove(pet)
+        findOwnerByIndex(newIndex)?.petsList?.add(pet)
+    }
+
+    fun searchByName(searchString: String) =
+        formatListString(
+            owners.filter { owner -> owner.name.contains(searchString, ignoreCase = true) }
+        )
+
     fun formatListString(notesToFormat: List<Owner>): String =
         notesToFormat
             .joinToString(separator = "\n") { owner ->
-                "        📌 " + owners.indexOf(owner).toString() + ": " + owner.toString()
+                "" + owners.indexOf(owner).toString() + ": " + owner.toString()
             }
 
     @Throws(Exception::class)

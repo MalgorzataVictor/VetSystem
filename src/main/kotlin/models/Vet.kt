@@ -11,9 +11,14 @@ data class Vet(
     var position: String,
     var patientList: MutableList<Pet> = mutableListOf()
 ) {
+    fun formatListStringSpecialisation() {
+        specialisation.joinToString("\n") { it.toString() }
+    }
+    fun formatListStringPatientList() {
+        patientList.joinToString("\n") { it.toString() }
+    }
     override fun toString(): String {
         val patientsInfo = patientList.joinToString("\n") { it.toString() }
-        return "vetID: $vetID, Name: $name, Date Qualified: $dateQualified, Specialisation: $specialisation, Salary: $salary, Position: $position, Patients: $patientList " +
-            "Patients:\n$patientsInfo"
+        return "vetID: $vetID, Name: $name, Date Qualified: $dateQualified, Specialisation: $specialisation, Salary: $salary, Position: $position, \nPatients: $patientList "
     }
 }

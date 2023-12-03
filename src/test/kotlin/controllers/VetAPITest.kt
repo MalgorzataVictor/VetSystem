@@ -131,7 +131,7 @@ class VetAPITest {
             assertEquals(4, populatedVets!!.numberOfVets())
             assertTrue(populatedVets!!.addVet(newVet))
             assertEquals(5, populatedVets!!.numberOfVets())
-            assertEquals(newVet, populatedVets!!.findVet(6))
+            assertEquals(newVet, populatedVets!!.findVet(5))
         }
 
         @Test

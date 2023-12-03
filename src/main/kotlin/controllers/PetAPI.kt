@@ -8,7 +8,22 @@ class PetAPI(serializerType: Serializer) {
     private var serializer: Serializer = serializerType
     private var pets = ArrayList<Pet>()
 
+    private fun getPetID(): Int {
+        if (pets.isEmpty()) {
+            return 1
+        }
+        return pets.last().petID + 1
+    }
+
+    fun listAllPets(): String =
+        if (pets.isEmpty()) {
+            "No pets stored"
+        } else {
+            formatListString(pets)
+        }
+
     fun addPet(pet: Pet): Boolean {
+        pet.petID = getPetID()
         return pets.add(pet)
     }
 
@@ -23,6 +38,14 @@ class PetAPI(serializerType: Serializer) {
     fun findPet(id: Int): Pet? {
         return pets.find { pet -> pet.petID == id }
     }
+    fun findPetByIndex(id: Int): Pet? {
+        return pets.get(id)
+    }
+
+    fun searchByName(searchString: String) =
+        formatListString(
+            pets.filter { pet -> pet.name.contains(searchString, ignoreCase = true) }
+        )
 
     fun updatePet(indexToUpdate: Int, pet: Pet?): Boolean {
         val foundPet = findPet(indexToUpdate)
@@ -34,11 +57,15 @@ class PetAPI(serializerType: Serializer) {
             foundPet.DOB = pet.DOB
             foundPet.isVaccinated = pet.isVaccinated
             foundPet.vetID = pet.vetID
-            foundPet.PPS = pet.PPS
+            foundPet.ownerPPS = pet.ownerPPS
             return true
         }
 
         return false
+    }
+
+    fun isValidIndex(index: Int): Boolean {
+        return Utilities.isValidListIndex(index, pets)
     }
 
     fun numberOfPets(): Int = pets.size
@@ -46,7 +73,7 @@ class PetAPI(serializerType: Serializer) {
     fun formatListString(notesToFormat: List<Pet>): String =
         notesToFormat
             .joinToString(separator = "\n") { pet ->
-                "        📌 " + pets.indexOf(pet).toString() + ": " + pet.toString()
+                "" + pets.indexOf(pet).toString() + ": " + pet.toString()
             }
 
     @Throws(Exception::class)

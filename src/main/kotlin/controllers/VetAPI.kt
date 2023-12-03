@@ -1,5 +1,6 @@
 package controllers
 
+import models.Pet
 import models.Vet
 import persistence.Serializer
 import utils.Utilities
@@ -8,7 +9,22 @@ class VetAPI(serializerType: Serializer) {
     private var serializer: Serializer = serializerType
     private var vets = ArrayList<Vet>()
 
+    private fun getVetID(): Int {
+        if (vets.isEmpty()) {
+            return 1
+        }
+        return vets.last().vetID + 1
+    }
+
+    fun listAllVets(): String =
+        if (vets.isEmpty()) {
+            "No vets stored"
+        } else {
+            formatListString(vets)
+        }
+
     fun addVet(vet: Vet): Boolean {
+        vet.vetID = getVetID()
         return vets.add(vet)
     }
 
@@ -24,7 +40,15 @@ class VetAPI(serializerType: Serializer) {
         return vets.find { vet -> vet.vetID == id }
     }
 
+    fun findVetByIndex(id: Int): Vet? {
+        return vets.get(id)
+    }
     fun numberOfVets(): Int = vets.size
+
+    fun searchByName(searchString: String) =
+        formatListString(
+            vets.filter { vet -> vet.name.contains(searchString, ignoreCase = true) }
+        )
 
     fun updateVet(indexToUpdate: Int, vet: Vet?): Boolean {
         val foundVet = findVet(indexToUpdate)
@@ -44,10 +68,26 @@ class VetAPI(serializerType: Serializer) {
         return false
     }
 
+    fun isValidIndex(index: Int): Boolean {
+        return Utilities.isValidListIndex(index, vets)
+    }
+
+    fun assignPetToVet(index: Int, pet: Pet): Boolean? {
+        return findVetByIndex(index)?.patientList?.add(pet)
+    }
+
+    fun unAssignPetFromVet(oldIndex: Int, newIndex: Int, pet: Pet) {
+        println(findVetByIndex(oldIndex)?.patientList)
+        val list1 = findVetByIndex(oldIndex)?.patientList?.filter { it -> it.petID != pet.petID }
+        findVetByIndex(oldIndex)?.patientList = list1!!.toMutableList()
+        println(list1)
+        findVetByIndex(newIndex)?.patientList?.add(pet)
+    }
+
     fun formatListString(notesToFormat: List<Vet>): String =
         notesToFormat
             .joinToString(separator = "\n") { vet ->
-                "        📌 " + vets.indexOf(vet).toString() + ": " + vet.toString()
+                "" + vets.indexOf(vet).toString() + ": " + vet.toString()
             }
 
     @Throws(Exception::class)

@@ -9,10 +9,10 @@ data class Pet(
     var DOB: LocalDate,
     var isVaccinated: Boolean,
     var vetID: Int,
-    var PPS: Int
+    var ownerPPS: Int
 
 ) {
     override fun toString(): String {
-        return "PetID: $petID, Name: $name, Breed: $breed, DOB: $DOB, Vaccinated: $isVaccinated,  "
+        return "PetID: $petID, Name: $name, Breed: $breed, DOB: $DOB, Vaccinated: $isVaccinated"
     }
 }
