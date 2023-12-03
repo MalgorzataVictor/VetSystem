@@ -73,7 +73,42 @@ fun runPetMenu() {
               4 -> updatePet()
               5 -> numberOfPets()
               6 -> searchPet
-              0 -> exitApp()*/
+              0 -> runMainMenu()*/
+            else -> println("Invalid option entered: $option")
+        }
+    } while (true)
+}
+
+fun vetMenu(): Int {
+    return ScannerInput.readNextInt(
+        """ 
+             
+        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        ┃            Vet                    ┃
+        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        ┃  1) Add Vet                       ┃
+        ┃  2) Delete Vet                    ┃
+        ┃  3) List Vet                      ┃ 
+        ┃  4) Update Vet                    ┃
+        ┃  5) Number Of Vet                 ┃
+        ┃  6) Search Vet                    
+        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        ┃  0) Exit                          ┃
+        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        Enter option️"""
+    )
+}
+
+fun runVetMenu() {
+    do {
+        when (val option = vetMenu()) {
+            /*   1 -> //addVet()
+             2 -> deleteVet()
+              3 -> listAllVets()
+              4 -> updateVet()
+              5 -> numberOfVets()
+              6 -> searchVet
+              0 -> runMainMenu()*/
             else -> println("Invalid option entered: $option")
         }
     } while (true)
