@@ -165,6 +165,7 @@ fun addPet() {
     println()
     listAllVets()
     val vetID = readNextInt("Enter ID of Vet who you want to assign: ")
+    listAllOwners()
     val ownerPPS = readNextInt("Enter PPS of Owner you want to assign: ")
 
     val isAdded = petAPI.addPet(
@@ -216,6 +217,102 @@ fun searchPet() {
     } else {
         println()
         println(searchResults)
+    }
+}
+
+fun updatePet() {
+    listAllPets()
+    if (petAPI.numberOfPets() > 0) {
+        val indexToUpdate = readNextInt("Enter the Index of the Pet you wish to update: ")
+        if (petAPI.isValidIndex(indexToUpdate)) {
+            val pet1 = petAPI.findPetByIndex(indexToUpdate)
+            val newPet =
+                Pet(
+                    pet1!!.petID,
+                    pet1.name,
+                    pet1.breed,
+                    pet1.DOB,
+                    pet1.isVaccinated,
+                    pet1.vetID,
+                    pet1.ownerPPS
+                )
+
+            println(
+                """ 
+            
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    ┃        PET        ┃
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    ┃   Update:                             ┃
+    ┃   𝟭. Pet Name                       ┃
+    ┃   𝟮. Pet Breed                        ┃
+    ┃   𝟯. Pet DOB                           ┃
+    ┃   𝟰. PET vetID                      ┃
+    ┃   𝟱. PEt OwnerID                  ┃
+    ┃                                       ┃
+    ┃  -𝟭. Exit                             ┃
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+         
+    Enter Option ➡️ """
+
+            )
+
+            var choice: Int
+
+            do {
+                choice = readLine()!!.toInt()
+                when (choice) {
+                    1 -> {
+                        newPet.name = Utilities.capitalizeFirstLetter(readNextLine("Enter Pet Name: "))
+                        return
+                    }
+
+                    2 -> {
+                        newPet.breed = Utilities.capitalizeFirstLetter(readNextLine("Enter Pet Breed: "))
+                        return
+                    }
+
+                    3 -> {
+                        val dobInput = readNextLine("Enter Pet DOB (MM-YY format): ")
+                        val formatter = DateTimeFormatter.ofPattern("MM-yy", Locale.ENGLISH)
+                        val DOB = LocalDate.parse(dobInput, formatter)
+                        newPet.DOB = DOB
+                        return
+                    }
+
+                    4 -> {
+                        listAllVets()
+                        val vetID = readNextInt("Enter ID of Vet who you want to assign: ")
+                        newPet.vetID = vetID
+                        return
+                    }
+
+                    5 -> {
+                        listAllOwners()
+                        val ownerPPS = readNextInt("Enter PPS of Owner you want to assign: ")
+                        newPet.ownerPPS = ownerPPS
+                        return
+                    }
+
+                    else -> println("Invalid Value")
+                }
+            } while (choice != -1)
+
+            if (petAPI.updatePet(
+                    indexToUpdate,
+                    newPet
+                )
+            ) {
+                println()
+                println("        ✔ Update Successful")
+            } else {
+                println()
+                println("        ❌ Update Failed")
+            }
+        } else {
+            println()
+            print("❗ No notes found")
+        }
     }
 }
 

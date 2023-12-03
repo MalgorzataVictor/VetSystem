@@ -38,6 +38,9 @@ class PetAPI(serializerType: Serializer) {
     fun findPet(id: Int): Pet? {
         return pets.find { pet -> pet.petID == id }
     }
+    fun findPetByIndex(id: Int): Pet? {
+        return pets.get(id)
+    }
 
     fun searchByName(searchString: String) =
         formatListString(
@@ -54,11 +57,15 @@ class PetAPI(serializerType: Serializer) {
             foundPet.DOB = pet.DOB
             foundPet.isVaccinated = pet.isVaccinated
             foundPet.vetID = pet.vetID
-            foundPet.PPS = pet.PPS
+            foundPet.ownerPPS = pet.ownerPPS
             return true
         }
 
         return false
+    }
+
+    fun isValidIndex(index: Int): Boolean {
+        return Utilities.isValidListIndex(index, pets)
     }
 
     fun numberOfPets(): Int = pets.size
