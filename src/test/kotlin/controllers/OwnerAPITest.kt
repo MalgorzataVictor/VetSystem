@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
@@ -125,5 +126,85 @@ class OwnerAPITest {
             assertEquals(number1 - 1, populatedOwners!!.numberOfOwners())
             assertNull(populatedOwners!!.findOwner(987654321))
         }
+    }
+
+    @Nested
+    inner class UpdateOwners {
+        @Test
+        fun `updating a owner that does not exist returns false`() {
+            assertFalse(
+                populatedOwners!!.updateOwner(
+                    9,
+                    Owner(
+                        135792468,
+                        "Mark Davis",
+                        "+1357924680",
+                        "mark@example.com",
+                        mutableListOf(
+                            Pet(6, "Coco", "Dog", LocalDate.of(2023, 3, 8), true, 4, 97531)
+                        )
+                    )
+                )
+            )
+            assertFalse(
+                populatedOwners!!.updateOwner(
+                    -1,
+                    Owner(
+                        135792468,
+                        "Mark Davis",
+                        "+1357924680",
+                        "mark@example.com",
+                        mutableListOf(
+                            Pet(6, "Coco", "Dog", LocalDate.of(2023, 3, 8), true, 4, 97531)
+                        )
+                    )
+                )
+            )
+            assertFalse(
+                emptyOwners!!.updateOwner(
+                    0,
+                    Owner(
+                        135792468,
+                        "Mark Davis",
+                        "+1357924680",
+                        "mark@example.com",
+                        mutableListOf(
+                            Pet(6, "Coco", "Dog", LocalDate.of(2023, 3, 8), true, 4, 97531)
+                        )
+                    )
+                )
+            )
+        }
+
+/* @Test
+        fun `updating a owner  that exists returns true and updates`() {
+            assertEquals(owner1, populatedOwners!!.findOwner(123456789,))
+            assertEquals("Jane Smith", populatedOwners!!.findOwner(987654321,)!!.name)
+             assertEquals("+9876543210", populatedOwners!!.findOwner(987654321)!!.phoneNumber)
+             assertEquals(mutableListOf(
+                 Pet(3, "Max", "Dog", LocalDate.of(2018, 3, 5), false, 1, 67890)
+             ), populatedOwners!!.findOwner(987654321,)!!.petsList)
+
+
+             assertTrue(
+                 populatedOwners!!.updateOwner(
+                     4,
+                     Owner(
+                         987654321,
+                         "Mark Davis",
+                         "+1357924680",
+                         "mark@example.com",
+                         mutableListOf(
+                             Pet(6, "Coco", "Dog", LocalDate.of(2023, 3, 8), true, 4, 97531)
+                         )
+                     )
+                 )
+             )
+             assertEquals("Mark Davis", populatedOwners!!.findOwner(987654321)!!.name)
+             assertEquals("+1357924680", populatedOwners!!.findOwner(987654321)!!.phoneNumber)
+             assertEquals(mutableListOf(
+                 Pet(6, "Coco", "Dog", LocalDate.of(2023, 3, 8), true, 4, 97531)
+             ), populatedOwners!!.findOwner(987654321)!!.petsList)
+        }*/
     }
 }
