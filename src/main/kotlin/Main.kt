@@ -149,7 +149,7 @@ fun runOwnerMenu() {
             1 -> addOwner()
             2 -> deleteOwner()
             3 -> listAllOwners()
-            // 4 -> updateOwner()
+            4 -> updateOwner()
             5 -> numberOfOwners()
             6 -> searchOwner()
             0 -> runMainMenu()
@@ -378,8 +378,8 @@ fun updateVet() {
     if (vetAPI.numberOfVets() > 0) {
         val indexToUpdate = readNextInt("Enter the index of the Vet to update: ")
         if (vetAPI.isValidIndex(indexToUpdate)) {
-            val name = Utilities.capitalizeFirstLetter(readNextLine("Enter Pet Name: "))
-            val dobInput = readNextLine("Enter Pet DOB (YYYY-MM-DD format): ").split("-")
+            val name = Utilities.capitalizeFirstLetter(readNextLine("Enter Vet Name: "))
+            val dobInput = readNextLine("Enter Vet DOB (YYYY-MM-DD format): ").split("-")
             val dateQualified = LocalDate.of(dobInput[0].toInt(), dobInput[1].toInt(), dobInput[2].toInt())
             val specialisations: MutableList<String> = mutableListOf()
             var input: String
@@ -412,6 +412,29 @@ fun updateVet() {
 }
 
 fun updateOwner() {
+    listAllOwners()
+    val indexToUpdate = readNextInt("Enter the index of the Owner to update: ")
+    if (vetAPI.isValidIndex(indexToUpdate)) {
+        val PPS = readNextInt("Enter Owner PPS: ")
+        val name = Utilities.capitalizeFirstLetter(readNextLine("Enter Owner Name: "))
+        val phoneNumber = Utilities.capitalizeFirstLetter(readNextLine("Enter Owner Phone Number: "))
+        val email = Utilities.capitalizeFirstLetter(readNextLine("Enter Owner email: "))
+
+        if (ownerAPI.updateOwner(
+                indexToUpdate,
+                Owner(PPS, name, phoneNumber, email, mutableListOf())
+            )
+        ) {
+            println()
+            println("        ✔ Update Successful")
+        } else {
+            println()
+            println("        ❌ Update Failed")
+        }
+    } else {
+        println()
+        println("no pets")
+    }
 }
 
 fun listAllPets() = println(petAPI.listAllPets())
