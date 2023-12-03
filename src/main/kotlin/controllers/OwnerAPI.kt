@@ -49,6 +49,11 @@ class OwnerAPI(serializerType: Serializer) {
         return false
     }
 
+    fun searchByName(searchString: String) =
+        formatListString(
+            owners.filter { owner -> owner.name.contains(searchString, ignoreCase = true) }
+        )
+
     fun formatListString(notesToFormat: List<Owner>): String =
         notesToFormat
             .joinToString(separator = "\n") { owner ->

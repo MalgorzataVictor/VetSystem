@@ -152,7 +152,7 @@ fun runOwnerMenu() {
             3 -> listAllOwners()
             4 -> updateOwner()
             5 -> numberOfOwners()
-            6 -> searchOwner
+            6 -> searchOwner()
             0 -> runMainMenu()
             else -> println("Invalid option entered: $option")
         }
@@ -327,6 +327,18 @@ fun searchPet() {
 fun searchVet() {
     val searchName = readNextLine("Enter the Vet Name to search by: ")
     val searchResults = vetAPI.searchByName(searchName)
+    if (searchResults.isEmpty()) {
+        println()
+        println("❗ No notes found")
+    } else {
+        println()
+        println(searchResults)
+    }
+}
+
+fun searchOwner() {
+    val searchName = readNextLine("Enter the Owner Name to search by: ")
+    val searchResults = ownerAPI.searchByName(searchName)
     if (searchResults.isEmpty()) {
         println()
         println("❗ No notes found")
