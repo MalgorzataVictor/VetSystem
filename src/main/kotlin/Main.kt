@@ -13,6 +13,7 @@ import utils.Utilities
 import java.io.File
 import java.time.LocalDate
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.system.exitProcess
 
 private val petAPI = PetAPI(XMLSerializer(File("pets.xml")))
@@ -113,7 +114,7 @@ fun runVetMenu() {
             1 -> addVet()
             2 -> deleteVet()
             3 -> listAllVets()
-            // 4 -> updateVet()
+            4 -> updateVet()
             5 -> numberOfVets()
             6 -> searchVet()
             0 -> runMainMenu()
@@ -148,7 +149,7 @@ fun runOwnerMenu() {
             1 -> addOwner()
             2 -> deleteOwner()
             3 -> listAllOwners()
-            // 4 -> updateOwner()
+            4 -> updateOwner()
             5 -> numberOfOwners()
             6 -> searchOwner()
             0 -> runMainMenu()
@@ -371,18 +372,88 @@ fun updatePet() {
         }
     }
 }
-/*
 
 fun updateVet() {
+    listAllVets()
+    if (vetAPI.numberOfVets() > 0) {
+        val indexToUpdate = readNextInt("Enter the index of the Vet to update: ")
+        if (vetAPI.isValidIndex(indexToUpdate)) {
+            val name = Utilities.capitalizeFirstLetter(readNextLine("Enter Vet Name: "))
+            val dobInput = readNextLine("Enter Vet DOB (YYYY-MM-DD format): ").split("-")
+            val dateQualified = LocalDate.of(dobInput[0].toInt(), dobInput[1].toInt(), dobInput[2].toInt())
+            val specialisations: MutableList<String> = mutableListOf()
+            var input: String
+            do {
+                input = Utilities.capitalizeFirstLetter(readNextLine("Enter specialisation, type 'F' to finish"))
+                if (input != "F") {
+                    specialisations.add(input)
+                }
+            }
+            while (input != "F")
+            val salary = readNextDouble("Enter Vet Salary")
+            val position = Utilities.capitalizeFirstLetter(readNextLine("Enter Vet Position: "))
+
+            if (vetAPI.updateVet(
+                    indexToUpdate,
+                    Vet(0, name, dateQualified, specialisations, salary, position, mutableListOf())
+                )
+            ) {
+                println()
+                println("        ✔ Update Successful")
+            } else {
+                println()
+                println("        ❌ Update Failed")
+            }
+        } else {
+            println()
+            println("no pets")
+        }
+    }
 }
 
 fun updateOwner() {
+    listAllOwners()
+    val indexToUpdate = readNextInt("Enter the index of the Owner to update: ")
+    if (vetAPI.isValidIndex(indexToUpdate)) {
+        val PPS = readNextInt("Enter Owner PPS: ")
+        val name = Utilities.capitalizeFirstLetter(readNextLine("Enter Owner Name: "))
+        val phoneNumber = Utilities.capitalizeFirstLetter(readNextLine("Enter Owner Phone Number: "))
+        val email = Utilities.capitalizeFirstLetter(readNextLine("Enter Owner email: "))
+
+        if (ownerAPI.updateOwner(
+                indexToUpdate,
+                Owner(PPS, name, phoneNumber, email, mutableListOf())
+            )
+        ) {
+            println()
+            println("        ✔ Update Successful")
+        } else {
+            println()
+            println("        ❌ Update Failed")
+        }
+    } else {
+        println()
+        println("no pets")
+    }
 }
-*/
 
 fun listAllPets() = println(petAPI.listAllPets())
-fun listAllVets() = println(vetAPI.listAllVets())
-fun listAllOwners() = println(ownerAPI.listAllOwners())
+fun listAllVets() {
+    val vets1: ArrayList<Vet> = vetAPI.getAllVets()
+    vets1.forEach {
+        println(it)
+        val patientsDetails = it.patientList.joinToString("\n") { p -> petAPI.findPet(p)?.toString() ?: "Pet details not found" }
+        println(patientsDetails)
+    }
+}
+fun listAllOwners() {
+    val owners1: ArrayList<Owner> = ownerAPI.getAllOwners()
+    owners1.forEach {
+        println(it)
+        val patientsDetails = it.petsList.joinToString("\n") { p -> petAPI.findPet(p)?.toString() ?: "Pet details not found" }
+        println(patientsDetails)
+    }
+}
 fun saveAll() {
     try {
         petAPI.savePets()

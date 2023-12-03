@@ -13,6 +13,6 @@ data class Pet(
 
 ) {
     override fun toString(): String {
-        return "PetID: $petID, Name: $name, Breed: $breed, DOB: $DOB, Vaccinated: $isVaccinated"
+        return "PetID: $petID, Name: $name, Breed: $breed, DOB: $DOB, Vaccinated: $isVaccinated, VetID: $vetID, OwnerPPS: $ownerPPS"
     }
 }

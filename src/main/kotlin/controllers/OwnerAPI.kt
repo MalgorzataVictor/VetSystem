@@ -15,6 +15,9 @@ class OwnerAPI(serializerType: Serializer) {
         } else {
             formatListString(owners)
         }
+    fun getAllOwners(): ArrayList<Owner> {
+        return owners
+    }
 
     fun addOwner(owner: Owner): Boolean {
         return owners.add(owner)
@@ -28,6 +31,9 @@ class OwnerAPI(serializerType: Serializer) {
         }
     }
 
+    fun findOwnerIndex(owner: Owner): Int {
+        return owners.indexOf(owner)
+    }
     fun findOwner(id: Int): Owner? {
         return owners.find { owner -> owner.PPS == id }
     }
@@ -35,14 +41,16 @@ class OwnerAPI(serializerType: Serializer) {
     fun numberOfOwners(): Int = owners.size
 
     fun updateOwner(indexToUpdate: Int, owner: Owner?): Boolean {
-        val foundOwner = findOwner(indexToUpdate)
+        if (!Utilities.isValidListIndex(indexToUpdate, owners)) {
+            return false
+        }
+        val foundOwner = findOwnerByIndex(indexToUpdate)
 
         if ((foundOwner != null) && (owner != null)) {
             foundOwner.PPS = owner.PPS
             foundOwner.name = owner.name
             foundOwner.phoneNumber = owner.phoneNumber
             foundOwner.email = owner.email
-            foundOwner.petsList = owner.petsList
 
             return true
         }
@@ -58,12 +66,12 @@ class OwnerAPI(serializerType: Serializer) {
         return Utilities.isValidListIndex(index, owners)
     }
     fun assignPetToOwner(index: Int, pet: Pet): Boolean? {
-        return findOwnerByIndex(index)?.petsList?.add(pet)
+        return findOwnerByIndex(index)?.petsList?.add(pet.petID)
     }
 
     fun unAssignPetFromOwner(oldIndex: Int, newIndex: Int, pet: Pet) {
-        findOwnerByIndex(oldIndex)?.petsList?.remove(pet)
-        findOwnerByIndex(newIndex)?.petsList?.add(pet)
+        findOwnerByIndex(oldIndex)?.petsList?.remove(pet.petID)
+        findOwnerByIndex(newIndex)?.petsList?.add(pet.petID)
     }
 
     fun searchByName(searchString: String) =

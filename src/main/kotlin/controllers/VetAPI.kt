@@ -23,6 +23,10 @@ class VetAPI(serializerType: Serializer) {
             formatListString(vets)
         }
 
+    fun getAllVets(): ArrayList<Vet> {
+        return vets
+    }
+
     fun addVet(vet: Vet): Boolean {
         vet.vetID = getVetID()
         return vets.add(vet)
@@ -34,6 +38,10 @@ class VetAPI(serializerType: Serializer) {
         } else {
             null
         }
+    }
+
+    fun findVetIndex(vet: Vet): Int {
+        return vets.indexOf(vet)
     }
 
     fun findVet(id: Int): Vet? {
@@ -51,7 +59,10 @@ class VetAPI(serializerType: Serializer) {
         )
 
     fun updateVet(indexToUpdate: Int, vet: Vet?): Boolean {
-        val foundVet = findVet(indexToUpdate)
+        if (!Utilities.isValidListIndex(indexToUpdate, vets)) {
+            return false
+        }
+        val foundVet = findVetByIndex(indexToUpdate)
 
         if (foundVet != null && vet != null) {
             // Update the fields of the found vet with the new information
@@ -60,7 +71,6 @@ class VetAPI(serializerType: Serializer) {
             foundVet.specialisation = vet.specialisation
             foundVet.salary = vet.salary
             foundVet.position = vet.position
-            foundVet.patientList = vet.patientList
 
             return true
         }
@@ -73,15 +83,12 @@ class VetAPI(serializerType: Serializer) {
     }
 
     fun assignPetToVet(index: Int, pet: Pet): Boolean? {
-        return findVetByIndex(index)?.patientList?.add(pet)
+        return findVetByIndex(index)?.patientList?.add(pet.petID)
     }
 
     fun unAssignPetFromVet(oldIndex: Int, newIndex: Int, pet: Pet) {
-        println(findVetByIndex(oldIndex)?.patientList)
-        val list1 = findVetByIndex(oldIndex)?.patientList?.filter { it -> it.petID != pet.petID }
-        findVetByIndex(oldIndex)?.patientList = list1!!.toMutableList()
-        println(list1)
-        findVetByIndex(newIndex)?.patientList?.add(pet)
+        findVetByIndex(oldIndex)?.patientList?.remove(pet.petID)
+        findVetByIndex(newIndex)?.patientList?.add(pet.petID)
     }
 
     fun formatListString(notesToFormat: List<Vet>): String =
