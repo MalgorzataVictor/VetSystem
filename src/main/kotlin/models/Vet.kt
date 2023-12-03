@@ -18,7 +18,6 @@ data class Vet(
         patientList.joinToString("\n") { it.toString() }
     }
     override fun toString(): String {
-        val patientsInfo = patientList.joinToString("\n") { it.toString() }
         return "vetID: $vetID, Name: $name, Date Qualified: $dateQualified, Specialisation: $specialisation, Salary: $salary, Position: $position, \nPatients: $patientList "
     }
 }

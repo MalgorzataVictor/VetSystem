@@ -23,6 +23,10 @@ class VetAPI(serializerType: Serializer) {
             formatListString(vets)
         }
 
+    fun getAllVets(): ArrayList<Vet> {
+        return vets
+    }
+
     fun addVet(vet: Vet): Boolean {
         vet.vetID = getVetID()
         return vets.add(vet)
@@ -73,15 +77,12 @@ class VetAPI(serializerType: Serializer) {
     }
 
     fun assignPetToVet(index: Int, pet: Pet): Boolean? {
-        return findVetByIndex(index)?.patientList?.add(pet)
+        return findVetByIndex(index)?.patientList?.add(pet.petID)
     }
 
     fun unAssignPetFromVet(oldIndex: Int, newIndex: Int, pet: Pet) {
-        println(findVetByIndex(oldIndex)?.patientList)
-        val list1 = findVetByIndex(oldIndex)?.patientList?.filter { it -> it.petID != pet.petID }
-        findVetByIndex(oldIndex)?.patientList = list1!!.toMutableList()
-        println(list1)
-        findVetByIndex(newIndex)?.patientList?.add(pet)
+        findVetByIndex(oldIndex)?.patientList?.remove(pet.petID)
+        findVetByIndex(newIndex)?.patientList?.add(pet.petID)
     }
 
     fun formatListString(notesToFormat: List<Vet>): String =

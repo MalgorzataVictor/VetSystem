@@ -15,6 +15,9 @@ class OwnerAPI(serializerType: Serializer) {
         } else {
             formatListString(owners)
         }
+    fun getAllOwners(): ArrayList<Owner> {
+        return owners
+    }
 
     fun addOwner(owner: Owner): Boolean {
         return owners.add(owner)
@@ -58,12 +61,12 @@ class OwnerAPI(serializerType: Serializer) {
         return Utilities.isValidListIndex(index, owners)
     }
     fun assignPetToOwner(index: Int, pet: Pet): Boolean? {
-        return findOwnerByIndex(index)?.petsList?.add(pet)
+        return findOwnerByIndex(index)?.petsList?.add(pet.petID)
     }
 
     fun unAssignPetFromOwner(oldIndex: Int, newIndex: Int, pet: Pet) {
-        findOwnerByIndex(oldIndex)?.petsList?.remove(pet)
-        findOwnerByIndex(newIndex)?.petsList?.add(pet)
+        findOwnerByIndex(oldIndex)?.petsList?.remove(pet.petID)
+        findOwnerByIndex(newIndex)?.petsList?.add(pet.petID)
     }
 
     fun searchByName(searchString: String) =

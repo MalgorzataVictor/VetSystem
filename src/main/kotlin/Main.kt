@@ -13,6 +13,7 @@ import utils.Utilities
 import java.io.File
 import java.time.LocalDate
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.system.exitProcess
 
 private val petAPI = PetAPI(XMLSerializer(File("pets.xml")))
@@ -381,8 +382,22 @@ fun updateOwner() {
 */
 
 fun listAllPets() = println(petAPI.listAllPets())
-fun listAllVets() = println(vetAPI.listAllVets())
-fun listAllOwners() = println(ownerAPI.listAllOwners())
+fun listAllVets() {
+    val vets1: ArrayList<Vet> = vetAPI.getAllVets()
+    vets1.forEach {
+        println(it)
+        val patientsDetails = it.patientList.joinToString("\n") { p -> petAPI.findPet(p)?.toString() ?: "Pet details not found" }
+        println(patientsDetails)
+    }
+}
+fun listAllOwners() {
+    val owners1: ArrayList<Owner> = ownerAPI.getAllOwners()
+    owners1.forEach {
+        println(it)
+        val patientsDetails = it.petsList.joinToString("\n") { p -> petAPI.findPet(p)?.toString() ?: "Pet details not found" }
+        println(patientsDetails)
+    }
+}
 fun saveAll() {
     try {
         petAPI.savePets()
