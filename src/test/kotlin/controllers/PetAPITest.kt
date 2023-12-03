@@ -135,4 +135,13 @@ class PetAPITest {
             assertEquals(false, populatedPets!!.findPet(4)!!.isVaccinated)
         }
     }
+
+    @Nested
+    inner class NumberOfPets {
+        @Test
+        fun `numberOfPets returns the total number of notes in the ArrayList`() {
+            assertEquals(5, populatedPets!!.numberOfPets())
+            assertEquals(0, emptyPets!!.numberOfPets())
+        }
+    }
 }
