@@ -114,6 +114,41 @@ fun runVetMenu() {
     } while (true)
 }
 
+fun ownerMenu(): Int {
+    return ScannerInput.readNextInt(
+        """ 
+             
+        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        ┃            Owner                    ┃
+        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        ┃  1) Add Owner                       ┃
+        ┃  2) Delete Owner                    ┃
+        ┃  3) List Owner                      ┃ 
+        ┃  4) Update Owner                    ┃
+        ┃  5) Number Of Owner                 ┃
+        ┃  6) Search Owner                    
+        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        ┃  0) Exit                          ┃
+        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        Enter option️"""
+    )
+}
+
+fun runOwnerMenu() {
+    do {
+        when (val option = ownerMenu()) {
+            /*   1 -> //addOwner()
+             2 -> deleteOwner()
+              3 -> listAllOwners()
+              4 -> updateOwner()
+              5 -> numberOfOwners()
+              6 -> searchOwner
+              0 -> runMainMenu()*/
+            else -> println("Invalid option entered: $option")
+        }
+    } while (true)
+}
+
 fun saveAll() {
     try {
         petAPI.savePets()
