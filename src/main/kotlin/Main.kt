@@ -242,6 +242,21 @@ fun deletePet() {
     }
 }
 
+fun deleteVet() {
+    listAllVets()
+    if (vetAPI.numberOfVets() > 0) {
+        val indexToDelete = readNextInt("Enter the index of the Vet to delete: ")
+        val vetToDelete = vetAPI.deleteVet(indexToDelete)
+        if (vetToDelete != null) {
+            println()
+            println("✔ Delete Successful! Deleted note: ${vetToDelete.name}")
+        } else {
+            println()
+            println("❌ Delete NOT Successful")
+        }
+    }
+}
+
 fun numberOfPets() {
     val petSize = petAPI.numberOfPets()
     println("Number of Pets in the system: $petSize pets")
