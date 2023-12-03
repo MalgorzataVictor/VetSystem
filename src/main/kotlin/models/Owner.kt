@@ -13,7 +13,6 @@ data class Owner(
     }
 
     override fun toString(): String {
-        val petsInfo = petsList.joinToString("\n") { it.toString() }
-        return " Name: $name, PPS: $PPS, Phone No: $phoneNumber, Email: $email, \nPatients:$petsInfo"
+        return " Name: $name, PPS: $PPS, Phone No: $phoneNumber, Email: $email"
     }
 }

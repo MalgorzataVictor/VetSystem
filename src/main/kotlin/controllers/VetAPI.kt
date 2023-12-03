@@ -55,7 +55,7 @@ class VetAPI(serializerType: Serializer) {
         )
 
     fun updateVet(indexToUpdate: Int, vet: Vet?): Boolean {
-        val foundVet = findVet(indexToUpdate)
+        val foundVet = findVetByIndex(indexToUpdate)
 
         if (foundVet != null && vet != null) {
             // Update the fields of the found vet with the new information
@@ -64,7 +64,6 @@ class VetAPI(serializerType: Serializer) {
             foundVet.specialisation = vet.specialisation
             foundVet.salary = vet.salary
             foundVet.position = vet.position
-            foundVet.patientList = vet.patientList
 
             return true
         }

@@ -114,7 +114,7 @@ fun runVetMenu() {
             1 -> addVet()
             2 -> deleteVet()
             3 -> listAllVets()
-            // 4 -> updateVet()
+            4 -> updateVet()
             5 -> numberOfVets()
             6 -> searchVet()
             0 -> runMainMenu()
@@ -372,14 +372,47 @@ fun updatePet() {
         }
     }
 }
-/*
 
 fun updateVet() {
+    listAllVets()
+    if (vetAPI.numberOfVets() > 0) {
+        val indexToUpdate = readNextInt("Enter the index of the Vet to update: ")
+        if (vetAPI.isValidIndex(indexToUpdate)) {
+            val name = Utilities.capitalizeFirstLetter(readNextLine("Enter Pet Name: "))
+            val dobInput = readNextLine("Enter Pet DOB (YYYY-MM-DD format): ").split("-")
+            val dateQualified = LocalDate.of(dobInput[0].toInt(), dobInput[1].toInt(), dobInput[2].toInt())
+            val specialisations: MutableList<String> = mutableListOf()
+            var input: String
+            do {
+                input = Utilities.capitalizeFirstLetter(readNextLine("Enter specialisation, type 'F' to finish"))
+                if (input != "F") {
+                    specialisations.add(input)
+                }
+            }
+            while (input != "F")
+            val salary = readNextDouble("Enter Vet Salary")
+            val position = Utilities.capitalizeFirstLetter(readNextLine("Enter Vet Position: "))
+
+            if (vetAPI.updateVet(
+                    indexToUpdate,
+                    Vet(0, name, dateQualified, specialisations, salary, position, mutableListOf())
+                )
+            ) {
+                println()
+                println("        ✔ Update Successful")
+            } else {
+                println()
+                println("        ❌ Update Failed")
+            }
+        } else {
+            println()
+            println("no pets")
+        }
+    }
 }
 
 fun updateOwner() {
 }
-*/
 
 fun listAllPets() = println(petAPI.listAllPets())
 fun listAllVets() {

@@ -48,7 +48,7 @@ class PetAPI(serializerType: Serializer) {
         )
 
     fun updatePet(indexToUpdate: Int, pet: Pet?): Boolean {
-        val foundPet = findPet(indexToUpdate)
+        val foundPet = findPetByIndex(indexToUpdate)
 
         if ((foundPet != null) && (pet != null)) {
             foundPet.petID = pet.petID
