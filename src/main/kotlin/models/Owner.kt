@@ -5,14 +5,12 @@ data class Owner(
     var name: String,
     var phoneNumber: String,
     var email: String,
-    var petsList: MutableList<Pet> = mutableListOf()
+    var petsList: MutableList<Int> = mutableListOf()
 ) {
 
-    fun formatListStringPatientList(): String =
-        petsList
-            .joinToString(separator = "\n") { petsl ->
-                "" + petsList.indexOf(petsl).toString() + ": " + petsl
-            }
+    fun formatListStringPetsList() {
+        petsList.joinToString("\n") { it.toString() }
+    }
 
     override fun toString(): String {
         val petsInfo = petsList.joinToString("\n") { it.toString() }
