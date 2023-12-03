@@ -3,11 +3,13 @@ package controllers
 import models.Pet
 import models.Vet
 import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
 import kotlin.test.assertEquals
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class VetAPITest {
@@ -77,7 +79,7 @@ class VetAPITest {
     inner class AddVets {
 
         @Test
-        fun `adding a Pet to a populated list adds to ArrayList`() {
+        fun `adding a Vet to a populated list adds to ArrayList`() {
             val newVet = Vet(
                 6,
                 "Lee Chan",
@@ -94,7 +96,7 @@ class VetAPITest {
         }
 
         @Test
-        fun `adding a Pet to an empty list adds to ArrayList`() {
+        fun `adding a Vet to an empty list adds to ArrayList`() {
             val newVet = Vet(
                 6,
                 "Lee Chan",
@@ -108,6 +110,28 @@ class VetAPITest {
             assertTrue(emptyVets!!.addVet(newVet))
             assertEquals(1, emptyVets!!.numberOfVets())
             assertEquals(newVet, emptyVets!!.findVet(newVet.vetID))
+        }
+    }
+
+    @Nested
+    inner class deleteVets {
+        @Test
+        fun `deleting a Vet that does not exist, returns null`() {
+            val number1 = emptyVets!!.numberOfVets()
+            val number2 = populatedVets!!.numberOfVets()
+            emptyVets!!.deleteVet(0)
+            populatedVets!!.deleteVet(-1)
+            assertEquals(number1, emptyVets!!.numberOfVets())
+            assertEquals(number2, populatedVets!!.numberOfVets())
+        }
+
+        @Test
+        fun `deleting a Vet that exists delete and returns deleted object`() {
+            assertNotNull(populatedVets!!.findVet(3))
+            val number1 = populatedVets!!.numberOfVets()
+            populatedVets!!.deleteVet(3)
+            assertEquals(number1 - 1, populatedVets!!.numberOfVets())
+            assertNull(populatedVets!!.findVet(3))
         }
     }
 }
