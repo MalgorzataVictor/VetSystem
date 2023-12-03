@@ -4,7 +4,12 @@ import models.Pet
 import models.Vet
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Nested
+import org.junit.jupiter.api.Test
 import java.time.LocalDate
+import kotlin.test.assertEquals
+import kotlin.test.assertTrue
+
 class VetAPITest {
     private var vet1: Vet? = null
     private var vet2: Vet? = null
@@ -21,7 +26,7 @@ class VetAPITest {
             LocalDate.of(2018, 7, 15),
             mutableListOf("Surgery", "Dentistry"), // Specializations with some values
             80000.0,
-            "Surgeon",
+            "Senior",
             mutableListOf() // Empty patient list
         )
         vet2 = Vet(
@@ -30,7 +35,7 @@ class VetAPITest {
             LocalDate.of(2020, 5, 10),
             mutableListOf(), // Empty specializations list
             75000.0,
-            "Dentist",
+            "Junior",
             mutableListOf(Pet(1, "PetName", "PetType", LocalDate.of(2022, 2, 2), false, 1, 12345)) // Patient list with one pet
         )
         vet3 = Vet(
@@ -39,7 +44,7 @@ class VetAPITest {
             LocalDate.of(2019, 9, 20),
             mutableListOf("General Checkups"), // Specializations with some values
             70000.0,
-            "General Practitioner",
+            "Senior",
             mutableListOf(Pet(2, "AnotherPet", "AnotherType", LocalDate.of(2023, 3, 3), true, 2, 54321)) // Patient list with one pet
         )
         vet4 = Vet(
@@ -48,7 +53,7 @@ class VetAPITest {
             LocalDate.of(2021, 3, 8),
             mutableListOf("Orthopedics", "Neurology"), // Specializations with some values
             85000.0,
-            "Orthopedic Surgeon",
+            "Junior",
             mutableListOf() // Empty patient list
         )
 
@@ -66,5 +71,43 @@ class VetAPITest {
         vet4 = null
         populatedVets = null
         emptyVets = null
+    }
+
+    @Nested
+    inner class AddVets {
+
+        @Test
+        fun `adding a Pet to a populated list adds to ArrayList`() {
+            val newVet = Vet(
+                6,
+                "Lee Chan",
+                LocalDate.of(2022, 7, 1),
+                mutableListOf("Orthopedics", "Cardiology"), // Specializations with some values
+                7634.0,
+                "Junior",
+                mutableListOf() // Empty patient list
+            )
+            assertEquals(4, populatedVets!!.numberOfVets())
+            assertTrue(populatedVets!!.addVet(newVet))
+            assertEquals(5, populatedVets!!.numberOfVets())
+            assertEquals(newVet, populatedVets!!.findVet(6))
+        }
+
+        @Test
+        fun `adding a Pet to an empty list adds to ArrayList`() {
+            val newVet = Vet(
+                6,
+                "Lee Chan",
+                LocalDate.of(2022, 7, 1),
+                mutableListOf("Orthopedics", "Cardiology"), // Specializations with some values
+                7634.0,
+                "Junior",
+                mutableListOf() // Empty patient list
+            )
+            assertEquals(0, emptyVets!!.numberOfVets())
+            assertTrue(emptyVets!!.addVet(newVet))
+            assertEquals(1, emptyVets!!.numberOfVets())
+            assertEquals(newVet, emptyVets!!.findVet(newVet.vetID))
+        }
     }
 }
