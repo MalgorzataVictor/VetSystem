@@ -12,14 +12,12 @@ import utils.ScannerInput.readNextLine
 import utils.Utilities
 import java.io.File
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.system.exitProcess
 
 private val petAPI = PetAPI(XMLSerializer(File("pets.xml")))
 private val vetAPI = VetAPI(XMLSerializer(File("vets.xml")))
 private val ownerAPI = OwnerAPI(XMLSerializer(File("owners.xml")))
-
 fun main(args: Array<String>) {
     loadAll()
     runMainMenu()
@@ -162,9 +160,8 @@ fun runOwnerMenu() {
 fun addPet() {
     val name = Utilities.capitalizeFirstLetter(readNextLine("Enter Pet Name: "))
     val breed = Utilities.capitalizeFirstLetter(readNextLine("Enter Pet Breed: "))
-    val dobInput = readNextLine("Enter Pet DOB (DD-MM-yy format): ")
-    val formatter = DateTimeFormatter.ofPattern("DD-MM-yy", Locale.ENGLISH)
-    val DOB = LocalDate.parse(dobInput, formatter)
+    val dobInput = readNextLine("Enter Pet DOB (YYYY-MM-DD format): ").split("-")
+    val DOB = LocalDate.of(dobInput[0].toInt(), dobInput[1].toInt(), dobInput[2].toInt())
     println()
     listAllVets()
     val vetID = readNextInt("Enter index of Vet who you want to assign: ")
@@ -194,11 +191,10 @@ fun addPet() {
 
 fun addVet() {
     val name = Utilities.capitalizeFirstLetter(readNextLine("Enter Vet Name: "))
-    val dobInput = readNextLine("Enter Date Qualified (DD-MM-yy format): ")
-    val formatter = DateTimeFormatter.ofPattern("DD-MM-yy", Locale.ENGLISH)
-    val dateQualified = LocalDate.parse(dobInput, formatter)
+    val dobInput = readNextLine("Enter Date Qualified (YYYY-MM-DD format): ").split("-")
+    val dateQualified = LocalDate.of(dobInput[0].toInt(), dobInput[1].toInt(), dobInput[2].toInt())
     val specialisations: MutableList<String> = mutableListOf()
-    var input = ""
+    var input: String
     do {
         input = Utilities.capitalizeFirstLetter(readNextLine("Enter specialisation, type 'F' to finish"))
         if (input != "F") {
@@ -352,88 +348,78 @@ fun searchOwner() {
 fun updatePet() {
     listAllPets()
     if (petAPI.numberOfPets() > 0) {
-        val indexToUpdate = readNextInt("Enter the Index of the Pet you wish to update: ")
+        val indexToUpdate = readNextInt("Enter the index of the Pet to update: ")
         if (petAPI.isValidIndex(indexToUpdate)) {
-            val pet1 = petAPI.findPetByIndex(indexToUpdate)
-            val newPet =
-                Pet(
-                    pet1!!.petID,
-                    pet1.name,
-                    pet1.breed,
-                    pet1.DOB,
-                    pet1.isVaccinated,
-                    pet1.vetID,
-                    pet1.ownerPPS
-                )
+            val existingPet = petAPI.findPetByIndex(indexToUpdate) // Fetch the existing pet
+            val name = Utilities.capitalizeFirstLetter(readNextLine("Enter Pet Name (${existingPet!!.name}): "))
+            val breed = Utilities.capitalizeFirstLetter(readNextLine("Enter Pet Breed (${existingPet.breed}): "))
+            val dobInput = readNextLine("Enter Pet DOB (YYYY-MM-DD format) (${existingPet.DOB}): ").split("-")
+            val DOB = try {
+                LocalDate.of(dobInput[0].toInt(), dobInput[1].toInt(), dobInput[2].toInt())
+            } catch (e: Exception) {
+                existingPet.DOB // Use the existing date if the input is invalid
+            }
 
-            println(
-                """ 
-            
-    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-    ┃        PET        ┃
-    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-    ┃   Update:                             ┃
-    ┃   𝟭. Pet Name                       ┃
-    ┃   𝟮. Pet Breed                        ┃
-    ┃   𝟯. Pet DOB                           ┃
-    ┃   𝟰. PET vetID                      ┃
-    ┃   𝟱. PEt OwnerID                  ┃
-    ┃                                       ┃
-    ┃  -𝟭. Exit                             ┃
-    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-         
-    Enter Option ➡️ """
-
+            // Update only the necessary fields
+            val updatedPet = existingPet.copy(
+                name = name,
+                breed = breed,
+                DOB = DOB
+                // Other attributes you want to update...
             )
 
-            var choice: Int
+            if (petAPI.updatePet(indexToUpdate, updatedPet)) {
+                println("✔ Update Successful")
+            } else {
+                println("❌ Update Failed")
+            }
+        } else {
+            println("❗ No pet found with the given index")
+        }
+    }
+}
 
-            do {
-                choice = readLine()!!.toInt()
-                when (choice) {
-                    1 -> {
-                        newPet.name = Utilities.capitalizeFirstLetter(readNextLine("Enter Pet Name: "))
-                        return
-                    }
+fun updateVet() {
+    listAllVets()
+    if (vetAPI.numberOfVets() > 0) {
+        val indexToUpdate = readNextInt("Enter the index of the Vet to update: ")
+        if (vetAPI.isValidIndex(indexToUpdate)) {
+            val currentVet = vetAPI.findVetByIndex(indexToUpdate)
+            val name = Utilities.capitalizeFirstLetter(readNextLine("Enter Vet Name: "))
+            val dobInput = readNextLine("Enter Date Qualified (YYYY-MM-DD format): ").split("-")
+            val dateQualified = LocalDate.of(dobInput[0].toInt(), dobInput[1].toInt(), dobInput[2].toInt())
 
-                    2 -> {
-                        newPet.breed = Utilities.capitalizeFirstLetter(readNextLine("Enter Pet Breed: "))
-                        return
-                    }
-
-                    3 -> {
-                        val dobInput = readNextLine("Enter Pet DOB (MM-YY format): ")
-                        val formatter = DateTimeFormatter.ofPattern("MM-yy", Locale.ENGLISH)
-                        val DOB = LocalDate.parse(dobInput, formatter)
-                        newPet.DOB = DOB
-                        return
-                    }
-
-                    4 -> {
-                        listAllVets()
-                        val vetID = readNextInt("Enter index of Vet who you want to assign: ")
-                        val oldVetID = newPet.vetID
-                        newPet.vetID = vetID
-                        vetAPI.unAssignPetFromVet(oldVetID, vetID, newPet)
-                        return
-                    }
-
-                    5 -> {
-                        listAllOwners()
-                        val ownerPPS = readNextInt("Enter PPS of Owner you want to assign: ")
-                        val oldOwnerPPS = newPet.ownerPPS
-                        newPet.ownerPPS = ownerPPS
-                        ownerAPI.unAssignPetFromOwner(oldOwnerPPS, ownerPPS, newPet)
-                        return
-                    }
-
-                    else -> println("Invalid Value")
+            // Display current specialisations and prompt for action (add or delete)
+            println("Current Specialisations: ${currentVet!!.specialisation.joinToString(", ")}")
+            val action = Utilities.capitalizeFirstLetter(readNextLine("Enter 'A' to add or 'D' to delete specialisation: "))
+            if (action == "A") {
+                val newSpecialisation = Utilities.capitalizeFirstLetter(readNextLine("Enter a specialisation to add: "))
+                currentVet.specialisation.add(newSpecialisation)
+            } else if (action == "D") {
+                val indexToRemove = readNextInt("Enter the index of specialisation you want to delete: ")
+                if (indexToRemove >= 0 && indexToRemove < currentVet.specialisation.size) {
+                    currentVet.specialisation.removeAt(indexToRemove)
+                } else {
+                    println("Invalid index for deletion")
+                    return
                 }
-            } while (choice != -1)
+            }
 
-            if (petAPI.updatePet(
+            val salary = readNextDouble("Enter Vet Salary: ")
+            val position = Utilities.capitalizeFirstLetter(readNextLine("Enter Vet position: "))
+
+            // Update the vet using the retrieved currentVet object
+            if (vetAPI.updateVet(
                     indexToUpdate,
-                    newPet
+                    Vet(
+                            currentVet.vetID,
+                            name,
+                            dateQualified,
+                            currentVet.specialisation,
+                            salary,
+                            position,
+                            currentVet.patientList
+                        )
                 )
             ) {
                 println()
@@ -444,116 +430,7 @@ fun updatePet() {
             }
         } else {
             println()
-            print("❗ No notes found")
-        }
-    }
-}
-
-fun updateVet() {
-    listAllVets()
-    if (vetAPI.numberOfVets() > 0) {
-        val indexToUpdate = readNextInt("Enter the Index of the Vet you wish to update: ")
-        if (vetAPI.isValidIndex(indexToUpdate)) {
-            val vet1 = vetAPI.findVetByIndex(indexToUpdate)
-            val newVet =
-                Vet(
-                    vet1!!.vetID,
-                    vet1.name,
-                    vet1.dateQualified,
-                    vet1.specialisation,
-                    vet1.salary,
-                    vet1.position,
-                    vet1.patientList
-                )
-
-            println(
-                """ 
-            
-    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-    ┃        Vet        ┃
-    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-    ┃   Update:                             ┃
-    ┃   𝟭. Vet Name                       ┃
-    ┃   𝟮. Vet Date Qualified                        ┃
-    ┃   𝟯. Vet Specialisation                           ┃
-    ┃   𝟰. Vet Salary                      ┃
-    ┃   𝟱. Vet Position                  ┃
-    ┃   𝟱. Vet Patient list                   ┃
-    ┃                                       ┃
-    ┃  -𝟭. Exit                             ┃
-    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-         
-    Enter Option ➡️ """
-
-            )
-
-            var choice: Int
-
-            do {
-                choice = readLine()!!.toInt()
-                when (choice) {
-                    1 -> {
-                        newVet.name = Utilities.capitalizeFirstLetter(readNextLine("Enter Vet Name: "))
-                        return
-                    }
-
-                    2 -> {
-                        val dobInput = readNextLine("Enter Date Qualified (MM-YY format): ")
-                        val formatter = DateTimeFormatter.ofPattern("MM-yy", Locale.ENGLISH)
-                        val dateQualified = LocalDate.parse(dobInput, formatter)
-                        newVet.dateQualified = dateQualified
-                        return
-                    }
-
-                    3 -> {
-                        val input = Utilities.capitalizeFirstLetter(readNextLine("Enter 'A' to or 'D' to delete specialisation: "))
-                        println(newVet.formatListStringSpecialisation())
-                        if (input == "A") {
-                            val input2 = Utilities.capitalizeFirstLetter(readNextLine("Enter a specialisation: "))
-                            newVet.specialisation.add(input2)
-                        } else if (input == "D") {
-                            val input2 = readNextInt("Enter an index of specialisation you want to delete: ")
-                            newVet.specialisation.removeAt(input2)
-                        } else {
-                            return
-                        }
-                        return
-                    }
-
-                    4 -> {
-                        newVet.salary = readNextDouble("Enter Vet Salary: ")
-                        return
-                    }
-
-                    5 -> {
-                        newVet.position = Utilities.capitalizeFirstLetter(readNextLine("Enter Vet position: "))
-                        return
-                    }
-
-                    6 -> {
-                        println(newVet.formatListStringPatientList())
-                        val input2 = readNextInt("Enter an index of Pet you want to delete: ")
-                        newVet.patientList.removeAt(input2)
-                    }
-
-                    else -> println("Invalid Value")
-                }
-            } while (choice != -1)
-
-            if (vetAPI.updateVet(
-                    indexToUpdate,
-                    newVet
-                )
-            ) {
-                println()
-                println("✔ Update Successful")
-            } else {
-                println()
-                println(" ❌ Update Failed")
-            }
-        } else {
-            println()
-            print("❗ No vets found")
+            println("❗ No vet found with the given index")
         }
     }
 }
@@ -561,88 +438,31 @@ fun updateVet() {
 fun updateOwner() {
     listAllOwners()
     if (ownerAPI.numberOfOwners() > 0) {
-        val indexToUpdate = readNextInt("Enter the Index of the Owner you wish to update: ")
+        val indexToUpdate = readNextInt("Enter the index of the Owner to update: ")
         if (ownerAPI.isValidIndex(indexToUpdate)) {
-            val owner1 = ownerAPI.findOwnerByIndex(indexToUpdate)
-            val newOwner =
-                Owner(
-                    owner1!!.PPS,
-                    owner1.name,
-                    owner1.phoneNumber,
-                    owner1.email,
-                    owner1.petsList
+            val existingOwner = ownerAPI.findOwnerByIndex(indexToUpdate) // Fetch the existing owner
 
-                )
+            val PPS = readNextInt("Enter Owner PPS (${existingOwner!!.PPS}): ")
+            val name = Utilities.capitalizeFirstLetter(readNextLine("Enter Owner Name (${existingOwner.name}): "))
+            val phoneNumber = Utilities.capitalizeFirstLetter(readNextLine("Enter Owner Phone Number (${existingOwner.phoneNumber}): "))
+            val email = Utilities.capitalizeFirstLetter(readNextLine("Enter Owner Email (${existingOwner.email}): "))
 
-            println(
-                """ 
-            
-    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-    ┃        Owner        ┃
-    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-    ┃   Update:                             ┃
-    ┃   𝟭. Owner PPS                       ┃
-    ┃   𝟮. Owner Name                       ┃
-    ┃   𝟯. Owner Phone Number                           ┃
-    ┃   𝟰. Owner Email                       ┃
-    ┃   𝟱. Owner Pet List                  ┃
-    ┃                                       ┃
-    ┃  -𝟭. Exit                             ┃
-    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-         
-    Enter Option ➡️ """
-
+            // Update only the necessary fields
+            val updatedOwner = existingOwner.copy(
+                PPS = PPS,
+                name = name,
+                phoneNumber = phoneNumber,
+                email = email
+                // Other attributes you want to update...
             )
 
-            var choice: Int
-
-            do {
-                choice = readLine()!!.toInt()
-                when (choice) {
-                    1 -> {
-                        newOwner.PPS = readNextInt("Enter Owner PPS: ")
-                        return
-                    }
-
-                    2 -> {
-                        newOwner.name = Utilities.capitalizeFirstLetter(readNextLine("Enter Owner Name: "))
-                        return
-                    }
-
-                    3 -> {
-                        newOwner.phoneNumber = Utilities.capitalizeFirstLetter(readNextLine("Enter Owner Phone Number: "))
-                        return
-                    }
-
-                    4 -> {
-                        newOwner.email = Utilities.capitalizeFirstLetter(readNextLine("Enter Owner Email: "))
-                        return
-                    }
-
-                    5 -> {
-                        println(newOwner.formatListStringPatientList())
-                        val input2 = readNextInt("Enter an index of Pet you want to delete: ")
-                        newOwner.petsList.removeAt(input2)
-                    }
-
-                    else -> println("Invalid Value")
-                }
-            } while (choice != -1)
-
-            if (ownerAPI.updateOwner(
-                    indexToUpdate,
-                    newOwner
-                )
-            ) {
-                println()
+            if (ownerAPI.updateOwner(indexToUpdate, updatedOwner)) {
                 println("✔ Update Successful")
             } else {
-                println()
-                println(" ❌ Update Failed")
+                println("❌ Update Failed")
             }
         } else {
-            println()
-            print("❗ No vets found")
+            println("❗ No owner found with the given index")
         }
     }
 }

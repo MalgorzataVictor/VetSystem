@@ -77,7 +77,10 @@ class VetAPI(serializerType: Serializer) {
     }
 
     fun unAssignPetFromVet(oldIndex: Int, newIndex: Int, pet: Pet) {
-        findVetByIndex(oldIndex)?.patientList?.remove(pet)
+        println(findVetByIndex(oldIndex)?.patientList)
+        val list1 = findVetByIndex(oldIndex)?.patientList?.filter { it -> it.petID != pet.petID }
+        findVetByIndex(oldIndex)?.patientList = list1!!.toMutableList()
+        println(list1)
         findVetByIndex(newIndex)?.patientList?.add(pet)
     }
 
