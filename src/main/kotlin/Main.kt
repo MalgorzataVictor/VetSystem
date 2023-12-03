@@ -262,6 +262,11 @@ fun numberOfPets() {
     println("Number of Pets in the system: $petSize pets")
 }
 
+fun numberOfVets() {
+    val vetSize = vetAPI.numberOfVets()
+    println("Number of Vets in the system: $vetSize vets")
+}
+
 fun searchPet() {
     val searchName = readNextLine("Enter the Pet Name to search by: ")
     val searchResults = petAPI.searchByName(searchName)
