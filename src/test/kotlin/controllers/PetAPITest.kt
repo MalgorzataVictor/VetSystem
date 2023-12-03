@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
@@ -87,6 +88,51 @@ class PetAPITest {
             populatedPets!!.deletePet(3)
             assertEquals(number1 - 1, populatedPets!!.numberOfPets())
             assertNull(populatedPets!!.findPet(3))
+        }
+    }
+
+    @Nested
+    inner class UpdatePets {
+        @Test
+        fun `updating a pet that does not exist returns false`() {
+            assertFalse(
+                populatedPets!!.updatePet(
+                    6,
+                    Pet(6, "Buba", "Bunny", LocalDate.of(2020, 7, 6), false, 2, 54123)
+                )
+            )
+            assertFalse(
+                populatedPets!!.updatePet(
+                    -1,
+                    Pet(6, "Buba", "Bunny", LocalDate.of(2020, 7, 6), false, 2, 54123)
+                )
+            )
+            assertFalse(
+                emptyPets!!.updatePet(
+                    0,
+                    Pet(6, "Buba", "Bunny", LocalDate.of(2020, 7, 6), false, 2, 54123)
+                )
+            )
+        }
+
+        @Test
+        fun `updating a pet that exists returns true and updates`() {
+            assertEquals(cat2, populatedPets!!.findPet(4))
+            assertEquals("Daisy", populatedPets!!.findPet(4)!!.name)
+            assertEquals(4, populatedPets!!.findPet(4)!!.petID)
+            assertEquals("Cat", populatedPets!!.findPet(4)!!.breed)
+            assertEquals(2, populatedPets!!.findPet(4)!!.vetID)
+            assertEquals(true, populatedPets!!.findPet(4)!!.isVaccinated)
+
+            assertTrue(
+                populatedPets!!.updatePet(
+                    4,
+                    Pet(4, "Update", "bunny", LocalDate.of(2023, 11, 30), false, 2, 12345)
+                )
+            )
+            assertEquals("Update", populatedPets!!.findPet(4)!!.name)
+            assertEquals("bunny", populatedPets!!.findPet(4)!!.breed)
+            assertEquals(false, populatedPets!!.findPet(4)!!.isVaccinated)
         }
     }
 }
