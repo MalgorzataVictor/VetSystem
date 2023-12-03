@@ -8,6 +8,13 @@ class VetAPI(serializerType: Serializer) {
     private var serializer: Serializer = serializerType
     private var vets = ArrayList<Vet>()
 
+    private fun getVetID(): Int {
+        if (vets.isEmpty()) {
+            return 1
+        }
+        return vets.last().petID + 1
+    }
+
     fun listAllVets(): String =
         if (vets.isEmpty()) {
             "No vets stored"
@@ -16,6 +23,7 @@ class VetAPI(serializerType: Serializer) {
         }
 
     fun addVet(vet: Vet): Boolean {
+        vet.vetID = getVetID()
         return vets.add(vet)
     }
 

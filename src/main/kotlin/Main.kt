@@ -2,8 +2,10 @@ import controllers.OwnerAPI
 import controllers.PetAPI
 import controllers.VetAPI
 import models.Pet
+import models.Vet
 import persistence.XMLSerializer
 import utils.ScannerInput
+import utils.ScannerInput.readNextDouble
 import utils.ScannerInput.readNextInt
 import utils.ScannerInput.readNextLine
 import utils.Utilities
@@ -109,13 +111,13 @@ fun vetMenu(): Int {
 fun runVetMenu() {
     do {
         when (val option = vetMenu()) {
-            /*   1 -> //addVet()
-             2 -> deleteVet()
-              3 -> listAllVets()
-              4 -> updateVet()
-              5 -> numberOfVets()
-              6 -> searchVet
-              0 -> runMainMenu()*/
+            1 -> addVet()
+            2 -> deleteVet()
+            3 -> listAllVets()
+            4 -> updateVet()
+            5 -> numberOfVets()
+            6 -> searchVet
+            0 -> runMainMenu()
             else -> println("Invalid option entered: $option")
         }
     } while (true)
@@ -177,6 +179,43 @@ fun addPet() {
             false,
             vetID,
             ownerPPS
+        )
+    )
+    if (isAdded) {
+        println()
+        println("✔ Added Successfully")
+    } else {
+        println()
+        println("❌ Add Failed")
+    }
+}
+
+fun addVet() {
+    val name = Utilities.capitalizeFirstLetter(readNextLine("Enter Vet Name: "))
+    val dobInput = readNextLine("Enter Date Qualified (MM-YY format): ")
+    val formatter = DateTimeFormatter.ofPattern("MM-yy", Locale.ENGLISH)
+    val dateQualified = LocalDate.parse(dobInput, formatter)
+    var specialisations: MutableList<String> = mutableListOf()
+    var input = ""
+    do {
+        input = Utilities.capitalizeFirstLetter(readNextLine("Enter specialisation, type 'F' to finish"))
+        if (input != "F") {
+            specialisations.add(input)
+        }
+    }
+    while (input != "F")
+    val salary = readNextDouble("Enter Vet Salary: ")
+    val position = Utilities.capitalizeFirstLetter(readNextLine("Enter Vet Position: "))
+
+    val isAdded = vetAPI.addVet(
+        Vet(
+            0,
+            name,
+            dateQualified,
+            specialisations,
+            salary,
+            position,
+            mutableListOf()
         )
     )
     if (isAdded) {
