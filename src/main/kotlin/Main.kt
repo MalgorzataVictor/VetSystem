@@ -1,9 +1,15 @@
 import controllers.OwnerAPI
 import controllers.PetAPI
 import controllers.VetAPI
+import models.Pet
 import persistence.XMLSerializer
 import utils.ScannerInput
+import utils.ScannerInput.readNextInt
+import utils.ScannerInput.readNextLine
+import utils.Utilities
 import java.io.File
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.system.exitProcess
 
@@ -150,11 +156,39 @@ fun runOwnerMenu() {
     } while (true)
 }
 
-/*fun addPet() {
-    val
+fun addPet() {
+    val name = Utilities.capitalizeFirstLetter(readNextLine("Enter Pet Name: "))
+    val breed = Utilities.capitalizeFirstLetter(readNextLine("Enter Pet Breed: "))
+    val dobInput = readNextLine("Enter Pet DOB (MM-YY format): ")
+    val formatter = DateTimeFormatter.ofPattern("MM-yy", Locale.ENGLISH)
+    val DOB = LocalDate.parse(dobInput, formatter)
+    println()
+    listAllVets()
+    val vetID = readNextInt("Enter ID of Vet who you want to assign: ")
+    val ownerPPS = readNextInt("Enter PPS of Owner you want to assign: ")
 
-}*/
-
+    val isAdded = petAPI.addPet(
+        Pet(
+            0,
+            name,
+            breed,
+            DOB,
+            false,
+            vetID,
+            ownerPPS
+        )
+    )
+    if (isAdded) {
+        println()
+        println("✔ Added Successfully")
+    } else {
+        println()
+        println("❌ Add Failed")
+    }
+}
+fun listAllPets() = println(petAPI.listAllPets())
+fun listAllVets() = println(vetAPI.listAllVets())
+fun listAllOwners() = println(ownerAPI.listAllOwners())
 fun saveAll() {
     try {
         petAPI.savePets()

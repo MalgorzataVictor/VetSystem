@@ -8,6 +8,13 @@ class OwnerAPI(serializerType: Serializer) {
     private var serializer: Serializer = serializerType
     private var owners = ArrayList<Owner>()
 
+    fun listAllOwners(): String =
+        if (owners.isEmpty()) {
+            "No owners stored"
+        } else {
+            formatListString(owners)
+        }
+
     fun addOwner(owner: Owner): Boolean {
         return owners.add(owner)
     }

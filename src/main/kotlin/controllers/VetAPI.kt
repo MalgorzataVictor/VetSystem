@@ -8,6 +8,13 @@ class VetAPI(serializerType: Serializer) {
     private var serializer: Serializer = serializerType
     private var vets = ArrayList<Vet>()
 
+    fun listAllVets(): String =
+        if (vets.isEmpty()) {
+            "No vets stored"
+        } else {
+            formatListString(vets)
+        }
+
     fun addVet(vet: Vet): Boolean {
         return vets.add(vet)
     }
