@@ -2,11 +2,13 @@ package controllers
 
 import models.Pet
 import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
 import kotlin.test.assertEquals
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class PetAPITest {
@@ -63,6 +65,28 @@ class PetAPITest {
             assertTrue(emptyPets!!.addPet(newPet))
             assertEquals(1, emptyPets!!.numberOfPets())
             assertEquals(newPet, emptyPets!!.findPet(newPet.petID))
+        }
+    }
+
+    @Nested
+    inner class DeletePets {
+        @Test
+        fun `deleting a Pet that does not exist, returns null`() {
+            val number1 = emptyPets!!.numberOfPets()
+            val number2 = populatedPets!!.numberOfPets()
+            emptyPets!!.deletePet(0)
+            populatedPets!!.deletePet(-1)
+            assertEquals(number1, emptyPets!!.numberOfPets())
+            assertEquals(number2, populatedPets!!.numberOfPets())
+        }
+
+        @Test
+        fun `deleting a Pet that exists delete and returns deleted object`() {
+            assertNotNull(populatedPets!!.findPet(3))
+            val number1 = populatedPets!!.numberOfPets()
+            populatedPets!!.deletePet(3)
+            assertEquals(number1 - 1, populatedPets!!.numberOfPets())
+            assertNull(populatedPets!!.findPet(3))
         }
     }
 }
