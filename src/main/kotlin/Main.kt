@@ -282,6 +282,21 @@ fun deleteVet() {
     }
 }
 
+fun deleteOwner() {
+    listAllOwners()
+    if (ownerAPI.numberOfOwners() > 0) {
+        val indexToDelete = readNextInt("Enter the index of the Owner to delete: ")
+        val ownerToDelete = ownerAPI.deleteOwner(indexToDelete)
+        if (ownerToDelete != null) {
+            println()
+            println("✔ Delete Successful! Deleted note: ${ownerToDelete.name}")
+        } else {
+            println()
+            println("❌ Delete NOT Successful")
+        }
+    }
+}
+
 fun numberOfPets() {
     val petSize = petAPI.numberOfPets()
     println("Number of Pets in the system: $petSize pets")
