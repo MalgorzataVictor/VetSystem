@@ -34,4 +34,7 @@ object Utilities {
     fun loggerInfoSuccessful() {
         logger.info { "✔ Process Successful" }
     }
+    fun loggerInfoUnsuccessful() {
+        logger.info { " ❌ Process Unsuccessful" }
+    }
 }

@@ -15,6 +15,8 @@ import utils.ScannerInput.readNextDouble
 import utils.ScannerInput.readNextInt
 import utils.ScannerInput.readNextLine
 import utils.Utilities
+import utils.Utilities.loggerInfoSuccessful
+import utils.Utilities.loggerInfoUnsuccessful
 import java.io.File
 import java.time.LocalDate
 import kotlin.collections.ArrayList
@@ -213,10 +215,10 @@ fun addPet() {
         vetAPI.assignPetToVet(vetID, pet)
         ownerAPI.assignPetToOwner(ownerPPSIndex, pet)
         println()
-        Utilities.loggerInfoSuccessful()
+        loggerInfoSuccessful()
     } else {
         println()
-        println("❌ Add Failed")
+        loggerInfoUnsuccessful()
     }
 }
 
@@ -249,10 +251,10 @@ fun addVet() {
     )
     if (isAdded) {
         println()
-        Utilities.loggerInfoSuccessful()
+        loggerInfoSuccessful()
     } else {
         println()
-        println("❌ Add Failed")
+        loggerInfoUnsuccessful()
     }
 }
 
@@ -273,10 +275,10 @@ fun addOwner() {
     )
     if (isAdded) {
         println()
-        Utilities.loggerInfoSuccessful()
+        loggerInfoSuccessful()
     } else {
         println()
-        println("❌ Add Failed")
+        loggerInfoUnsuccessful()
     }
 }
 
@@ -287,10 +289,10 @@ fun deletePet() {
         val petToDelete = petAPI.deletePet(indexToDelete)
         if (petToDelete != null) {
             println()
-            Utilities.loggerInfoSuccessful()
+            loggerInfoSuccessful()
         } else {
             println()
-            println("❌ Delete NOT Successful")
+            loggerInfoUnsuccessful()
         }
     }
 }
@@ -302,10 +304,10 @@ fun deleteVet() {
         val vetToDelete = vetAPI.deleteVet(indexToDelete)
         if (vetToDelete != null) {
             println()
-            Utilities.loggerInfoSuccessful()
+            loggerInfoSuccessful()
         } else {
             println()
-            println("❌ Delete NOT Successful")
+            loggerInfoUnsuccessful()
         }
     }
 }
@@ -317,10 +319,10 @@ fun deleteOwner() {
         val ownerToDelete = ownerAPI.deleteOwner(indexToDelete)
         if (ownerToDelete != null) {
             println()
-            Utilities.loggerInfoSuccessful()
+            loggerInfoSuccessful()
         } else {
             println()
-            println("❌ Delete NOT Successful")
+            loggerInfoUnsuccessful()
         }
     }
 }
@@ -404,10 +406,10 @@ fun updatePet() {
                 )
             ) {
                 println()
-                Utilities.loggerInfoSuccessful()
+                loggerInfoSuccessful()
             } else {
                 println()
-                println("        ❌ Update Failed")
+                loggerInfoUnsuccessful()
             }
         } else {
             println()
@@ -442,10 +444,10 @@ fun updateVet() {
                 )
             ) {
                 println()
-                Utilities.loggerInfoSuccessful()
+                loggerInfoSuccessful()
             } else {
                 println()
-                println("        ❌ Update Failed")
+                loggerInfoUnsuccessful()
             }
         } else {
             println()
@@ -469,10 +471,10 @@ fun updateOwner() {
             )
         ) {
             println()
-            Utilities.loggerInfoSuccessful()
+            loggerInfoSuccessful()
         } else {
             println()
-            println("        ❌ Update Failed")
+            loggerInfoUnsuccessful()
         }
     } else {
         println()
