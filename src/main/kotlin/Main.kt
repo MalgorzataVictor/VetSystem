@@ -9,11 +9,14 @@ import controllers.VetAPI
 import models.Owner
 import models.Pet
 import models.Vet
+import mu.KotlinLogging
 import persistence.XMLSerializer
 import utils.ScannerInput.readNextDouble
 import utils.ScannerInput.readNextInt
 import utils.ScannerInput.readNextLine
 import utils.Utilities
+import utils.Utilities.loggerInfoSuccessful
+import utils.Utilities.loggerInfoUnsuccessful
 import java.io.File
 import java.time.LocalDate
 import kotlin.collections.ArrayList
@@ -22,10 +25,12 @@ import kotlin.system.exitProcess
 private val petAPI = PetAPI(XMLSerializer(File("pets.xml")))
 private val vetAPI = VetAPI(XMLSerializer(File("vets.xml")))
 private val ownerAPI = OwnerAPI(XMLSerializer(File("owners.xml")))
+private val logger = KotlinLogging.logger {}
 private val GmailApi = GmailAPI
 val t = Terminal()
 val style = (TextStyles.bold + TextColors.red + TextColors.brightWhite.bg)
 fun main(args: Array<String>) {
+    logger.info { "Launching Vet System App..." }
     loadAll()
     runMainMenu()
 }
@@ -55,12 +60,12 @@ fun mainMenu(): Int? {
 
 fun runMainMenu() {
     do {
-        when (val option = mainMenu()) {
+        when (mainMenu()) {
             1 -> runPetMenu()
             2 -> runVetMenu()
             3 -> runOwnerMenu()
             0 -> exitApp()
-            else -> println("Invalid option entered: $option")
+            else -> Utilities.logggerWarnFormat()
         }
     } while (true)
 }
@@ -92,7 +97,7 @@ fun petMenu(): Int? {
 
 fun runPetMenu() {
     do {
-        when (val option = petMenu()) {
+        when (petMenu()) {
             1 -> addPet()
             2 -> deletePet()
             3 -> listAllPets()
@@ -101,7 +106,7 @@ fun runPetMenu() {
             6 -> searchPet()
             7 -> sendNotification()
             0 -> runMainMenu()
-            else -> println("Invalid option entered: $option")
+            else -> Utilities.logggerWarnFormat()
         }
     } while (true)
 }
@@ -132,7 +137,7 @@ fun vetMenu(): Int? {
 
 fun runVetMenu() {
     do {
-        when (val option = vetMenu()) {
+        when (vetMenu()) {
             1 -> addVet()
             2 -> deleteVet()
             3 -> listAllVets()
@@ -140,7 +145,7 @@ fun runVetMenu() {
             5 -> numberOfVets()
             6 -> searchVet()
             0 -> runMainMenu()
-            else -> println("Invalid option entered: $option")
+            else -> Utilities.logggerWarnFormat()
         }
     } while (true)
 }
@@ -171,7 +176,7 @@ fun ownerMenu(): Int? {
 
 fun runOwnerMenu() {
     do {
-        when (val option = ownerMenu()) {
+        when (ownerMenu()) {
             1 -> addOwner()
             2 -> deleteOwner()
             3 -> listAllOwners()
@@ -179,7 +184,7 @@ fun runOwnerMenu() {
             5 -> numberOfOwners()
             6 -> searchOwner()
             0 -> runMainMenu()
-            else -> println("Invalid option entered: $option")
+            else -> Utilities.logggerWarnFormat()
         }
     } while (true)
 }
@@ -210,10 +215,10 @@ fun addPet() {
         vetAPI.assignPetToVet(vetID, pet)
         ownerAPI.assignPetToOwner(ownerPPSIndex, pet)
         println()
-        println("✔ Added Successfully")
+        loggerInfoSuccessful()
     } else {
         println()
-        println("❌ Add Failed")
+        loggerInfoUnsuccessful()
     }
 }
 
@@ -246,10 +251,10 @@ fun addVet() {
     )
     if (isAdded) {
         println()
-        println("✔ Added Successfully")
+        loggerInfoSuccessful()
     } else {
         println()
-        println("❌ Add Failed")
+        loggerInfoUnsuccessful()
     }
 }
 
@@ -270,10 +275,10 @@ fun addOwner() {
     )
     if (isAdded) {
         println()
-        println("✔ Added Successfully")
+        loggerInfoSuccessful()
     } else {
         println()
-        println("❌ Add Failed")
+        loggerInfoUnsuccessful()
     }
 }
 
@@ -284,10 +289,10 @@ fun deletePet() {
         val petToDelete = petAPI.deletePet(indexToDelete)
         if (petToDelete != null) {
             println()
-            println("✔ Delete Successful! Deleted note: ${petToDelete.name}")
+            loggerInfoSuccessful()
         } else {
             println()
-            println("❌ Delete NOT Successful")
+            loggerInfoUnsuccessful()
         }
     }
 }
@@ -299,10 +304,10 @@ fun deleteVet() {
         val vetToDelete = vetAPI.deleteVet(indexToDelete)
         if (vetToDelete != null) {
             println()
-            println("✔ Delete Successful! Deleted note: ${vetToDelete.name}")
+            loggerInfoSuccessful()
         } else {
             println()
-            println("❌ Delete NOT Successful")
+            loggerInfoUnsuccessful()
         }
     }
 }
@@ -314,10 +319,10 @@ fun deleteOwner() {
         val ownerToDelete = ownerAPI.deleteOwner(indexToDelete)
         if (ownerToDelete != null) {
             println()
-            println("✔ Delete Successful! Deleted note: ${ownerToDelete.name}")
+            loggerInfoSuccessful()
         } else {
             println()
-            println("❌ Delete NOT Successful")
+            loggerInfoUnsuccessful()
         }
     }
 }
@@ -401,10 +406,10 @@ fun updatePet() {
                 )
             ) {
                 println()
-                println("        ✔ Update Successful")
+                loggerInfoSuccessful()
             } else {
                 println()
-                println("        ❌ Update Failed")
+                loggerInfoUnsuccessful()
             }
         } else {
             println()
@@ -439,10 +444,10 @@ fun updateVet() {
                 )
             ) {
                 println()
-                println("        ✔ Update Successful")
+                loggerInfoSuccessful()
             } else {
                 println()
-                println("        ❌ Update Failed")
+                loggerInfoUnsuccessful()
             }
         } else {
             println()
@@ -466,10 +471,10 @@ fun updateOwner() {
             )
         ) {
             println()
-            println("        ✔ Update Successful")
+            loggerInfoSuccessful()
         } else {
             println()
-            println("        ❌ Update Failed")
+            loggerInfoUnsuccessful()
         }
     } else {
         println()
@@ -496,6 +501,7 @@ fun listAllOwners() {
 }
 fun saveAll() {
     try {
+        logger.info { "Saving data..." }
         petAPI.savePets()
         vetAPI.saveVets()
         ownerAPI.saveOwners()
@@ -506,6 +512,7 @@ fun saveAll() {
 
 fun loadAll() {
     try {
+        logger.info { "Loading data..." }
         petAPI.loadPets()
         vetAPI.loadVets()
         ownerAPI.loadOwners()
@@ -516,6 +523,6 @@ fun loadAll() {
 fun exitApp() {
     saveAll()
     println()
-    print("Exiting...")
+    logger.info { "Exiting..." }
     exitProcess(0)
 }
