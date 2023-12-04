@@ -1,3 +1,6 @@
+import com.github.ajalt.mordant.rendering.TextColors.*
+import com.github.ajalt.mordant.rendering.TextStyles.*
+import com.github.ajalt.mordant.terminal.Terminal
 import controllers.GmailAPI
 import controllers.OwnerAPI
 import controllers.PetAPI
@@ -21,14 +24,17 @@ private val petAPI = PetAPI(XMLSerializer(File("pets.xml")))
 private val vetAPI = VetAPI(XMLSerializer(File("vets.xml")))
 private val ownerAPI = OwnerAPI(XMLSerializer(File("owners.xml")))
 private val GmailApi = GmailAPI
+val t = Terminal()
 fun main(args: Array<String>) {
     loadAll()
     runMainMenu()
 }
 
-fun mainMenu(): Int {
-    return ScannerInput.readNextInt(
-        """ 
+fun mainMenu(): Int? {
+    val style = (bold + green)
+    return t.prompt(
+        style(
+            """ 
              
         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         ┃            Vet System             ┃
@@ -40,7 +46,8 @@ fun mainMenu(): Int {
         ┃  0) Exit                          ┃
         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         Enter option️"""
-    )
+        )
+    )?.toInt()
 }
 
 fun runMainMenu() {

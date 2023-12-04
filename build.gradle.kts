@@ -37,7 +37,7 @@ dependencies {
     implementation("com.google.apis:google-api-services-gmail:v1-rev20220404-2.0.0")
     implementation("com.sun.mail:javax.mail:1.6.2")
 
-    //for Mordant Interface
+    // for Mordant Interface
     implementation("com.github.ajalt.mordant:mordant:2.2.0")
 }
 
