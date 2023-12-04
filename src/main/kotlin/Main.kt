@@ -28,6 +28,7 @@ private val GmailApi = GmailAPI
 val t = Terminal()
 val style = (TextStyles.bold + TextColors.red + TextColors.brightWhite.bg)
 fun main(args: Array<String>) {
+    logger.info { "Launching Vet System App..." }
     loadAll()
     runMainMenu()
 }
@@ -57,12 +58,12 @@ fun mainMenu(): Int? {
 
 fun runMainMenu() {
     do {
-        when (val option = mainMenu()) {
+        when (mainMenu()) {
             1 -> runPetMenu()
             2 -> runVetMenu()
             3 -> runOwnerMenu()
             0 -> exitApp()
-            else -> println("Invalid option entered: $option")
+            else -> Utilities.logggerWarnFormat()
         }
     } while (true)
 }
@@ -94,7 +95,7 @@ fun petMenu(): Int? {
 
 fun runPetMenu() {
     do {
-        when (val option = petMenu()) {
+        when (petMenu()) {
             1 -> addPet()
             2 -> deletePet()
             3 -> listAllPets()
@@ -103,7 +104,7 @@ fun runPetMenu() {
             6 -> searchPet()
             7 -> sendNotification()
             0 -> runMainMenu()
-            else -> println("Invalid option entered: $option")
+            else -> Utilities.logggerWarnFormat()
         }
     } while (true)
 }
@@ -134,7 +135,7 @@ fun vetMenu(): Int? {
 
 fun runVetMenu() {
     do {
-        when (val option = vetMenu()) {
+        when (vetMenu()) {
             1 -> addVet()
             2 -> deleteVet()
             3 -> listAllVets()
@@ -142,7 +143,7 @@ fun runVetMenu() {
             5 -> numberOfVets()
             6 -> searchVet()
             0 -> runMainMenu()
-            else -> println("Invalid option entered: $option")
+            else -> Utilities.logggerWarnFormat()
         }
     } while (true)
 }
@@ -173,7 +174,7 @@ fun ownerMenu(): Int? {
 
 fun runOwnerMenu() {
     do {
-        when (val option = ownerMenu()) {
+        when (ownerMenu()) {
             1 -> addOwner()
             2 -> deleteOwner()
             3 -> listAllOwners()
@@ -181,7 +182,7 @@ fun runOwnerMenu() {
             5 -> numberOfOwners()
             6 -> searchOwner()
             0 -> runMainMenu()
-            else -> println("Invalid option entered: $option")
+            else -> Utilities.logggerWarnFormat()
         }
     } while (true)
 }

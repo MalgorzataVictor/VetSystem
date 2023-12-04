@@ -1,6 +1,8 @@
 package utils
 
 import java.util.*
+import mu.KotlinLogging
+private val logger = KotlinLogging.logger {}
 
 /**
  * Utility object containing functions for general-purpose operations and validations.
@@ -21,5 +23,10 @@ object Utilities {
     fun capitalizeFirstLetter(input: String): String {
         return input.ifEmpty { return input }
             .substring(0, 1).uppercase(Locale.getDefault()) + input.substring(1).lowercase(Locale.getDefault())
+    }
+
+    @JvmStatic
+    fun logggerWarnFormat() {
+        logger.warn{"❗ Invalid option entered"}
     }
 }
