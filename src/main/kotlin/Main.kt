@@ -501,6 +501,7 @@ fun listAllOwners() {
 }
 fun saveAll() {
     try {
+        logger.info { "Saving data..." }
         petAPI.savePets()
         vetAPI.saveVets()
         ownerAPI.saveOwners()
@@ -511,6 +512,7 @@ fun saveAll() {
 
 fun loadAll() {
     try {
+        logger.info { "Loading data..." }
         petAPI.loadPets()
         vetAPI.loadVets()
         ownerAPI.loadOwners()
@@ -521,6 +523,6 @@ fun loadAll() {
 fun exitApp() {
     saveAll()
     println()
-    print("Exiting...")
+    logger.info { "Exiting..." }
     exitProcess(0)
 }
