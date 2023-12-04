@@ -213,7 +213,7 @@ fun addPet() {
         vetAPI.assignPetToVet(vetID, pet)
         ownerAPI.assignPetToOwner(ownerPPSIndex, pet)
         println()
-        println("✔ Added Successfully")
+        Utilities.loggerInfoSuccessful()
     } else {
         println()
         println("❌ Add Failed")
@@ -249,7 +249,7 @@ fun addVet() {
     )
     if (isAdded) {
         println()
-        println("✔ Added Successfully")
+        Utilities.loggerInfoSuccessful()
     } else {
         println()
         println("❌ Add Failed")
@@ -273,7 +273,7 @@ fun addOwner() {
     )
     if (isAdded) {
         println()
-        println("✔ Added Successfully")
+        Utilities.loggerInfoSuccessful()
     } else {
         println()
         println("❌ Add Failed")
@@ -287,7 +287,7 @@ fun deletePet() {
         val petToDelete = petAPI.deletePet(indexToDelete)
         if (petToDelete != null) {
             println()
-            println("✔ Delete Successful! Deleted note: ${petToDelete.name}")
+            Utilities.loggerInfoSuccessful()
         } else {
             println()
             println("❌ Delete NOT Successful")
@@ -302,7 +302,7 @@ fun deleteVet() {
         val vetToDelete = vetAPI.deleteVet(indexToDelete)
         if (vetToDelete != null) {
             println()
-            println("✔ Delete Successful! Deleted note: ${vetToDelete.name}")
+            Utilities.loggerInfoSuccessful()
         } else {
             println()
             println("❌ Delete NOT Successful")
@@ -317,7 +317,7 @@ fun deleteOwner() {
         val ownerToDelete = ownerAPI.deleteOwner(indexToDelete)
         if (ownerToDelete != null) {
             println()
-            println("✔ Delete Successful! Deleted note: ${ownerToDelete.name}")
+            Utilities.loggerInfoSuccessful()
         } else {
             println()
             println("❌ Delete NOT Successful")
@@ -404,7 +404,7 @@ fun updatePet() {
                 )
             ) {
                 println()
-                println("        ✔ Update Successful")
+                Utilities.loggerInfoSuccessful()
             } else {
                 println()
                 println("        ❌ Update Failed")
@@ -442,7 +442,7 @@ fun updateVet() {
                 )
             ) {
                 println()
-                println("        ✔ Update Successful")
+                Utilities.loggerInfoSuccessful()
             } else {
                 println()
                 println("        ❌ Update Failed")
@@ -469,7 +469,7 @@ fun updateOwner() {
             )
         ) {
             println()
-            println("        ✔ Update Successful")
+            Utilities.loggerInfoSuccessful()
         } else {
             println()
             println("        ❌ Update Failed")

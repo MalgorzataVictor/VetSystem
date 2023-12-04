@@ -1,7 +1,7 @@
 package utils
 
-import java.util.*
 import mu.KotlinLogging
+import java.util.*
 private val logger = KotlinLogging.logger {}
 
 /**
@@ -27,6 +27,11 @@ object Utilities {
 
     @JvmStatic
     fun logggerWarnFormat() {
-        logger.warn{"❗ Invalid option entered"}
+        logger.warn { "❗ Invalid option entered" }
+    }
+
+    @JvmStatic
+    fun loggerInfoSuccessful() {
+        logger.info { "✔ Process Successful" }
     }
 }
