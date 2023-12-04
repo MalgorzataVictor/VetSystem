@@ -25,13 +25,14 @@ private val vetAPI = VetAPI(XMLSerializer(File("vets.xml")))
 private val ownerAPI = OwnerAPI(XMLSerializer(File("owners.xml")))
 private val GmailApi = GmailAPI
 val t = Terminal()
+val style = (TextStyles.bold + TextColors.red + TextColors.brightWhite.bg)
 fun main(args: Array<String>) {
     loadAll()
     runMainMenu()
 }
 
 fun mainMenu(): Int? {
-    val style = (TextStyles.bold + TextColors.red + TextColors.brightWhite.bg)
+
     return t.prompt(
         style(
             """
@@ -40,12 +41,12 @@ fun mainMenu(): Int? {
  ┃         🏥 Vet System  🏥         ┃ 
  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 
  ┃                                   ┃ 
- ┃  1)🐇 Pet Menu                    ┃ 
- ┃  2)🥼️ Vet Menu                    ┃ 
- ┃  3)🧑🏻 Owner Menu                  ┃ 
+ ┃  1) 🐇 Pet Menu                   ┃ 
+ ┃  2) 🥼️ Vet Menu                   ┃ 
+ ┃  3) 🧑🏻 Owner Menu                 ┃ 
  ┃                                   ┃ 
  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 
- ┃  0)❌ Exit                        ┃ 
+ ┃  0) ❌ Exit                       ┃ 
  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 
                                        
    Enter option:                       
@@ -66,25 +67,27 @@ fun runMainMenu() {
     } while (true)
 }
 
-fun petMenu(): Int {
-    return ScannerInput.readNextInt(
-        """ 
-             
-        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        ┃            Pet                    ┃
-        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        ┃  1) Add Pet                       ┃
-        ┃  2) Delete Pet                    ┃
-        ┃  3) List Pet                      ┃ 
-        ┃  4) Update Pet                    ┃
-        ┃  5) Number Of Pet                 ┃
-        ┃  6) Search Pet                    
-           7) Sent notification                
-        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        ┃  0) Exit                          ┃
-        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        Enter option️"""
+fun petMenu(): Int? {
+    return t.prompt(
+        style(
+            """ 
+                                       
+ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 
+ ┃            🐇 Pet 🐇              ┃ 
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 
+ ┃  1) ➕ Add Pet                    ┃ 
+ ┃  2) 🗑️ Delete Pet                 ┃ 
+ ┃  3) 📋 List Pet                   ┃ 
+ ┃  4) 🖋 Update Pet                 ┃ 
+ ┃  5) 🔟 Number Of Pet              ┃ 
+ ┃  6) 🔍 Search Pet                 ┃ 
+ ┃  7) 🔔 Sent notification          ┃ 
+ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 
+ ┃  0) ❌ Exit                       ┃ 
+ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 
+        Enter option:                  """
     )
+    )?.toInt()
 }
 
 fun runPetMenu() {
