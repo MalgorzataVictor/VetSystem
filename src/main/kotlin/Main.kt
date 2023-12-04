@@ -9,6 +9,7 @@ import controllers.VetAPI
 import models.Owner
 import models.Pet
 import models.Vet
+import mu.KotlinLogging
 import persistence.XMLSerializer
 import utils.ScannerInput.readNextDouble
 import utils.ScannerInput.readNextInt
@@ -22,6 +23,7 @@ import kotlin.system.exitProcess
 private val petAPI = PetAPI(XMLSerializer(File("pets.xml")))
 private val vetAPI = VetAPI(XMLSerializer(File("vets.xml")))
 private val ownerAPI = OwnerAPI(XMLSerializer(File("owners.xml")))
+private val logger = KotlinLogging.logger {}
 private val GmailApi = GmailAPI
 val t = Terminal()
 val style = (TextStyles.bold + TextColors.red + TextColors.brightWhite.bg)

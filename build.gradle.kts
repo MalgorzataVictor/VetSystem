@@ -20,8 +20,8 @@ repositories {
 dependencies {
     testImplementation(kotlin("test"))
     // dependencies for logging
-    implementation("io.github.microutils:kotlin-logging:2.1.23")
-    implementation("org.slf4j:slf4j-simple:1.7.36")
+    implementation("io.github.microutils:kotlin-logging:3.0.5")
+    implementation("org.slf4j:slf4j-simple:2.0.9")
 
     // For Streaming to XML and JSON
     implementation("com.thoughtworks.xstream:xstream:1.4.18")
