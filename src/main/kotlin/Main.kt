@@ -1,5 +1,6 @@
-import com.github.ajalt.mordant.rendering.TextColors.*
-import com.github.ajalt.mordant.rendering.TextStyles.*
+
+import com.github.ajalt.mordant.rendering.TextColors
+import com.github.ajalt.mordant.rendering.TextStyles
 import com.github.ajalt.mordant.terminal.Terminal
 import controllers.GmailAPI
 import controllers.OwnerAPI
@@ -16,7 +17,6 @@ import utils.ScannerInput.readNextLine
 import utils.Utilities
 import java.io.File
 import java.time.LocalDate
-import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.system.exitProcess
 
@@ -31,21 +31,25 @@ fun main(args: Array<String>) {
 }
 
 fun mainMenu(): Int? {
-    val style = (bold + green)
+    val style = (TextStyles.bold + TextColors.red + TextColors.brightWhite.bg)
     return t.prompt(
         style(
-            """ 
-             
-        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        ┃            Vet System             ┃
-        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        ┃  1) Pet Menu                      ┃
-        ┃  2) Vet Menu                      ┃
-        ┃  3) Owner Menu                    ┃
-        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        ┃  0) Exit                          ┃
-        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        Enter option️"""
+            """
+                                       
+ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 
+ ┃         🏥 Vet System  🏥         ┃ 
+ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 
+ ┃                                   ┃ 
+ ┃  1)🐇 Pet Menu                    ┃ 
+ ┃  2)🥼️ Vet Menu                    ┃ 
+ ┃  3)🧑🏻 Owner Menu                  ┃ 
+ ┃                                   ┃ 
+ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 
+ ┃  0)❌ Exit                        ┃ 
+ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 
+                                       
+   Enter option:                       
+                                       """
         )
     )?.toInt()
 }
