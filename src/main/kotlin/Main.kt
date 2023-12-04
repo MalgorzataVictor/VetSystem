@@ -1,3 +1,7 @@
+
+import com.github.ajalt.mordant.rendering.TextColors
+import com.github.ajalt.mordant.rendering.TextStyles
+import com.github.ajalt.mordant.terminal.Terminal
 import controllers.GmailAPI
 import controllers.OwnerAPI
 import controllers.PetAPI
@@ -6,14 +10,12 @@ import models.Owner
 import models.Pet
 import models.Vet
 import persistence.XMLSerializer
-import utils.ScannerInput
 import utils.ScannerInput.readNextDouble
 import utils.ScannerInput.readNextInt
 import utils.ScannerInput.readNextLine
 import utils.Utilities
 import java.io.File
 import java.time.LocalDate
-import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.system.exitProcess
 
@@ -21,26 +23,34 @@ private val petAPI = PetAPI(XMLSerializer(File("pets.xml")))
 private val vetAPI = VetAPI(XMLSerializer(File("vets.xml")))
 private val ownerAPI = OwnerAPI(XMLSerializer(File("owners.xml")))
 private val GmailApi = GmailAPI
+val t = Terminal()
+val style = (TextStyles.bold + TextColors.red + TextColors.brightWhite.bg)
 fun main(args: Array<String>) {
     loadAll()
     runMainMenu()
 }
 
-fun mainMenu(): Int {
-    return ScannerInput.readNextInt(
-        """ 
-             
-        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        ┃            Vet System             ┃
-        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        ┃  1) Pet Menu                      ┃
-        ┃  2) Vet Menu                      ┃
-        ┃  3) Owner Menu                    ┃
-        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        ┃  0) Exit                          ┃
-        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        Enter option️"""
-    )
+fun mainMenu(): Int? {
+    return t.prompt(
+        style(
+            """
+                                       
+ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 
+ ┃         🏥 Vet System  🏥         ┃ 
+ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 
+ ┃                                   ┃ 
+ ┃  1) 🐇 Pet Menu                   ┃ 
+ ┃  2) 🥼️ Vet Menu                   ┃ 
+ ┃  3) 🧑🏻 Owner Menu                 ┃ 
+ ┃                                   ┃ 
+ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 
+ ┃  0) ❌ Exit                       ┃ 
+ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 
+                                       
+   Enter option:                       
+                                       """
+        )
+    )?.toInt()
 }
 
 fun runMainMenu() {
@@ -55,25 +65,29 @@ fun runMainMenu() {
     } while (true)
 }
 
-fun petMenu(): Int {
-    return ScannerInput.readNextInt(
-        """ 
-             
-        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        ┃            Pet                    ┃
-        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        ┃  1) Add Pet                       ┃
-        ┃  2) Delete Pet                    ┃
-        ┃  3) List Pet                      ┃ 
-        ┃  4) Update Pet                    ┃
-        ┃  5) Number Of Pet                 ┃
-        ┃  6) Search Pet                    
-           7) Sent notification                
-        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        ┃  0) Exit                          ┃
-        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        Enter option️"""
-    )
+fun petMenu(): Int? {
+    return t.prompt(
+        style(
+            """ 
+                                       
+ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 
+ ┃            🐇 Pet 🐇              ┃ 
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 
+ ┃  1) ➕ Add Pet                    ┃ 
+ ┃  2) 🗑️ Delete Pet                 ┃ 
+ ┃  3) 📋 List Pet                   ┃ 
+ ┃  4) 🖋 Update Pet                 ┃ 
+ ┃  5) 🔟 Number Of Pets             ┃ 
+ ┃  6) 🔍 Search Pet                 ┃ 
+ ┃  7) 🔔 Sent notification          ┃ 
+ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 
+ ┃  0) ❌ Exit                       ┃ 
+ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 
+                                       
+  Enter option:                        
+                                       """
+        )
+    )?.toInt()
 }
 
 fun runPetMenu() {
@@ -92,24 +106,28 @@ fun runPetMenu() {
     } while (true)
 }
 
-fun vetMenu(): Int {
-    return ScannerInput.readNextInt(
-        """ 
-             
-        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        ┃            Vet                    ┃
-        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        ┃  1) Add Vet                       ┃
-        ┃  2) Delete Vet                    ┃
-        ┃  3) List Vet                      ┃ 
-        ┃  4) Update Vet                    ┃
-        ┃  5) Number Of Vet                 ┃
-        ┃  6) Search Vet                    
-        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        ┃  0) Exit                          ┃
-        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        Enter option️"""
-    )
+fun vetMenu(): Int? {
+    return t.prompt(
+        style(
+            """ 
+                                       
+ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 
+ ┃            🥼 Vet 🥼              ┃ 
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 
+ ┃  1) ➕ Add Vet                    ┃ 
+ ┃  2) 🗑️ Delete Vet                 ┃ 
+ ┃  3) 📋 List Vet                   ┃ 
+ ┃  4) 🖋 Update Vet                 ┃ 
+ ┃  5) 🔟 Number Of Vets             ┃ 
+ ┃  6) 🔍 Search Vet                 ┃ 
+ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 
+ ┃  0) ❌ Exit                       ┃ 
+ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 
+                                       
+  Enter option:                        
+                                       """
+        )
+    )?.toInt()
 }
 
 fun runVetMenu() {
@@ -127,24 +145,28 @@ fun runVetMenu() {
     } while (true)
 }
 
-fun ownerMenu(): Int {
-    return ScannerInput.readNextInt(
-        """ 
-             
-        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        ┃            Owner                    ┃
-        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        ┃  1) Add Owner                       ┃
-        ┃  2) Delete Owner                    ┃
-        ┃  3) List Owner                      ┃ 
-        ┃  4) Update Owner                    ┃
-        ┃  5) Number Of Owner                 ┃
-        ┃  6) Search Owner                    
-        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        ┃  0) Exit                          ┃
-        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        Enter option️"""
-    )
+fun ownerMenu(): Int? {
+    return t.prompt(
+        style(
+            """ 
+                                       
+ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 
+ ┃           🧑🏻 Owner 🧑🏻             ┃ 
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 
+ ┃  1) ➕ Add Owner                  ┃ 
+ ┃  2) 🗑️ Delete Owner               ┃ 
+ ┃  3) 📋 List Owner                 ┃ 
+ ┃  4) 🖋 Update Owner               ┃ 
+ ┃  5) 🔟 Number Of Owner            ┃ 
+ ┃  6) 🔍 Search Owner               ┃ 
+ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 
+ ┃  0) ❌ Exit                       ┃ 
+ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 
+                                       
+  Enter option:                        
+                                       """
+        )
+    )?.toInt()
 }
 
 fun runOwnerMenu() {
