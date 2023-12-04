@@ -10,7 +10,6 @@ import models.Owner
 import models.Pet
 import models.Vet
 import persistence.XMLSerializer
-import utils.ScannerInput
 import utils.ScannerInput.readNextDouble
 import utils.ScannerInput.readNextInt
 import utils.ScannerInput.readNextLine
@@ -32,7 +31,6 @@ fun main(args: Array<String>) {
 }
 
 fun mainMenu(): Int? {
-
     return t.prompt(
         style(
             """
@@ -88,7 +86,7 @@ fun petMenu(): Int? {
                                        
   Enter option:                        
                                        """
-    )
+        )
     )?.toInt()
 }
 
@@ -128,7 +126,7 @@ fun vetMenu(): Int? {
                                        
   Enter option:                        
                                        """
-    )
+        )
     )?.toInt()
 }
 
