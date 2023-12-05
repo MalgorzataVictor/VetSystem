@@ -11,7 +11,6 @@ import models.Pet
 import models.Vet
 import mu.KotlinLogging
 import persistence.XMLSerializer
-import utils.ScannerInput
 import utils.ScannerInput.readNextDouble
 import utils.ScannerInput.readNextInt
 import utils.ScannerInput.readNextLine
@@ -40,7 +39,7 @@ fun main(args: Array<String>) {
     runMainMenu()
 }
 
-fun mainMenu(): Int? {
+fun mainMenu(): Int {
     t.println(
         style(
             """
@@ -62,7 +61,7 @@ fun mainMenu(): Int? {
         )
     )
 
-    return ScannerInput.readNextInt("")
+    return readNextInt("")
 }
 
 fun runMainMenu() {
@@ -102,7 +101,7 @@ fun petMenu(): Int {
                                        """
         )
     )
-    return ScannerInput.readNextInt("")
+    return readNextInt("")
 }
 
 fun runPetMenu() {
@@ -147,7 +146,7 @@ fun vetMenu(): Int {
                                        """
         )
     )
-    return ScannerInput.readNextInt("")
+    return readNextInt("")
 }
 
 fun runVetMenu() {
@@ -189,7 +188,7 @@ fun ownerMenu(): Int {
                                        """
         )
     )
-    return ScannerInput.readNextInt("")
+    return readNextInt("")
 }
 
 fun runOwnerMenu() {
@@ -210,19 +209,23 @@ fun runOwnerMenu() {
 fun addPet() {
     val name = Utilities.capitalizeFirstLetter(readNextLine("Enter Pet Name: "))
     val breed = Utilities.capitalizeFirstLetter(readNextLine("Enter Pet Breed: "))
-    val DOB = ValidateInput.readValidDOB("Enter Pet DOB (YYYY-MM-DD format): ")
+    val dob = ValidateInput.readValidDOB("Enter Pet DOB (YYYY-MM-DD format): ")
     println()
     listAllVets()
-    val vetID = readNextInt("Enter index of Vet who you want to assign: ")
+    var vetID: Int
+    do { vetID = readNextInt("Enter index of Vet who you want to assign: ") }
+    while (!Utilities.isValidListIndex(vetID, vetAPI.getAllVets()))
     listAllOwners()
-    val ownerPPSIndex = readNextInt("Enter index of Owner you want to assign: ")
+    var ownerPPSIndex: Int
+    do { ownerPPSIndex = readNextInt("Enter index of Owner you want to assign: ") }
+    while (!Utilities.isValidListIndex(ownerPPSIndex, ownerAPI.getAllOwners()))
     val ownerPPS = ownerAPI.findOwnerByIndex(ownerPPSIndex)?.PPS
 
     val pet = Pet(
         0,
         name,
         breed,
-        DOB,
+        dob,
         false,
         vetID,
         ownerPPS!!
@@ -275,14 +278,14 @@ fun addVet() {
 }
 
 fun addOwner() {
-    val PPS = validatePPSInput("Enter Owner PPS: ")
+    val pps = validatePPSInput("Enter Owner PPS: ")
     val name = Utilities.capitalizeFirstLetter(readNextLine("Enter Owner Name: "))
     val phoneNumber = readNextLine("Enter Owner Phone Number: ")
     val email = getEmailFromUser("Enter Owner Email: ")
 
     val isAdded = ownerAPI.addOwner(
         Owner(
-            PPS,
+            pps,
             name,
             phoneNumber,
             email,
@@ -395,7 +398,7 @@ fun searchPet() {
     val searchResults = petAPI.searchByName(searchName)
     if (searchResults.isEmpty()) {
         println()
-        println("❗ No notes found")
+        println("❗ No pets found")
     } else {
         println()
         println(searchResults)
@@ -407,7 +410,7 @@ fun searchVet() {
     val searchResults = vetAPI.searchByName(searchName)
     if (searchResults.isEmpty()) {
         println()
-        println("❗ No notes found")
+        println("❗ No pets found")
     } else {
         println()
         println(searchResults)
@@ -419,7 +422,7 @@ fun searchOwner() {
     val searchResults = ownerAPI.searchByName(searchName)
     if (searchResults.isEmpty()) {
         println()
-        println("❗ No notes found")
+        println("❗ No owners found")
     } else {
         println()
         println(searchResults)
@@ -433,10 +436,10 @@ fun updatePet() {
         if (petAPI.isValidIndex(indexToUpdate)) {
             val name = Utilities.capitalizeFirstLetter(readNextLine("Enter Pet Name: "))
             val breed = Utilities.capitalizeFirstLetter(readNextLine("Enter Pet Breed: "))
-            val DOB = ValidateInput.readValidDOB("Enter Pet DOB (YYYY-MM-DD format): ")
+            val dob = ValidateInput.readValidDOB("Enter Pet DOB (YYYY-MM-DD format): ")
             if (petAPI.updatePet(
                     indexToUpdate,
-                    Pet(0, name, breed, DOB, false, 0, "0000000AB")
+                    Pet(0, name, breed, dob, false, 0, "0000000AB")
                 )
             ) {
                 println()
@@ -484,7 +487,7 @@ fun updateVet() {
             }
         } else {
             println()
-            println("no pets")
+            println("no vets")
         }
     }
 }
@@ -493,14 +496,14 @@ fun updateOwner() {
     listAllOwners()
     val indexToUpdate = readNextInt("Enter the index of the Owner to update: ")
     if (vetAPI.isValidIndex(indexToUpdate)) {
-        val PPS = validatePPSInput("Enter Owner PPS: ")
+        val pps = validatePPSInput("Enter Owner PPS: ")
         val name = Utilities.capitalizeFirstLetter(readNextLine("Enter Owner Name: "))
         val phoneNumber = readNextLine("Enter Owner Phone Number: ")
         val email = getEmailFromUser("Enter Owner Email: ")
 
         if (ownerAPI.updateOwner(
                 indexToUpdate,
-                Owner(PPS, name, phoneNumber, email, mutableListOf())
+                Owner(pps, name, phoneNumber, email, mutableListOf())
             )
         ) {
             println()
@@ -511,7 +514,7 @@ fun updateOwner() {
         }
     } else {
         println()
-        println("no pets")
+        println("no owner")
     }
 }
 
