@@ -19,6 +19,7 @@ import utils.Utilities.loggerInfoSuccessful
 import utils.Utilities.loggerInfoUnsuccessful
 import utils.Utilities.logggerWarnFormat
 import utils.ValidateInput
+import utils.ValidateInput.getEmailFromUser
 import utils.ValidateInput.readValidPosition
 import utils.ValidateInput.validatePPSInput
 import java.io.File
@@ -270,8 +271,8 @@ fun addVet() {
 fun addOwner() {
     val PPS = validatePPSInput("Enter Owner PPS: ")
     val name = Utilities.capitalizeFirstLetter(readNextLine("Enter Owner Name: "))
-    val phoneNumber = Utilities.capitalizeFirstLetter(readNextLine("Enter Owner Phone Number: "))
-    val email = Utilities.capitalizeFirstLetter(readNextLine("Enter Owner Email: "))
+    val phoneNumber = readNextLine("Enter Owner Phone Number: ")
+    val email = getEmailFromUser("Enter Owner Email: ")
 
     val isAdded = ownerAPI.addOwner(
         Owner(
@@ -488,8 +489,8 @@ fun updateOwner() {
     if (vetAPI.isValidIndex(indexToUpdate)) {
         val PPS = validatePPSInput("Enter Owner PPS: ")
         val name = Utilities.capitalizeFirstLetter(readNextLine("Enter Owner Name: "))
-        val phoneNumber = Utilities.capitalizeFirstLetter(readNextLine("Enter Owner Phone Number: "))
-        val email = Utilities.capitalizeFirstLetter(readNextLine("Enter Owner email: "))
+        val phoneNumber = readNextLine("Enter Owner Phone Number: ")
+        val email = getEmailFromUser("Enter Owner Email: ")
 
         if (ownerAPI.updateOwner(
                 indexToUpdate,

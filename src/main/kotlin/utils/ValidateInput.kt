@@ -70,4 +70,30 @@ object ValidateInput {
         val regex = """^\d{7}[A-Za-z]{1,2}$""".toRegex()
         return regex.matches(pps)
     }
+
+    @JvmStatic
+    fun getEmailFromUser(prompt: String): String {
+        var email: String
+        var isEmailValid: Boolean
+
+        do {
+            email = readNextLine(prompt)
+            isEmailValid = isEmailValid(email)
+
+            if (!isEmailValid) {
+                println("Please enter a valid email address.")
+
+            }
+        } while (!isEmailValid)
+
+        return email
+    }
+
+    @JvmStatic
+    fun isEmailValid(email: String): Boolean {
+        val containsAtSymbol = email.contains("@")
+        val containsDot = email.contains(".")
+
+        return containsAtSymbol && containsDot
+    }
 }
