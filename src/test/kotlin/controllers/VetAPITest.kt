@@ -322,4 +322,29 @@ class VetAPITest {
             assertEquals(expectedVets, filteredVets)
         }
     }
+
+    @Nested
+    inner class SearchVetSpecialisationTests {
+
+        @Test
+        fun `searchVetSpecialisation - should return vets with given specialisation`() {
+            val searchedVets: List<Vet?>? = populatedVets?.searchVetSpecialisation("Surgery")
+
+            val expectedVets = listOf(
+                vet1
+            )
+
+            assertEquals(expectedVets, searchedVets)
+            assertTrue(searchedVets?.all { vet -> vet?.specialisation?.contains("Surgery") == true } ?: false)
+        }
+
+        @Test
+        fun `searchVetSpecialisation - should return empty list if no vets with given specialisation`() {
+            val searchedVets: List<Vet?>? = populatedVets?.searchVetSpecialisation("Oncology")
+
+            val expectedVets = emptyList<Vet>()
+
+            assertEquals(expectedVets, searchedVets)
+        }
+    }
 }
