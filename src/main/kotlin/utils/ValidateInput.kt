@@ -14,7 +14,6 @@ object ValidateInput {
         do {
             input = readNextLine(prompt)
             DOB = parseDOB(input)
-
         } while (DOB == null)
         return DOB
     }

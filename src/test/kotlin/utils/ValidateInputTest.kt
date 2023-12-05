@@ -2,7 +2,6 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 import utils.ValidateInput
 import java.io.ByteArrayInputStream
 import java.time.LocalDate
@@ -25,13 +24,11 @@ class ValidateInputTest {
         val validInput = "1990-01-01"
 
         for (input in invalidInputs) {
-          assertNull(ValidateInput.parseDOB(input))
+            assertNull(ValidateInput.parseDOB(input))
         }
 
         val dob = ValidateInput.parseDOB(validInput)
         assertEquals(LocalDate.of(1990, 1, 1), dob)
-
-
     }
 
     @Test

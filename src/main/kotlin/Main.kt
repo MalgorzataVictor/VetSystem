@@ -11,6 +11,7 @@ import models.Pet
 import models.Vet
 import mu.KotlinLogging
 import persistence.XMLSerializer
+import utils.ScannerInput
 import utils.ScannerInput.readNextDouble
 import utils.ScannerInput.readNextInt
 import utils.ScannerInput.readNextLine
@@ -40,7 +41,7 @@ fun main(args: Array<String>) {
 }
 
 fun mainMenu(): Int? {
-    return t.prompt(
+    t.println(
         style(
             """
                                        
@@ -59,7 +60,9 @@ fun mainMenu(): Int? {
    Enter option:                       
                                        """
         )
-    )?.toInt()
+    )
+
+    return ScannerInput.readNextInt("")
 }
 
 fun runMainMenu() {
@@ -74,8 +77,8 @@ fun runMainMenu() {
     } while (true)
 }
 
-fun petMenu(): Int? {
-    return t.prompt(
+fun petMenu(): Int {
+    t.println(
         style(
             """ 
                                        
@@ -98,7 +101,8 @@ fun petMenu(): Int? {
   Enter option:                        
                                        """
         )
-    )?.toInt()
+    )
+    return ScannerInput.readNextInt("")
 }
 
 fun runPetMenu() {
@@ -119,8 +123,8 @@ fun runPetMenu() {
     } while (true)
 }
 
-fun vetMenu(): Int? {
-    return t.prompt(
+fun vetMenu(): Int {
+    t.println(
         style(
             """ 
                                        
@@ -142,7 +146,8 @@ fun vetMenu(): Int? {
   Enter option:                        
                                        """
         )
-    )?.toInt()
+    )
+    return ScannerInput.readNextInt("")
 }
 
 fun runVetMenu() {
@@ -162,8 +167,8 @@ fun runVetMenu() {
     } while (true)
 }
 
-fun ownerMenu(): Int? {
-    return t.prompt(
+fun ownerMenu(): Int {
+    t.println(
         style(
             """ 
                                        
@@ -183,7 +188,8 @@ fun ownerMenu(): Int? {
   Enter option:                        
                                        """
         )
-    )?.toInt()
+    )
+    return ScannerInput.readNextInt("")
 }
 
 fun runOwnerMenu() {
@@ -511,7 +517,7 @@ fun updateOwner() {
 
 fun sortPetsByAge() {
     if (petAPI.numberOfPets() > 0) {
-        val option = t.prompt(
+        t.println(
             style(
                 """ 
                                                
@@ -523,9 +529,9 @@ fun sortPetsByAge() {
   Enter option:                                
                                                """
             )
-        )?.toInt()
+        )
 
-        when (option) {
+        when (readNextInt("")) {
             1 -> sortPetsYoungestToOldest()
             2 -> sortPetsOldestToYoungest()
             else -> logggerWarnFormat()
