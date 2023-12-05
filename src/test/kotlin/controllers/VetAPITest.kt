@@ -1,5 +1,6 @@
 package controllers
 
+import models.Pet
 import models.Vet
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
@@ -323,6 +324,30 @@ class VetAPITest {
         }
     }
 
+
+    @Nested
+    inner class GetAllVets {
+        @Test
+        fun `getAllVets returns all vets in the list`() {
+            val vetsList = populatedVets!!.getAllVets()
+            assertEquals(4, vetsList.size) // Assuming there are 4 vets in the populatedVets
+            assertTrue(vetsList.contains(vet1))
+            assertTrue(vetsList.contains(vet2))
+            assertTrue(vetsList.contains(vet3))
+            assertTrue(vetsList.contains(vet4))
+        }
+
+        @Test
+        fun `getAllVets returns empty list for no vets`() {
+            val emptyVetsList = emptyVets!!.getAllVets()
+            assertEquals(0, emptyVetsList.size)
+            assertFalse(emptyVetsList.contains(vet1))
+            assertFalse(emptyVetsList.contains(vet2))
+            assertFalse(emptyVetsList.contains(vet3))
+            assertFalse(emptyVetsList.contains(vet4))
+        }
+    }
+
     @Nested
     inner class SearchVetSpecialisationTests {
 
@@ -347,4 +372,48 @@ class VetAPITest {
             assertEquals(expectedVets, searchedVets)
         }
     }
+
+    @Nested
+    inner class SearchByNameTests {
+
+        @Test
+        fun `searchByName returns correct result when search string matches name`() {
+            val result = populatedVets!!.searchByName("Dr. Smith")
+            assertEquals("0: vetID: 1, Name: Dr. Smith, Date Qualified: 2018-07-15, Specialisation: [Surgery, Dentistry], Salary: 80000.0, Position: Senior, \n" +
+                    "Patients: [] ", result)
+        }
+
+        @Test
+        fun `searchByName returns empty string when no match found`() {
+            val result = populatedVets!!.searchByName("Unknown")
+            assertEquals("", result)
+        }
+
+        @Test
+        fun `searchByName returns correct result with case-insensitive search`() {
+            val result = populatedVets!!.searchByName("DR. JOHNSON")
+            assertEquals("1: vetID: 2, Name: Dr. Johnson, Date Qualified: 2020-05-10, Specialisation: [], Salary: 75000.0, Position: Junior, \n" +
+                    "Patients: [1] ", result)
+        }
+    }
+    @Nested
+    inner class AssignPetToVet {
+        @Test
+        fun `assignPetToVet adds pet to vets's pets list`() {
+            val petToAdd = Pet(6, "Buba", "Bunny", LocalDate.of(2020, 7, 6), false, 2, "54123e")
+            val result = populatedVets!!.assignPetToVet(0, petToAdd)
+            assertTrue(result!!)
+            assertEquals(1, populatedVets!!.findVet(1)!!.patientList.size)
+            assertTrue(populatedVets!!.findVet(1)!!.patientList.contains(6))
+        }
+
+        @Test
+        fun `assignPetToVet returns false if vet is not found`() {
+            val petToAdd = Pet(4, "Buba", "Bunny", LocalDate.of(2020, 7, 6), false, 2, "54123e")
+            val result: Boolean? = populatedVets!!.assignPetToVet(6, petToAdd)
+            assertFalse(result ?: false)
+        }
+
+    }
+
 }
