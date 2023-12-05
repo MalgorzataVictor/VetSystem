@@ -13,6 +13,6 @@ data class Owner(
     }
 
     override fun toString(): String {
-        return " Name: $name, PPS: $PPS, Phone No: $phoneNumber, Email: $email"
+        return "\uD83D\uDD34 Name: $name, PPS: $PPS, Phone No: $phoneNumber, Email: $email"
     }
 }
