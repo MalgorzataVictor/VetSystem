@@ -131,6 +131,7 @@ fun vetMenu(): Int? {
  ┃  5) 🔟 Number Of Vets             ┃ 
  ┃  6) 🔍 Search Vet                 ┃
  ┃  7) 📈 Filter Vets by Experience  ┃ 
+ ┃  8) 🔍 Search by specialisation   ┃ 
  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 
  ┃  0) ❌ Exit                       ┃ 
  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 
@@ -151,6 +152,7 @@ fun runVetMenu() {
             5 -> numberOfVets()
             6 -> searchVet()
             7 -> filterVetsByExperience()
+            8 -> searchBySpecialisation()
             0 -> runMainMenu()
             else -> logggerWarnFormat()
         }
@@ -566,6 +568,17 @@ fun filterVetsByExperience() {
     } else {
         println("Vets with at least $yearsOfExperience years of experience:")
         println(vetAPI.formatListString(filteredVets))
+    }
+}
+fun searchBySpecialisation() {
+    val userInput = Utilities.capitalizeFirstLetter(readNextLine("Enter the specialization you are looking for within vets: "))
+    val filteredVets = vetAPI.searchVetSpecialisation(userInput)
+
+    if (filteredVets.isNotEmpty()) {
+        println("Filtered Vets with Specialization '$userInput':")
+        println(vetAPI.formatListString(filteredVets))
+    } else {
+        println("No vets found with the specialization '$userInput'.")
     }
 }
 

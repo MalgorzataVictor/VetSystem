@@ -102,6 +102,11 @@ class VetAPI(serializerType: Serializer) {
         findVetByIndex(oldIndex)?.patientList?.remove(pet.petID)
         findVetByIndex(newIndex)?.patientList?.add(pet.petID)
     }
+    fun searchVetSpecialisation(specialisation: String): List<Vet> {
+        return vets.filter { vet ->
+            vet.specialisation.contains(specialisation)
+        }
+    }
 
     fun formatListString(notesToFormat: List<Vet>): String =
         notesToFormat
