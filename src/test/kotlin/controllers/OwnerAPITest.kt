@@ -1,12 +1,14 @@
 package controllers
 
 import models.Owner
+import models.Pet
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import persistence.XMLSerializer
 import java.io.File
+import java.time.LocalDate
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
@@ -153,6 +155,27 @@ class OwnerAPITest {
     }
 
     @Nested
+    inner class GetAllOwners {
+        @Test
+        fun `getAllOwners returns all owners in the list`() {
+            val ownersList = populatedOwners!!.getAllOwners()
+            assertEquals(3, ownersList.size)
+            assertTrue(ownersList.contains(owner1))
+            assertTrue(ownersList.contains(owner2))
+            assertTrue(ownersList.contains(owner3))
+        }
+
+        @Test
+        fun `getAllOwners returns empty list for no owners`() {
+            val ownersList = emptyOwners!!.getAllOwners()
+            assertEquals(0, ownersList.size)
+            assertFalse(ownersList.contains(owner1))
+            assertFalse(ownersList.contains(owner2))
+            assertFalse(ownersList.contains(owner3))
+        }
+    }
+
+    @Nested
     inner class UpdateOwners {
         @Test
         fun `updating a owner that does not exist returns false`() {
@@ -218,6 +241,55 @@ class OwnerAPITest {
             )
             assertEquals("Mark Davis", populatedOwners!!.findOwner("987654321b")!!.name)
             assertEquals("+1357924680", populatedOwners!!.findOwner("987654321b")!!.phoneNumber)
+        }
+
+        @Test
+        fun `updating an owner with null returns false`() {
+            assertFalse(populatedOwners!!.updateOwner(0, null))
+            assertFalse(populatedOwners!!.updateOwner(-1, null))
+            assertFalse(emptyOwners!!.updateOwner(0, null))
+        }
+    }
+
+    @Nested
+    inner class AssignPetToOwner {
+        @Test
+        fun `assignPetToOwner adds pet to owner's pets list`() {
+            val petToAdd = Pet(6, "Buba", "Bunny", LocalDate.of(2020, 7, 6), false, 2, "54123e")
+            val result = populatedOwners!!.assignPetToOwner(0, petToAdd)
+            assertTrue(result!!)
+            assertEquals(3, populatedOwners!!.findOwner("123456789a")!!.petsList.size)
+            assertTrue(populatedOwners!!.findOwner("123456789a")!!.petsList.contains(6))
+        }
+
+        @Test
+        fun `assignPetToOwner returns false if owner is not found`() {
+            val petToAdd = Pet(4, "Buba", "Bunny", LocalDate.of(2020, 7, 6), false, 2, "54123e")
+            val result: Boolean? = populatedOwners!!.assignPetToOwner(2, petToAdd)
+            assertFalse(result ?: false)
+        }
+
+    }
+
+    @Nested
+    inner class SearchByNameTests {
+
+        @Test
+        fun `searchByName returns correct result when search string matches name`() {
+            val result = populatedOwners!!.searchByName("Jane")
+            assertEquals("1:  Name: Jane Smith, PPS: 987654321b, Phone No: +9876543210, Email: jane@example.com", result)
+        }
+
+        @Test
+        fun `searchByName returns empty string when no match found`() {
+            val result = populatedOwners!!.searchByName("Unknown")
+            assertEquals("", result)
+        }
+
+        @Test
+        fun `searchByName returns correct result with case-insensitive search`() {
+            val result = populatedOwners!!.searchByName("ALICE")
+            assertEquals("2:  Name: Alice Johnson, PPS: 246813579c, Phone No: +2468135790, Email: alice@example.com", result)
         }
     }
 
