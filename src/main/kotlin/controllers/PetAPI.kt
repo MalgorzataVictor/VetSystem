@@ -83,6 +83,22 @@ class PetAPI(serializerType: Serializer) {
         return false
     }
 
+    fun sortPetsYoungestToOldest(): String {
+        val sortedPets = pets.sortedByDescending { it.DOB }
+        return if (sortedPets.isEmpty()) {
+            "❗ No pets stored"
+        } else {
+            formatListString(sortedPets)
+        }
+    }
+    fun sortPetsOldestToYoungest(): String {
+        val sortedPets = pets.sortedBy { it.DOB }
+        return if (sortedPets.isEmpty()) {
+            "❗ No pets stored"
+        } else {
+            formatListString(sortedPets)
+        }
+    }
     fun isValidIndex(index: Int): Boolean {
         return Utilities.isValidListIndex(index, pets)
     }

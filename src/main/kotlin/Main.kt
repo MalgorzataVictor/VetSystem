@@ -66,7 +66,7 @@ fun runMainMenu() {
             2 -> runVetMenu()
             3 -> runOwnerMenu()
             0 -> exitApp()
-            else -> Utilities.logggerWarnFormat()
+            else -> logggerWarnFormat()
         }
     } while (true)
 }
@@ -111,7 +111,7 @@ fun runPetMenu() {
             8 -> updateVaccination()
             9 -> sortPetsByAge()
             0 -> runMainMenu()
-            else -> Utilities.logggerWarnFormat()
+            else -> logggerWarnFormat()
         }
     } while (true)
 }
@@ -150,7 +150,7 @@ fun runVetMenu() {
             5 -> numberOfVets()
             6 -> searchVet()
             0 -> runMainMenu()
-            else -> Utilities.logggerWarnFormat()
+            else -> logggerWarnFormat()
         }
     } while (true)
 }
@@ -189,7 +189,7 @@ fun runOwnerMenu() {
             5 -> numberOfOwners()
             6 -> searchOwner()
             0 -> runMainMenu()
-            else -> Utilities.logggerWarnFormat()
+            else -> logggerWarnFormat()
         }
     } while (true)
 }
@@ -506,19 +506,19 @@ fun updateOwner() {
     }
 }
 
-fun sortPetsByAge(){
+fun sortPetsByAge() {
     if (petAPI.numberOfPets() > 0) {
         val option = t.prompt(
             style(
                 """ 
-                                              
- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- ┃  1) Sort pets from youngest to oldest 📅  ┃
- ┃  2) Sort pets from oldest to youngest 📅  ┃
-  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-                                              
-  Enter option:                        
-                                       """
+                                               
+ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 
+ ┃  1) Sort pets from youngest to oldest 📅  ┃ 
+ ┃  2) Sort pets from oldest to youngest 📅  ┃ 
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 
+                                               
+  Enter option:                                
+                                               """
             )
         )?.toInt()
 
@@ -530,9 +530,11 @@ fun sortPetsByAge(){
     } else {
         println()
         logger.warn { "❗ No pets found" }
-
     }
 }
+fun sortPetsYoungestToOldest() = println(petAPI.sortPetsYoungestToOldest())
+
+fun sortPetsOldestToYoungest() = println(petAPI.sortPetsOldestToYoungest())
 
 fun listAllPets() = println(petAPI.listAllPets())
 fun listAllVets() {
