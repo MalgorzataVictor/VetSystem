@@ -17,6 +17,7 @@ import utils.ScannerInput.readNextLine
 import utils.Utilities
 import utils.Utilities.loggerInfoSuccessful
 import utils.Utilities.loggerInfoUnsuccessful
+import utils.Utilities.logggerWarnFormat
 import java.io.File
 import java.time.LocalDate
 import kotlin.collections.ArrayList
@@ -108,6 +109,7 @@ fun runPetMenu() {
             6 -> searchPet()
             7 -> sendNotification()
             8 -> updateVaccination()
+            9 -> sortPetsByAge()
             0 -> runMainMenu()
             else -> Utilities.logggerWarnFormat()
         }
@@ -501,6 +503,34 @@ fun updateOwner() {
     } else {
         println()
         println("no pets")
+    }
+}
+
+fun sortPetsByAge(){
+    if (petAPI.numberOfPets() > 0) {
+        val option = t.prompt(
+            style(
+                """ 
+                                              
+ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ ┃  1) Sort pets from youngest to oldest 📅  ┃
+ ┃  2) Sort pets from oldest to youngest 📅  ┃
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+                                              
+  Enter option:                        
+                                       """
+            )
+        )?.toInt()
+
+        when (option) {
+            1 -> sortPetsYoungestToOldest()
+            2 -> sortPetsOldestToYoungest()
+            else -> logggerWarnFormat()
+        }
+    } else {
+        println()
+        logger.warn { "❗ No pets found" }
+
     }
 }
 
