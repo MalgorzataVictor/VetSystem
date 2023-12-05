@@ -57,12 +57,11 @@ class OwnerAPI(serializerType: Serializer) {
     }
 
     fun assignPetToOwner(index: Int, pet: Pet): Boolean? {
-        if (findOwnerByIndex(index)?.petsList?.filter { it == pet.petID }?.isNotEmpty()!!){
+        if (findOwnerByIndex(index)?.petsList?.filter { it == pet.petID }?.isNotEmpty()!!) {
             return false
         }
         return findOwnerByIndex(index)?.petsList?.add(pet.petID)
     }
-
 
     fun searchByName(searchString: String) =
         formatListString(

@@ -324,7 +324,6 @@ class VetAPITest {
         }
     }
 
-
     @Nested
     inner class GetAllVets {
         @Test
@@ -379,8 +378,11 @@ class VetAPITest {
         @Test
         fun `searchByName returns correct result when search string matches name`() {
             val result = populatedVets!!.searchByName("Dr. Smith")
-            assertEquals("0: vetID: 1, Name: Dr. Smith, Date Qualified: 2018-07-15, Specialisation: [Surgery, Dentistry], Salary: 80000.0, Position: Senior, \n" +
-                    "Patients: [] ", result)
+            assertEquals(
+                "0: vetID: 1, Name: Dr. Smith, Date Qualified: 2018-07-15, Specialisation: [Surgery, Dentistry], Salary: 80000.0, Position: Senior, \n" +
+                    "Patients: [] ",
+                result
+            )
         }
 
         @Test
@@ -392,10 +394,14 @@ class VetAPITest {
         @Test
         fun `searchByName returns correct result with case-insensitive search`() {
             val result = populatedVets!!.searchByName("DR. JOHNSON")
-            assertEquals("1: vetID: 2, Name: Dr. Johnson, Date Qualified: 2020-05-10, Specialisation: [], Salary: 75000.0, Position: Junior, \n" +
-                    "Patients: [1] ", result)
+            assertEquals(
+                "1: vetID: 2, Name: Dr. Johnson, Date Qualified: 2020-05-10, Specialisation: [], Salary: 75000.0, Position: Junior, \n" +
+                    "Patients: [1] ",
+                result
+            )
         }
     }
+
     @Nested
     inner class AssignPetToVet {
         @Test
@@ -413,7 +419,5 @@ class VetAPITest {
             val result: Boolean? = populatedVets!!.assignPetToVet(6, petToAdd)
             assertFalse(result ?: false)
         }
-
     }
-
 }

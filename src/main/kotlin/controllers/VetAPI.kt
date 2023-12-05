@@ -90,7 +90,7 @@ class VetAPI(serializerType: Serializer) {
     fun assignPetToVet(index: Int, pet: Pet): Boolean? {
         println(index)
         println(getAllVets().size)
-        if (index >= getAllVets().size.minus(1)   || findVetByIndex(index)?.patientList?.filter { it == pet.petID }!!.isNotEmpty()){
+        if (index >= getAllVets().size.minus(1) || findVetByIndex(index)?.patientList?.filter { it == pet.petID }!!.isNotEmpty()) {
             return false
         }
         return findVetByIndex(index)?.patientList?.add(pet.petID)

@@ -138,7 +138,7 @@ class PetAPITest {
             val searchResults = populatedPets!!.searchByName("no results expected")
             assertTrue(searchResults.isEmpty())
 
-            //Searching an empty collection
+            // Searching an empty collection
             assertEquals(0, emptyPets!!.numberOfPets())
             assertTrue(emptyPets!!.searchByName("").isEmpty())
         }
@@ -147,18 +147,18 @@ class PetAPITest {
         fun `search notes by title returns notes when notes with that title exist`() {
             assertEquals(5, populatedPets!!.numberOfPets())
 
-            //Searching a populated collection for a full name that exists (case matches exactly)
+            // Searching a populated collection for a full name that exists (case matches exactly)
             var searchResults = populatedPets!!.searchByName("Cupcake")
             assertTrue(searchResults.contains("Cupcake"))
             assertFalse(searchResults.contains("Toothless"))
 
-
-            //Searching a populated collection for a partial name that exists (case doesn't match)
+            // Searching a populated collection for a partial name that exists (case doesn't match)
             searchResults = populatedPets!!.searchByName("cUp")
             assertTrue(searchResults.contains("Cupcake"))
             assertFalse(searchResults.contains("Daisy"))
         }
     }
+
     @Nested
     inner class GetAllPets {
 
@@ -184,10 +184,10 @@ class PetAPITest {
         fun `listAllPets returns formatted pet list when pets are present`() {
             val expectedFormattedPets =
                 "0: PetID: 1, Name: Cupcake, Breed: Dog, DOB: 2022-02-24, Vaccinated: false, VetID: 1, OwnerPPS: 12345a\n" +
-                        "1: PetID: 2, Name: Toothless, Breed: Dog, DOB: 2021-05-17, Vaccinated: false, VetID: 2, OwnerPPS: 54321b\n" +
-                        "2: PetID: 3, Name: Speedy, Breed: Cat, DOB: 2020-12-12, Vaccinated: true, VetID: 3, OwnerPPS: 12543c\n" +
-                        "3: PetID: 4, Name: Daisy, Breed: Cat, DOB: 2023-11-30, Vaccinated: true, VetID: 2, OwnerPPS: 12345d\n" +
-                        "4: PetID: 5, Name: Stefan, Breed: Bunny, DOB: 2022-09-09, Vaccinated: false, VetID: 4, OwnerPPS: 54123e"
+                    "1: PetID: 2, Name: Toothless, Breed: Dog, DOB: 2021-05-17, Vaccinated: false, VetID: 2, OwnerPPS: 54321b\n" +
+                    "2: PetID: 3, Name: Speedy, Breed: Cat, DOB: 2020-12-12, Vaccinated: true, VetID: 3, OwnerPPS: 12543c\n" +
+                    "3: PetID: 4, Name: Daisy, Breed: Cat, DOB: 2023-11-30, Vaccinated: true, VetID: 2, OwnerPPS: 12345d\n" +
+                    "4: PetID: 5, Name: Stefan, Breed: Bunny, DOB: 2022-09-09, Vaccinated: false, VetID: 4, OwnerPPS: 54123e"
 
             val formattedPets = populatedPets!!.listAllPets()
 
@@ -254,7 +254,6 @@ class PetAPITest {
             assertFalse(populatedPets!!.updatePet(-1, null))
             assertFalse(emptyPets!!.updatePet(0, null))
         }
-
     }
 
     @Nested

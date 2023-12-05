@@ -254,9 +254,8 @@ fun addVet() {
     val salary = readNextDouble("Enter Vet Salary: ")
 
     var position: String
-    do{position = Utilities.capitalizeFirstLetter(readNextLine("Enter Vet Position (Junior/Senior): "))}
+    do { position = Utilities.capitalizeFirstLetter(readNextLine("Enter Vet Position (Junior/Senior): ")) }
     while (!Utilities.isValidPosition(position))
-
 
     val isAdded = vetAPI.addVet(
         Vet(
@@ -280,13 +279,15 @@ fun addVet() {
 
 fun addOwner() {
     var pps: String
-    do {pps = readNextLine("Enter Owner PPS: ")
+    do {
+        pps = readNextLine("Enter Owner PPS: ")
     } while (!ValidateInput.isValidPPS(pps))
     val name = Utilities.capitalizeFirstLetter(readNextLine("Enter Owner Name: "))
     val phoneNumber = readNextLine("Enter Owner Phone Number: ")
 
     var email: String
-    do {email = readNextLine("Enter Owner Email: ")
+    do {
+        email = readNextLine("Enter Owner Email: ")
     } while (!ValidateInput.isEmailValid(email))
 
     val isAdded = ownerAPI.addOwner(
@@ -479,7 +480,7 @@ fun updateVet() {
             while (input != "F")
             val salary = readNextDouble("Enter Vet Salary: ")
             var position: String
-            do{position = Utilities.capitalizeFirstLetter(readNextLine("Enter Vet Position (Junior/Senior): "))}
+            do { position = Utilities.capitalizeFirstLetter(readNextLine("Enter Vet Position (Junior/Senior): ")) }
             while (!Utilities.isValidPosition(position))
 
             if (vetAPI.updateVet(
@@ -505,12 +506,14 @@ fun updateOwner() {
     val indexToUpdate = readNextInt("Enter the index of the Owner to update: ")
     if (vetAPI.isValidIndex(indexToUpdate)) {
         var pps: String
-        do {pps = readNextLine("Enter Owner PPS: ")
+        do {
+            pps = readNextLine("Enter Owner PPS: ")
         } while (!ValidateInput.isValidPPS(pps))
         val name = Utilities.capitalizeFirstLetter(readNextLine("Enter Owner Name: "))
         val phoneNumber = readNextLine("Enter Owner Phone Number: ")
         var email: String
-        do {email = readNextLine("Enter Owner Email: ")
+        do {
+            email = readNextLine("Enter Owner Email: ")
         } while (!ValidateInput.isEmailValid(email))
 
         if (ownerAPI.updateOwner(
