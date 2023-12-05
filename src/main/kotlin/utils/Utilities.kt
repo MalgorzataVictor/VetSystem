@@ -10,6 +10,9 @@ private val logger = KotlinLogging.logger {}
 object Utilities {
 
     @JvmStatic
+    val positions = setOf("Junior", "Senior")
+
+    @JvmStatic
     fun validRange(numberToCheck: Int, min: Int, max: Int): Boolean {
         return numberToCheck in min..max
     }
@@ -23,6 +26,16 @@ object Utilities {
     fun capitalizeFirstLetter(input: String): String {
         return input.ifEmpty { return input }
             .substring(0, 1).uppercase(Locale.getDefault()) + input.substring(1).lowercase(Locale.getDefault())
+    }
+
+    @JvmStatic
+    fun isValidPosition(positionToCheck: String?): Boolean {
+        for (position in positions) {
+            if (position.equals(positionToCheck, ignoreCase = true)) {
+                return true
+            }
+        }
+        return false
     }
 
     @JvmStatic

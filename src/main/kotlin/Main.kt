@@ -18,8 +18,11 @@ import utils.Utilities
 import utils.Utilities.loggerInfoSuccessful
 import utils.Utilities.loggerInfoUnsuccessful
 import utils.Utilities.logggerWarnFormat
+import utils.ValidateInput
+import utils.ValidateInput.getEmailFromUser
+import utils.ValidateInput.readValidPosition
+import utils.ValidateInput.validatePPSInput
 import java.io.File
-import java.time.LocalDate
 import kotlin.collections.ArrayList
 import kotlin.system.exitProcess
 
@@ -36,8 +39,8 @@ fun main(args: Array<String>) {
     runMainMenu()
 }
 
-fun mainMenu(): Int? {
-    return t.prompt(
+fun mainMenu(): Int {
+    t.println(
         style(
             """
                                        
@@ -56,7 +59,9 @@ fun mainMenu(): Int? {
    Enter option:                       
                                        """
         )
-    )?.toInt()
+    )
+
+    return readNextInt("")
 }
 
 fun runMainMenu() {
@@ -71,8 +76,8 @@ fun runMainMenu() {
     } while (true)
 }
 
-fun petMenu(): Int? {
-    return t.prompt(
+fun petMenu(): Int {
+    t.println(
         style(
             """ 
                                        
@@ -95,7 +100,8 @@ fun petMenu(): Int? {
   Enter option:                        
                                        """
         )
-    )?.toInt()
+    )
+    return readNextInt("")
 }
 
 fun runPetMenu() {
@@ -116,8 +122,8 @@ fun runPetMenu() {
     } while (true)
 }
 
-fun vetMenu(): Int? {
-    return t.prompt(
+fun vetMenu(): Int {
+    t.println(
         style(
             """ 
                                        
@@ -139,7 +145,8 @@ fun vetMenu(): Int? {
   Enter option:                        
                                        """
         )
-    )?.toInt()
+    )
+    return readNextInt("")
 }
 
 fun runVetMenu() {
@@ -159,8 +166,8 @@ fun runVetMenu() {
     } while (true)
 }
 
-fun ownerMenu(): Int? {
-    return t.prompt(
+fun ownerMenu(): Int {
+    t.println(
         style(
             """ 
                                        
@@ -180,7 +187,8 @@ fun ownerMenu(): Int? {
   Enter option:                        
                                        """
         )
-    )?.toInt()
+    )
+    return readNextInt("")
 }
 
 fun runOwnerMenu() {
@@ -201,20 +209,23 @@ fun runOwnerMenu() {
 fun addPet() {
     val name = Utilities.capitalizeFirstLetter(readNextLine("Enter Pet Name: "))
     val breed = Utilities.capitalizeFirstLetter(readNextLine("Enter Pet Breed: "))
-    val dobInput = readNextLine("Enter Pet DOB (YYYY-MM-DD format): ").split("-")
-    val DOB = LocalDate.of(dobInput[0].toInt(), dobInput[1].toInt(), dobInput[2].toInt())
+    val dob = ValidateInput.readValidDOB("Enter Pet DOB (YYYY-MM-DD format): ")
     println()
     listAllVets()
-    val vetID = readNextInt("Enter index of Vet who you want to assign: ")
+    var vetID: Int
+    do { vetID = readNextInt("Enter index of Vet who you want to assign: ") }
+    while (!Utilities.isValidListIndex(vetID, vetAPI.getAllVets()))
     listAllOwners()
-    val ownerPPSIndex = readNextInt("Enter index of Owner you want to assign: ")
+    var ownerPPSIndex: Int
+    do { ownerPPSIndex = readNextInt("Enter index of Owner you want to assign: ") }
+    while (!Utilities.isValidListIndex(ownerPPSIndex, ownerAPI.getAllOwners()))
     val ownerPPS = ownerAPI.findOwnerByIndex(ownerPPSIndex)?.PPS
 
     val pet = Pet(
         0,
         name,
         breed,
-        DOB,
+        dob,
         false,
         vetID,
         ownerPPS!!
@@ -233,19 +244,18 @@ fun addPet() {
 
 fun addVet() {
     val name = Utilities.capitalizeFirstLetter(readNextLine("Enter Vet Name: "))
-    val dobInput = readNextLine("Enter Date Qualified (YYYY-MM-DD format): ").split("-")
-    val dateQualified = LocalDate.of(dobInput[0].toInt(), dobInput[1].toInt(), dobInput[2].toInt())
+    val dateQualified = ValidateInput.readValidDOB("Enter Date Qualified (YYYY-MM-DD format): ")
     val specialisations: MutableList<String> = mutableListOf()
     var input: String
     do {
-        input = Utilities.capitalizeFirstLetter(readNextLine("Enter specialisation, type 'F' to finish"))
+        input = Utilities.capitalizeFirstLetter(readNextLine("Enter specialisation, type 'F' to finish: "))
         if (input != "F") {
             specialisations.add(input)
         }
     }
     while (input != "F")
     val salary = readNextDouble("Enter Vet Salary: ")
-    val position = Utilities.capitalizeFirstLetter(readNextLine("Enter Vet Position: "))
+    val position = Utilities.capitalizeFirstLetter(readValidPosition("Enter Vet Position (Junior/Senior): "))
 
     val isAdded = vetAPI.addVet(
         Vet(
@@ -268,14 +278,14 @@ fun addVet() {
 }
 
 fun addOwner() {
-    val PPS = readNextInt("Enter Owner PPS: ")
+    val pps = validatePPSInput("Enter Owner PPS: ")
     val name = Utilities.capitalizeFirstLetter(readNextLine("Enter Owner Name: "))
-    val phoneNumber = Utilities.capitalizeFirstLetter(readNextLine("Enter Owner Phone Number: "))
-    val email = Utilities.capitalizeFirstLetter(readNextLine("Enter Owner Email: "))
+    val phoneNumber = readNextLine("Enter Owner Phone Number: ")
+    val email = getEmailFromUser("Enter Owner Email: ")
 
     val isAdded = ownerAPI.addOwner(
         Owner(
-            PPS,
+            pps,
             name,
             phoneNumber,
             email,
@@ -388,7 +398,7 @@ fun searchPet() {
     val searchResults = petAPI.searchByName(searchName)
     if (searchResults.isEmpty()) {
         println()
-        println("❗ No notes found")
+        println("❗ No pets found")
     } else {
         println()
         println(searchResults)
@@ -400,7 +410,7 @@ fun searchVet() {
     val searchResults = vetAPI.searchByName(searchName)
     if (searchResults.isEmpty()) {
         println()
-        println("❗ No notes found")
+        println("❗ No pets found")
     } else {
         println()
         println(searchResults)
@@ -412,7 +422,7 @@ fun searchOwner() {
     val searchResults = ownerAPI.searchByName(searchName)
     if (searchResults.isEmpty()) {
         println()
-        println("❗ No notes found")
+        println("❗ No owners found")
     } else {
         println()
         println(searchResults)
@@ -426,11 +436,10 @@ fun updatePet() {
         if (petAPI.isValidIndex(indexToUpdate)) {
             val name = Utilities.capitalizeFirstLetter(readNextLine("Enter Pet Name: "))
             val breed = Utilities.capitalizeFirstLetter(readNextLine("Enter Pet Breed: "))
-            val dobInput = readNextLine("Enter Pet DOB (YYYY-MM-DD format): ").split("-")
-            val DOB = LocalDate.of(dobInput[0].toInt(), dobInput[1].toInt(), dobInput[2].toInt())
+            val dob = ValidateInput.readValidDOB("Enter Pet DOB (YYYY-MM-DD format): ")
             if (petAPI.updatePet(
                     indexToUpdate,
-                    Pet(0, name, breed, DOB, false, 0, 0)
+                    Pet(0, name, breed, dob, false, 0, "0000000AB")
                 )
             ) {
                 println()
@@ -452,19 +461,18 @@ fun updateVet() {
         val indexToUpdate = readNextInt("Enter the index of the Vet to update: ")
         if (vetAPI.isValidIndex(indexToUpdate)) {
             val name = Utilities.capitalizeFirstLetter(readNextLine("Enter Vet Name: "))
-            val dobInput = readNextLine("Enter Vet DOB (YYYY-MM-DD format): ").split("-")
-            val dateQualified = LocalDate.of(dobInput[0].toInt(), dobInput[1].toInt(), dobInput[2].toInt())
+            val dateQualified = ValidateInput.readValidDOB("Enter Vet DOB (YYYY-MM-DD format): ")
             val specialisations: MutableList<String> = mutableListOf()
             var input: String
             do {
-                input = Utilities.capitalizeFirstLetter(readNextLine("Enter specialisation, type 'F' to finish"))
+                input = Utilities.capitalizeFirstLetter(readNextLine("Enter specialisation, type 'F' to finish: "))
                 if (input != "F") {
                     specialisations.add(input)
                 }
             }
             while (input != "F")
-            val salary = readNextDouble("Enter Vet Salary")
-            val position = Utilities.capitalizeFirstLetter(readNextLine("Enter Vet Position: "))
+            val salary = readNextDouble("Enter Vet Salary: ")
+            val position = Utilities.capitalizeFirstLetter(readValidPosition("Enter Vet Position (Junior/Senior): "))
 
             if (vetAPI.updateVet(
                     indexToUpdate,
@@ -479,7 +487,7 @@ fun updateVet() {
             }
         } else {
             println()
-            println("no pets")
+            println("no vets")
         }
     }
 }
@@ -488,14 +496,14 @@ fun updateOwner() {
     listAllOwners()
     val indexToUpdate = readNextInt("Enter the index of the Owner to update: ")
     if (vetAPI.isValidIndex(indexToUpdate)) {
-        val PPS = readNextInt("Enter Owner PPS: ")
+        val pps = validatePPSInput("Enter Owner PPS: ")
         val name = Utilities.capitalizeFirstLetter(readNextLine("Enter Owner Name: "))
-        val phoneNumber = Utilities.capitalizeFirstLetter(readNextLine("Enter Owner Phone Number: "))
-        val email = Utilities.capitalizeFirstLetter(readNextLine("Enter Owner email: "))
+        val phoneNumber = readNextLine("Enter Owner Phone Number: ")
+        val email = getEmailFromUser("Enter Owner Email: ")
 
         if (ownerAPI.updateOwner(
                 indexToUpdate,
-                Owner(PPS, name, phoneNumber, email, mutableListOf())
+                Owner(pps, name, phoneNumber, email, mutableListOf())
             )
         ) {
             println()
@@ -506,13 +514,13 @@ fun updateOwner() {
         }
     } else {
         println()
-        println("no pets")
+        println("no owner")
     }
 }
 
 fun sortPetsByAge() {
     if (petAPI.numberOfPets() > 0) {
-        val option = t.prompt(
+        t.println(
             style(
                 """ 
                                                
@@ -524,9 +532,9 @@ fun sortPetsByAge() {
   Enter option:                                
                                                """
             )
-        )?.toInt()
+        )
 
-        when (option) {
+        when (readNextInt("")) {
             1 -> sortPetsYoungestToOldest()
             2 -> sortPetsOldestToYoungest()
             else -> logggerWarnFormat()

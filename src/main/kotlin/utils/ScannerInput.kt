@@ -64,7 +64,6 @@ object ScannerInput {
      */
     @JvmStatic
     fun readNextLine(prompt: String?): String {
-        println()
         print(prompt)
         return Scanner(System.`in`).nextLine()
     }

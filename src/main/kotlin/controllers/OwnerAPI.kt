@@ -34,7 +34,7 @@ class OwnerAPI(serializerType: Serializer) {
     fun findOwnerIndex(owner: Owner): Int {
         return owners.indexOf(owner)
     }
-    fun findOwner(id: Int): Owner? {
+    fun findOwner(id: String): Owner? {
         return owners.find { owner -> owner.PPS == id }
     }
 

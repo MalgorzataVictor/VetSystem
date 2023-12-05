@@ -23,11 +23,11 @@ class PetAPITest {
 
     @BeforeEach
     fun setup() {
-        dog1 = Pet(1, "Cupcake", "Dog", LocalDate.of(2022, 2, 24), false, 1, 12345)
-        dog2 = Pet(2, "Toothless", "Dog", LocalDate.of(2021, 5, 17), false, 2, 54321)
-        cat1 = Pet(3, "Speedy", "Cat", LocalDate.of(2020, 12, 12), true, 3, 12543)
-        cat2 = Pet(4, "Daisy", "Cat", LocalDate.of(2023, 11, 30), true, 2, 12345)
-        bunny1 = Pet(5, "Stefan", "Bunny", LocalDate.of(2022, 9, 9), false, 4, 54123)
+        dog1 = Pet(1, "Cupcake", "Dog", LocalDate.of(2022, 2, 24), false, 1, "12345a")
+        dog2 = Pet(2, "Toothless", "Dog", LocalDate.of(2021, 5, 17), false, 2, "54321b")
+        cat1 = Pet(3, "Speedy", "Cat", LocalDate.of(2020, 12, 12), true, 3, "12543c")
+        cat2 = Pet(4, "Daisy", "Cat", LocalDate.of(2023, 11, 30), true, 2, "12345d")
+        bunny1 = Pet(5, "Stefan", "Bunny", LocalDate.of(2022, 9, 9), false, 4, "54123e")
 
         populatedPets!!.addPet(dog1!!)
         populatedPets!!.addPet(dog2!!)
@@ -90,7 +90,7 @@ class PetAPITest {
 
         @Test
         fun `adding a Pet to a populated list adds to ArrayList`() {
-            val newPet = Pet(6, "Buba", "Bunny", LocalDate.of(2020, 7, 6), false, 2, 54123)
+            val newPet = Pet(6, "Buba", "Bunny", LocalDate.of(2020, 7, 6), false, 2, "54123e")
             assertEquals(5, populatedPets!!.numberOfPets())
             assertTrue(populatedPets!!.addPet(newPet))
             assertEquals(6, populatedPets!!.numberOfPets())
@@ -99,7 +99,7 @@ class PetAPITest {
 
         @Test
         fun `adding a Pet to an empty list adds to ArrayList`() {
-            val newPet = Pet(6, "Buba", "Bunny", LocalDate.of(2020, 7, 6), false, 2, 54123)
+            val newPet = Pet(6, "Buba", "Bunny", LocalDate.of(2020, 7, 6), false, 2, "54123e")
             assertEquals(0, emptyPets!!.numberOfPets())
             assertTrue(emptyPets!!.addPet(newPet))
             assertEquals(1, emptyPets!!.numberOfPets())
@@ -136,19 +136,19 @@ class PetAPITest {
             assertFalse(
                 populatedPets!!.updatePet(
                     6,
-                    Pet(6, "Buba", "Bunny", LocalDate.of(2020, 7, 6), false, 2, 54123)
+                    Pet(6, "Buba", "Bunny", LocalDate.of(2020, 7, 6), false, 2, "54123e")
                 )
             )
             assertFalse(
                 populatedPets!!.updatePet(
                     -1,
-                    Pet(6, "Buba", "Bunny", LocalDate.of(2020, 7, 6), false, 2, 54123)
+                    Pet(6, "Buba", "Bunny", LocalDate.of(2020, 7, 6), false, 2, "54123e")
                 )
             )
             assertFalse(
                 emptyPets!!.updatePet(
                     0,
-                    Pet(6, "Buba", "Bunny", LocalDate.of(2020, 7, 6), false, 2, 54123)
+                    Pet(6, "Buba", "Bunny", LocalDate.of(2020, 7, 6), false, 2, "54123e")
                 )
             )
         }
@@ -165,7 +165,7 @@ class PetAPITest {
             assertTrue(
                 populatedPets!!.updatePet(
                     populatedPets!!.findPetIndex(cat2!!),
-                    Pet(4, "Update", "bunny", LocalDate.of(2023, 11, 30), false, 2, 12345)
+                    Pet(4, "Update", "bunny", LocalDate.of(2023, 11, 30), false, 2, "12345a")
                 )
             )
             assertEquals("Update", populatedPets!!.findPet(4)!!.name)

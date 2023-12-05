@@ -21,7 +21,7 @@ class OwnerAPITest {
     @BeforeEach
     fun setup() {
         owner1 = Owner(
-            123456789,
+            "123456789a",
             "John Doe",
             "+1234567890",
             "john@example.com",
@@ -29,7 +29,7 @@ class OwnerAPITest {
         )
 
         owner2 = Owner(
-            987654321,
+            "987654321b",
             "Jane Smith",
             "+9876543210",
             "jane@example.com",
@@ -37,7 +37,7 @@ class OwnerAPITest {
         )
 
         owner3 = Owner(
-            246813579,
+            "246813579c",
             "Alice Johnson",
             "+2468135790",
             "alice@example.com",
@@ -89,9 +89,9 @@ class OwnerAPITest {
                 assertEquals(3, saveOwners.numberOfOwners())
                 assertEquals(3, loadedPets.numberOfOwners())
                 assertEquals(saveOwners.numberOfOwners(), loadedPets.numberOfOwners())
-                assertEquals(saveOwners.findOwner(0), loadedPets.findOwner(0))
-                assertEquals(saveOwners.findOwner(1), loadedPets.findOwner(1))
-                assertEquals(saveOwners.findOwner(2), loadedPets.findOwner(2))
+                assertEquals(saveOwners.findOwner("123456789a"), loadedPets.findOwner("123456789a"))
+                assertEquals(saveOwners.findOwner("987654321b"), loadedPets.findOwner("987654321b"))
+                assertEquals(saveOwners.findOwner("246813579c"), loadedPets.findOwner("246813579c"))
             }
         }
     }
@@ -102,7 +102,7 @@ class OwnerAPITest {
         @Test
         fun `adding a Owner to a populated list adds to ArrayList`() {
             val newOwner = Owner(
-                135792468,
+                "135792468d",
                 "Mark Davis",
                 "+1357924680",
                 "mark@example.com",
@@ -111,13 +111,13 @@ class OwnerAPITest {
             assertEquals(3, populatedOwners!!.numberOfOwners())
             assertTrue(populatedOwners!!.addOwner(newOwner))
             assertEquals(4, populatedOwners!!.numberOfOwners())
-            assertEquals(newOwner, populatedOwners!!.findOwner(135792468))
+            assertEquals(newOwner, populatedOwners!!.findOwner("135792468d"))
         }
 
         @Test
         fun `adding a Owner to an empty list adds to ArrayList`() {
             val newOwner = Owner(
-                135792468,
+                "135792468d",
                 "Mark Davis",
                 "+1357924680",
                 "mark@example.com",
@@ -160,7 +160,7 @@ class OwnerAPITest {
                 populatedOwners!!.updateOwner(
                     9,
                     Owner(
-                        135792468,
+                        "135792468d",
                         "Mark Davis",
                         "+1357924680",
                         "mark@example.com",
@@ -172,7 +172,7 @@ class OwnerAPITest {
                 populatedOwners!!.updateOwner(
                     -1,
                     Owner(
-                        135792468,
+                        "135792468d",
                         "Mark Davis",
                         "+1357924680",
                         "mark@example.com",
@@ -184,7 +184,7 @@ class OwnerAPITest {
                 emptyOwners!!.updateOwner(
                     0,
                     Owner(
-                        135792468,
+                        "135792468d",
                         "Mark Davis",
                         "+1357924680",
                         "mark@example.com",
@@ -196,19 +196,19 @@ class OwnerAPITest {
 
         @Test
         fun `updating a owner  that exists returns true and updates`() {
-            assertEquals(owner2, populatedOwners!!.findOwner(987654321))
-            assertEquals("Jane Smith", populatedOwners!!.findOwner(987654321)!!.name)
-            assertEquals("+9876543210", populatedOwners!!.findOwner(987654321)!!.phoneNumber)
+            assertEquals(owner2, populatedOwners!!.findOwner("987654321b"))
+            assertEquals("Jane Smith", populatedOwners!!.findOwner("987654321b")!!.name)
+            assertEquals("+9876543210", populatedOwners!!.findOwner("987654321b")!!.phoneNumber)
             assertEquals(
                 mutableListOf(3),
-                populatedOwners!!.findOwner(987654321)!!.petsList
+                populatedOwners!!.findOwner("987654321b")!!.petsList
             )
 
             assertTrue(
                 populatedOwners!!.updateOwner(
                     populatedOwners!!.findOwnerIndex(owner2!!),
                     Owner(
-                        987654321,
+                        "987654321b",
                         "Mark Davis",
                         "+1357924680",
                         "mark@example.com",
@@ -216,8 +216,8 @@ class OwnerAPITest {
                     )
                 )
             )
-            assertEquals("Mark Davis", populatedOwners!!.findOwner(987654321)!!.name)
-            assertEquals("+1357924680", populatedOwners!!.findOwner(987654321)!!.phoneNumber)
+            assertEquals("Mark Davis", populatedOwners!!.findOwner("987654321b")!!.name)
+            assertEquals("+1357924680", populatedOwners!!.findOwner("987654321b")!!.phoneNumber)
         }
     }
 
