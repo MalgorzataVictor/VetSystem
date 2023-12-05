@@ -83,8 +83,10 @@ class VetAPI(serializerType: Serializer) {
     fun filterVetsByExperience(yearsOfExperience: Int): List<Vet> {
         val currentDate = LocalDate.now()
         return vets.filter { vet ->
-            val years = Period.between(vet.dateQualified, currentDate).years
-            years >= yearsOfExperience
+            vet.dateQualified.let { dateQualified ->
+                val years = Period.between(dateQualified, currentDate).years
+                years >= yearsOfExperience
+            } ?: false // Filter out vets with null dateQualified values
         }
     }
 

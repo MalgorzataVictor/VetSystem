@@ -566,7 +566,7 @@ fun filterVetsByExperience() {
     } else {
         println("Vets with at least $yearsOfExperience years of experience:")
         println(vetAPI.formatListString(filteredVets))
-    } 
+    }
 }
 
 fun saveAll() {
