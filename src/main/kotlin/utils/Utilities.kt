@@ -39,7 +39,7 @@ object Utilities {
     }
 
     @JvmStatic
-    fun logggerWarnFormat() {
+    fun loggerWarnFormat() {
         logger.warn { "❗ Invalid option entered" }
     }
 

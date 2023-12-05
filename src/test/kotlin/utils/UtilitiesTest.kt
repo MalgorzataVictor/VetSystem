@@ -70,4 +70,5 @@ class UtilitiesTest {
             Assertions.assertFalse(Utilities.isValidPosition(null))
         }
     }
+
 }

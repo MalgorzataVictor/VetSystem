@@ -17,7 +17,7 @@ import utils.ScannerInput.readNextLine
 import utils.Utilities
 import utils.Utilities.loggerInfoSuccessful
 import utils.Utilities.loggerInfoUnsuccessful
-import utils.Utilities.logggerWarnFormat
+import utils.Utilities.loggerWarnFormat
 import utils.ValidateInput
 import java.io.File
 import kotlin.collections.ArrayList
@@ -68,7 +68,7 @@ fun runMainMenu() {
             2 -> runVetMenu()
             3 -> runOwnerMenu()
             0 -> exitApp()
-            else -> logggerWarnFormat()
+            else -> loggerWarnFormat()
         }
     } while (true)
 }
@@ -114,7 +114,7 @@ fun runPetMenu() {
             8 -> updateVaccination()
             9 -> sortPetsByAge()
             0 -> runMainMenu()
-            else -> logggerWarnFormat()
+            else -> loggerWarnFormat()
         }
     } while (true)
 }
@@ -158,7 +158,7 @@ fun runVetMenu() {
             7 -> filterVetsByExperience()
             8 -> searchBySpecialisation()
             0 -> runMainMenu()
-            else -> logggerWarnFormat()
+            else -> loggerWarnFormat()
         }
     } while (true)
 }
@@ -198,7 +198,7 @@ fun runOwnerMenu() {
             5 -> numberOfOwners()
             6 -> searchOwner()
             0 -> runMainMenu()
-            else -> logggerWarnFormat()
+            else -> loggerWarnFormat()
         }
     } while (true)
 }
@@ -549,7 +549,7 @@ fun sortPetsByAge() {
         when (readNextInt("")) {
             1 -> sortPetsYoungestToOldest()
             2 -> sortPetsOldestToYoungest()
-            else -> logggerWarnFormat()
+            else -> loggerWarnFormat()
         }
     } else {
         println()
