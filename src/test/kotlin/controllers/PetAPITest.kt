@@ -206,4 +206,45 @@ class PetAPITest {
             assertTrue(populatedPets!!.findPet(1)!!.isVaccinated)
         }
     }
+
+    @Nested
+    inner class SortedPets {
+        @Nested
+        inner class SortedPetsYoungestToOldest {
+            @Test
+            fun `SortedPetsYoungestToOldest returns No pets stored for an empty list`() {
+                val sortedPetsString = emptyPets!!.sortPetsYoungestToOldest()
+                assertEquals("❗ No pets stored", sortedPetsString)
+            }
+
+            @Test
+            fun `sortPetsYoungestToOldest returns sorted notes in descending order`() {
+                val sortedPetsString = populatedPets!!.sortPetsYoungestToOldest()
+                val expectedNotesOrder = listOf(cat2, bunny1, dog1, dog2, cat1)
+                val nonNullableExpectedNotesOrder = expectedNotesOrder.filterNotNull()
+                val expectedsortedPetsString = populatedPets!!.formatListString(nonNullableExpectedNotesOrder)
+
+                assertEquals(expectedsortedPetsString, sortedPetsString)
+            }
+        }
+
+        @Nested
+        inner class SortedNotesOldestToNewest {
+            @Test
+            fun `SortedNotesOldestToNewest returns No notes stored for an empty list`() {
+                val sortedPetsString = emptyPets!!.sortPetsOldestToYoungest()
+                assertEquals("❗ No pets stored", sortedPetsString)
+            }
+
+            @Test
+            fun `SortedNotesOldestToNewest returns sorted notes in ascending order`() {
+                val sortedPetsString = populatedPets!!.sortPetsOldestToYoungest()
+                val expectedNotesOrder = listOf(cat1, dog2, dog1, bunny1, cat2)
+                val nonNullableExpectedNotesOrder = expectedNotesOrder.filterNotNull()
+                val expectedsortedPetsString = populatedPets!!.formatListString(nonNullableExpectedNotesOrder)
+
+                assertEquals(expectedsortedPetsString, sortedPetsString)
+            }
+        }
+    }
 }
