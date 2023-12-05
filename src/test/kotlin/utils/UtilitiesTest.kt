@@ -51,8 +51,6 @@ class UtilitiesTest {
             Assertions.assertEquals("K", Utilities.capitalizeFirstLetter("K"))
             Assertions.assertEquals("", Utilities.capitalizeFirstLetter(""))
         }
-
-
     }
 
     @Nested
@@ -72,6 +70,4 @@ class UtilitiesTest {
             Assertions.assertFalse(Utilities.isValidPosition(null))
         }
     }
-
-
 }
