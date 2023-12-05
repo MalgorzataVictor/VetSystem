@@ -182,4 +182,28 @@ class PetAPITest {
             assertEquals(0, emptyPets!!.numberOfPets())
         }
     }
+
+    @Nested
+    inner class UpdateVaccination {
+
+        @Test
+        fun `updating a vaccination in pet that does not exist returns false`() {
+            assertFalse(populatedPets!!.updateVaccination(6))
+            assertFalse(populatedPets!!.updateVaccination(-1))
+            assertFalse(emptyPets!!.updateVaccination(0))
+        }
+
+        @Test
+        fun `updating a vaccination in pet that already is vaccinated returns false`() {
+            assertTrue(populatedPets!!.findPet(3)!!.isVaccinated)
+            assertFalse(populatedPets!!.updateVaccination(3))
+        }
+
+        @Test
+        fun `updating a vaccination in not vaccinated dog that exists returns true and makes it favourite`() {
+            assertFalse(populatedPets!!.findPet(1)!!.isVaccinated)
+            assertTrue(populatedPets!!.updateVaccination(0))
+            assertTrue(populatedPets!!.findPet(1)!!.isVaccinated)
+        }
+    }
 }
