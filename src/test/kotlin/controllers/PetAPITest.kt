@@ -183,11 +183,11 @@ class PetAPITest {
         @Test
         fun `listAllPets returns formatted pet list when pets are present`() {
             val expectedFormattedPets =
-                "0: PetID: 1, Name: Cupcake, Breed: Dog, DOB: 2022-02-24, Vaccinated: false, VetID: 1, OwnerPPS: 12345a\n" +
-                    "1: PetID: 2, Name: Toothless, Breed: Dog, DOB: 2021-05-17, Vaccinated: false, VetID: 2, OwnerPPS: 54321b\n" +
-                    "2: PetID: 3, Name: Speedy, Breed: Cat, DOB: 2020-12-12, Vaccinated: true, VetID: 3, OwnerPPS: 12543c\n" +
-                    "3: PetID: 4, Name: Daisy, Breed: Cat, DOB: 2023-11-30, Vaccinated: true, VetID: 2, OwnerPPS: 12345d\n" +
-                    "4: PetID: 5, Name: Stefan, Breed: Bunny, DOB: 2022-09-09, Vaccinated: false, VetID: 4, OwnerPPS: 54123e"
+                "0: \uD83D\uDC3E PetID: 1, Name: Cupcake, Breed: Dog, DOB: 2022-02-24, Vaccinated: false, VetID: 1, OwnerPPS: 12345a\n" +
+                    "1: \uD83D\uDC3E PetID: 2, Name: Toothless, Breed: Dog, DOB: 2021-05-17, Vaccinated: false, VetID: 2, OwnerPPS: 54321b\n" +
+                    "2: \uD83D\uDC3E PetID: 3, Name: Speedy, Breed: Cat, DOB: 2020-12-12, Vaccinated: true, VetID: 3, OwnerPPS: 12543c\n" +
+                    "3: \uD83D\uDC3E PetID: 4, Name: Daisy, Breed: Cat, DOB: 2023-11-30, Vaccinated: true, VetID: 2, OwnerPPS: 12345d\n" +
+                    "4: \uD83D\uDC3E PetID: 5, Name: Stefan, Breed: Bunny, DOB: 2022-09-09, Vaccinated: false, VetID: 4, OwnerPPS: 54123e"
 
             val formattedPets = populatedPets!!.listAllPets()
 
