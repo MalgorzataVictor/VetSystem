@@ -59,7 +59,7 @@ class PetAPI(serializerType: Serializer) {
         }
         val foundPet = findPetByIndex(indexToUpdate)
 
-        if ((foundPet != null) && (pet != null)) {
+        if (pet != null) {
             foundPet.petID = pet.petID
             foundPet.name = pet.name
             foundPet.breed = pet.breed
@@ -70,6 +70,16 @@ class PetAPI(serializerType: Serializer) {
             return true
         }
 
+        return false
+    }
+    fun updateVaccination(index: Int): Boolean {
+        if (isValidIndex(index)) {
+            val petToVaccinate = pets[index]
+            if (!petToVaccinate.isVaccinated) {
+                petToVaccinate.isVaccinated = true
+                return true
+            }
+        }
         return false
     }
 
