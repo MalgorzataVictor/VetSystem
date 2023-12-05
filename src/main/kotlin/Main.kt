@@ -19,6 +19,7 @@ import utils.Utilities.loggerInfoSuccessful
 import utils.Utilities.loggerInfoUnsuccessful
 import utils.Utilities.logggerWarnFormat
 import utils.ValidateInput
+import utils.ValidateInput.readValidPosition
 import java.io.File
 import java.time.LocalDate
 import kotlin.collections.ArrayList
@@ -237,14 +238,14 @@ fun addVet() {
     val specialisations: MutableList<String> = mutableListOf()
     var input: String
     do {
-        input = Utilities.capitalizeFirstLetter(readNextLine("Enter specialisation, type 'F' to finish"))
+        input = Utilities.capitalizeFirstLetter(readNextLine("Enter specialisation, type 'F' to finish: "))
         if (input != "F") {
             specialisations.add(input)
         }
     }
     while (input != "F")
     val salary = readNextDouble("Enter Vet Salary: ")
-    val position = Utilities.capitalizeFirstLetter(readNextLine("Enter Vet Position: "))
+    val position = Utilities.capitalizeFirstLetter(readValidPosition("Enter Vet Position (Junior/Senior): "))
 
     val isAdded = vetAPI.addVet(
         Vet(
@@ -454,14 +455,14 @@ fun updateVet() {
             val specialisations: MutableList<String> = mutableListOf()
             var input: String
             do {
-                input = Utilities.capitalizeFirstLetter(readNextLine("Enter specialisation, type 'F' to finish"))
+                input = Utilities.capitalizeFirstLetter(readNextLine("Enter specialisation, type 'F' to finish: "))
                 if (input != "F") {
                     specialisations.add(input)
                 }
             }
             while (input != "F")
-            val salary = readNextDouble("Enter Vet Salary")
-            val position = Utilities.capitalizeFirstLetter(readNextLine("Enter Vet Position: "))
+            val salary = readNextDouble("Enter Vet Salary: ")
+            val position = Utilities.capitalizeFirstLetter(readValidPosition("Enter Vet Position (Junior/Senior): "))
 
             if (vetAPI.updateVet(
                     indexToUpdate,

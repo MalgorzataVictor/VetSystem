@@ -30,4 +30,18 @@ object ValidateInput {
         val regex = """^\d{4}-\d{2}-\d{2}$""".toRegex()
         return regex.matches(input)
     }
+
+    @JvmStatic
+    fun readValidPosition(prompt: String?): String {
+        print(prompt)
+        var input = Scanner(System.`in`).nextLine()
+        do {
+            if (Utilities.isValidPosition(input))
+                return input
+            else {
+                print("❗ Invalid position $input.  Please try again: ")
+                input = Scanner(System.`in`).nextLine()
+            }
+        } while (true)
+    }
 }
