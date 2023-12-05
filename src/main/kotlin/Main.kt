@@ -568,7 +568,7 @@ fun listAllVets() {
     val vets1: ArrayList<Vet> = vetAPI.getAllVets()
     vets1.forEach {
         println(it)
-        val patientsDetails = it.patientList.joinToString("\n") { p -> petAPI.findPet(p)?.toString() ?: "Pet details not found" }
+        val patientsDetails = it.patientList.joinToString("\n") { p -> petAPI.findPet(p)?.toString() ?: "❌ Pet details not found" }
         println(patientsDetails)
     }
 }
@@ -576,7 +576,7 @@ fun listAllOwners() {
     val owners1: ArrayList<Owner> = ownerAPI.getAllOwners()
     owners1.forEach {
         println(it)
-        val patientsDetails = it.petsList.joinToString("\n") { p -> petAPI.findPet(p)?.toString() ?: "Pet details not found" }
+        val patientsDetails = it.petsList.joinToString("\n") { p -> petAPI.findPet(p)?.toString() ?: "❌ Pet details not found" }
         println(patientsDetails)
     }
 }

@@ -18,6 +18,6 @@ data class Vet(
         patientList.joinToString("\n") { it.toString() }
     }
     override fun toString(): String {
-        return "vetID: $vetID, Name: $name, Date Qualified: $dateQualified, Specialisation: $specialisation, Salary: $salary, Position: $position, \nPatients: $patientList "
+        return "\uD83D\uDD35 VetID: $vetID, Name: $name, Date Qualified: $dateQualified, Specialisation: $specialisation, Salary: $salary, Position: $position"
     }
 }

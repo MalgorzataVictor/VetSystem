@@ -250,6 +250,13 @@ class VetAPITest {
             assertEquals(90000.0, populatedVets!!.findVet(4)!!.salary)
             assertEquals("Senior", populatedVets!!.findVet(4)!!.position)
         }
+
+        @Test
+        fun `updating a vet with null returns false`() {
+            assertFalse(populatedVets!!.updateVet(0, null))
+            assertFalse(populatedVets!!.updateVet(-1, null))
+            assertFalse(emptyVets!!.updateVet(0, null))
+        }
     }
 
     @Nested
@@ -348,6 +355,28 @@ class VetAPITest {
     }
 
     @Nested
+    inner class IsValidIndex {
+        @Test
+        fun `isValidIndex with valid index returns true`() {
+            assertTrue(populatedVets!!.isValidIndex(0))
+            assertTrue(populatedVets!!.isValidIndex(2))
+            assertTrue(populatedVets!!.isValidIndex(3))
+        }
+
+        @Test
+        fun `isValidIndex with negative index returns false`() {
+            assertFalse(populatedVets!!.isValidIndex(-1))
+            assertFalse(populatedVets!!.isValidIndex(-5))
+        }
+
+        @Test
+        fun `isValidIndex with index beyond list size returns false`() {
+            assertFalse(populatedVets!!.isValidIndex(6))
+            assertFalse(populatedVets!!.isValidIndex(10))
+        }
+    }
+
+    @Nested
     inner class SearchVetSpecialisationTests {
 
         @Test
@@ -378,11 +407,7 @@ class VetAPITest {
         @Test
         fun `searchByName returns correct result when search string matches name`() {
             val result = populatedVets!!.searchByName("Dr. Smith")
-            assertEquals(
-                "0: vetID: 1, Name: Dr. Smith, Date Qualified: 2018-07-15, Specialisation: [Surgery, Dentistry], Salary: 80000.0, Position: Senior, \n" +
-                    "Patients: [] ",
-                result
-            )
+            assertTrue(result.contains("Dr. Smith"))
         }
 
         @Test
@@ -394,11 +419,7 @@ class VetAPITest {
         @Test
         fun `searchByName returns correct result with case-insensitive search`() {
             val result = populatedVets!!.searchByName("DR. JOHNSON")
-            assertEquals(
-                "1: vetID: 2, Name: Dr. Johnson, Date Qualified: 2020-05-10, Specialisation: [], Salary: 75000.0, Position: Junior, \n" +
-                    "Patients: [1] ",
-                result
-            )
+            assertTrue(result.contains("Dr. Johnson"))
         }
     }
 

@@ -276,7 +276,7 @@ class OwnerAPITest {
         @Test
         fun `searchByName returns correct result when search string matches name`() {
             val result = populatedOwners!!.searchByName("Jane")
-            assertEquals("1:  Name: Jane Smith, PPS: 987654321b, Phone No: +9876543210, Email: jane@example.com", result)
+            assertEquals("1: \uD83D\uDD34 Name: Jane Smith, PPS: 987654321b, Phone No: +9876543210, Email: jane@example.com", result)
         }
 
         @Test
@@ -288,7 +288,7 @@ class OwnerAPITest {
         @Test
         fun `searchByName returns correct result with case-insensitive search`() {
             val result = populatedOwners!!.searchByName("ALICE")
-            assertEquals("2:  Name: Alice Johnson, PPS: 246813579c, Phone No: +2468135790, Email: alice@example.com", result)
+            assertEquals("2: \uD83D\uDD34 Name: Alice Johnson, PPS: 246813579c, Phone No: +2468135790, Email: alice@example.com", result)
         }
     }
 
