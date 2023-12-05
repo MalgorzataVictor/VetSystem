@@ -689,7 +689,9 @@ fun sortPetsByAge() {
         println()
         logger.warn { "❗ No pets found" }
     }
-} /**
+}
+
+/**
  * Sorts pets from youngest to oldest and displays the sorted list.
  */
 fun sortPetsYoungestToOldest() = println(petAPI.sortPetsYoungestToOldest())
@@ -716,7 +718,9 @@ fun listAllVets() {
         val patientsDetails = it.patientList.joinToString("\n") { p -> petAPI.findPet(p)?.toString() ?: "❌ Pet details not found" }
         println(patientsDetails)
     }
-} /**
+}
+
+/**
  * Lists all owners in the system along with their pets' details.
  * Displays the details of all owners and their respective pets.
  */
