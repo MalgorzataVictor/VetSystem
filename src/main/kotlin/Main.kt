@@ -30,12 +30,23 @@ private val logger = KotlinLogging.logger {}
 private val GmailApi = GmailAPI
 val t = Terminal()
 val style = (TextStyles.bold + TextColors.red + TextColors.brightWhite.bg)
+
+/**
+ * Entry point of the application.
+ *
+ * @param args Command line arguments passed to the application.
+ */
 fun main(args: Array<String>) {
     logger.info { "Launching Vet System App..." }
     loadAll()
     runMainMenu()
 }
 
+/**
+ * Displays the main menu and prompts the user for input.
+ *
+ * @return The selected option from the main menu.
+ */
 fun mainMenu(): Int {
     t.println(
         style(
@@ -61,6 +72,9 @@ fun mainMenu(): Int {
     return readNextInt("")
 }
 
+/**
+ * Handles navigation based on the selected option from the main menu.
+ */
 fun runMainMenu() {
     do {
         when (mainMenu()) {
@@ -73,6 +87,11 @@ fun runMainMenu() {
     } while (true)
 }
 
+/**
+ * Displays the pet menu and prompts the user for input.
+ *
+ * @return The selected option from the pet menu.
+ */
 fun petMenu(): Int {
     t.println(
         style(
@@ -101,6 +120,9 @@ fun petMenu(): Int {
     return readNextInt("")
 }
 
+/**
+ * Handles navigation based on the selected option from the pet menu.
+ */
 fun runPetMenu() {
     do {
         when (petMenu()) {
@@ -119,6 +141,11 @@ fun runPetMenu() {
     } while (true)
 }
 
+/**
+ * Displays the vet menu and prompts the user for input.
+ *
+ * @return The selected option from the vet menu.
+ */
 fun vetMenu(): Int {
     t.println(
         style(
@@ -146,6 +173,9 @@ fun vetMenu(): Int {
     return readNextInt("")
 }
 
+/**
+ * Handles navigation based on the selected option from the vet menu.
+ */
 fun runVetMenu() {
     do {
         when (vetMenu()) {
@@ -163,6 +193,11 @@ fun runVetMenu() {
     } while (true)
 }
 
+/**
+ * Displays the owner menu and prompts the user for input.
+ *
+ * @return The selected option from the owner menu.
+ */
 fun ownerMenu(): Int {
     t.println(
         style(
@@ -188,6 +223,9 @@ fun ownerMenu(): Int {
     return readNextInt("")
 }
 
+/**
+ * Handles navigation based on the selected option from the owner menu.
+ */
 fun runOwnerMenu() {
     do {
         when (ownerMenu()) {
@@ -203,6 +241,15 @@ fun runOwnerMenu() {
     } while (true)
 }
 
+/**
+ * Adds a new pet to the system.
+ *
+ * @param name The name of the pet.
+ * @param breed The breed of the pet.
+ * @param dob The date of birth of the pet in "YYYY-MM-DD" format.
+ * @param vetID The index of the vet to whom the pet will be assigned.
+ * @param ownerPPSIndex The index of the owner to whom the pet will be assigned.
+ */
 fun addPet() {
     val name = Utilities.capitalizeFirstLetter(readNextLine("Enter Pet Name: "))
     val breed = Utilities.capitalizeFirstLetter(readNextLine("Enter Pet Breed: "))
@@ -239,6 +286,15 @@ fun addPet() {
     }
 }
 
+/**
+ * Adds a new vet to the system.
+ *
+ * @param name The name of the vet.
+ * @param dateQualified The date when the vet got qualified in "YYYY-MM-DD" format.
+ * @param specialisations The list of specializations the vet has.
+ * @param salary The salary of the vet.
+ * @param position The position of the vet (Junior/Senior).
+ */
 fun addVet() {
     val name = Utilities.capitalizeFirstLetter(readNextLine("Enter Vet Name: "))
     val dateQualified = ValidateInput.readValidDOB("Enter Date Qualified (YYYY-MM-DD format): ")
@@ -277,6 +333,14 @@ fun addVet() {
     }
 }
 
+/**
+ * Adds a new owner to the system.
+ *
+ * @param pps The Personal Public Service (PPS) number of the owner.
+ * @param name The name of the owner.
+ * @param phoneNumber The phone number of the owner.
+ * @param email The email address of the owner.
+ */
 fun addOwner() {
     var pps: String
     do {
@@ -308,6 +372,11 @@ fun addOwner() {
     }
 }
 
+/**
+ * Deletes a pet from the system.
+ * Lists all pets and prompts the user to enter the index of the pet to delete.
+ * Handles the deletion process based on user input.
+ */
 fun deletePet() {
     listAllPets()
     if (petAPI.numberOfPets() > 0) {
@@ -323,6 +392,11 @@ fun deletePet() {
     }
 }
 
+/**
+ * Deletes a vet from the system.
+ * Lists all vets and prompts the user to enter the index of the vet to delete.
+ * Handles the deletion process based on user input.
+ */
 fun deleteVet() {
     listAllVets()
     if (vetAPI.numberOfVets() > 0) {
@@ -338,6 +412,11 @@ fun deleteVet() {
     }
 }
 
+/**
+ * Deletes an owner from the system.
+ * Lists all owners and prompts the user to enter the index of the owner to delete.
+ * Handles the deletion process based on user input.
+ */
 fun deleteOwner() {
     listAllOwners()
     if (ownerAPI.numberOfOwners() > 0) {
@@ -353,6 +432,10 @@ fun deleteOwner() {
     }
 }
 
+/**
+ * Sends a vaccination reminder notification to owners for their pets.
+ * Retrieves all pets that are not vaccinated and sends a notification to their respective owners via email.
+ */
 fun sendNotification() {
     val sickPets = petAPI.getAllPets().filter { !it.isVaccinated }
     sickPets.forEach { pet ->
@@ -366,6 +449,11 @@ fun sendNotification() {
     }
 }
 
+/**
+ * Updates the vaccination status of a pet in the system.
+ * Lists all pets and prompts the user to enter the index of the pet to update its vaccination.
+ * Handles the update process based on user input.
+ */
 fun updateVaccination() {
     listAllPets()
     if (petAPI.numberOfPets() > 0) {
@@ -385,21 +473,37 @@ fun updateVaccination() {
     }
 }
 
+/**
+ * Displays the number of pets in the system.
+ * Retrieves the number of pets and prints the count.
+ */
 fun numberOfPets() {
     val petSize = petAPI.numberOfPets()
     println("Number of Pets in the system: $petSize pets")
 }
 
+/**
+ * Displays the number of vets in the system.
+ * Retrieves the number of vets and prints the count.
+ */
 fun numberOfVets() {
     val vetSize = vetAPI.numberOfVets()
     println("Number of Vets in the system: $vetSize vets")
 }
 
+/**
+ * Displays the number of owners in the system.
+ * Retrieves the number of owners and prints the count.
+ */
 fun numberOfOwners() {
     val ownerSize = ownerAPI.numberOfOwners()
     println("Number of Owners in the system: $ownerSize owners")
 }
 
+/**
+ * Searches for a pet by its name.
+ * Prompts the user to enter a pet name to search for and displays the search results.
+ */
 fun searchPet() {
     val searchName = readNextLine("Enter the Pet Name to search by: ")
     val searchResults = petAPI.searchByName(searchName)
@@ -412,6 +516,10 @@ fun searchPet() {
     }
 }
 
+/**
+ * Searches for a vet by their name.
+ * Prompts the user to enter a vet name to search for and displays the search results.
+ */
 fun searchVet() {
     val searchName = readNextLine("Enter the Vet Name to search by: ")
     val searchResults = vetAPI.searchByName(searchName)
@@ -424,6 +532,10 @@ fun searchVet() {
     }
 }
 
+/**
+ * Searches for an owner by their name.
+ * Prompts the user to enter an owner name to search for and displays the search results.
+ */
 fun searchOwner() {
     val searchName = readNextLine("Enter the Owner Name to search by: ")
     val searchResults = ownerAPI.searchByName(searchName)
@@ -436,6 +548,11 @@ fun searchOwner() {
     }
 }
 
+/**
+ * Updates pet information in the system.
+ * Lists all pets and prompts the user to enter the index of the pet to update.
+ * Handles the update process based on user input.
+ */
 fun updatePet() {
     listAllPets()
     if (petAPI.numberOfPets() > 0) {
@@ -462,6 +579,11 @@ fun updatePet() {
     }
 }
 
+/**
+ * Updates pet information in the system.
+ * Lists all pets and prompts the user to enter the index of the pet to update.
+ * Handles the update process based on user input.
+ */
 fun updateVet() {
     listAllVets()
     if (vetAPI.numberOfVets() > 0) {
@@ -501,6 +623,11 @@ fun updateVet() {
     }
 }
 
+/**
+ * Updates owner information in the system.
+ * Lists all owners and prompts the user to enter the index of the owner to update.
+ * Handles the update process based on user input.
+ */
 fun updateOwner() {
     listAllOwners()
     val indexToUpdate = readNextInt("Enter the index of the Owner to update: ")
@@ -533,6 +660,10 @@ fun updateOwner() {
     }
 }
 
+/**
+ * Sorts pets by age based on user selection.
+ * Displays sorting options and performs the sorting accordingly.
+ */
 fun sortPetsByAge() {
     if (petAPI.numberOfPets() > 0) {
         t.println(
@@ -559,11 +690,27 @@ fun sortPetsByAge() {
         logger.warn { "❗ No pets found" }
     }
 }
+
+/**
+ * Sorts pets from youngest to oldest and displays the sorted list.
+ */
 fun sortPetsYoungestToOldest() = println(petAPI.sortPetsYoungestToOldest())
 
+/**
+ * Sorts pets from oldest to youngest and displays the sorted list.
+ */
 fun sortPetsOldestToYoungest() = println(petAPI.sortPetsOldestToYoungest())
 
+/**
+ * Lists all pets in the system.
+ * Displays the details of all pets.
+ */
 fun listAllPets() = println(petAPI.listAllPets())
+
+/**
+ * Lists all vets in the system along with their assigned patients' details.
+ * Displays the details of all vets and their respective patients.
+ */
 fun listAllVets() {
     val vets1: ArrayList<Vet> = vetAPI.getAllVets()
     vets1.forEach {
@@ -572,6 +719,11 @@ fun listAllVets() {
         println(patientsDetails)
     }
 }
+
+/**
+ * Lists all owners in the system along with their pets' details.
+ * Displays the details of all owners and their respective pets.
+ */
 fun listAllOwners() {
     val owners1: ArrayList<Owner> = ownerAPI.getAllOwners()
     owners1.forEach {
@@ -581,6 +733,11 @@ fun listAllOwners() {
     }
 }
 
+/**
+ * Filters vets based on the number of years of experience.
+ * Prompts the user to enter the number of years of experience to filter vets.
+ * Displays vets with at least the specified number of years of experience.
+ */
 fun filterVetsByExperience() {
     val yearsOfExperience = readNextInt("Enter the number of years of experience: ")
 
@@ -593,6 +750,12 @@ fun filterVetsByExperience() {
         println(vetAPI.formatListString(filteredVets))
     }
 }
+
+/**
+ * Searches for vets based on a specific specialization.
+ * Prompts the user to enter a specialization to search for within vets.
+ * Displays vets with the entered specialization.
+ */
 fun searchBySpecialisation() {
     val userInput = Utilities.capitalizeFirstLetter(readNextLine("Enter the specialization you are looking for within vets: "))
     val filteredVets = vetAPI.searchVetSpecialisation(userInput)
@@ -605,6 +768,10 @@ fun searchBySpecialisation() {
     }
 }
 
+/**
+ * Saves all data related to pets, vets, and owners to files.
+ * Handles the process of saving data to files for persistence.
+ */
 fun saveAll() {
     try {
         logger.info { "Saving data..." }
@@ -616,6 +783,10 @@ fun saveAll() {
     }
 }
 
+/**
+ * Loads all data related to pets, vets, and owners from files.
+ * Handles the process of loading data from files for initialization.
+ */
 fun loadAll() {
     try {
         logger.info { "Loading data..." }
@@ -626,6 +797,11 @@ fun loadAll() {
         System.err.println("Error reading from file: $e")
     }
 }
+
+/**
+ * Exits the application after saving all data and logging the exit action.
+ * Saves data and displays an exit message before terminating the application.
+ */
 fun exitApp() {
     saveAll()
     println()
