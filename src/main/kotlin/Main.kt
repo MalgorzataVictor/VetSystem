@@ -129,7 +129,8 @@ fun vetMenu(): Int? {
  ┃  3) 📋 List Vet                   ┃ 
  ┃  4) 🖋 Update Vet                 ┃ 
  ┃  5) 🔟 Number Of Vets             ┃ 
- ┃  6) 🔍 Search Vet                 ┃ 
+ ┃  6) 🔍 Search Vet                 ┃
+ ┃  7) 📈 Filter Vets by Experience  ┃ 
  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 
  ┃  0) ❌ Exit                       ┃ 
  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 
@@ -149,6 +150,7 @@ fun runVetMenu() {
             4 -> updateVet()
             5 -> numberOfVets()
             6 -> searchVet()
+            7 -> filterVetsByExperience()
             0 -> runMainMenu()
             else -> logggerWarnFormat()
         }
@@ -553,6 +555,20 @@ fun listAllOwners() {
         println(patientsDetails)
     }
 }
+
+fun filterVetsByExperience() {
+    val yearsOfExperience = readNextInt("Enter the number of years of experience: ")
+
+    val filteredVets = vetAPI.filterVetsByExperience(yearsOfExperience)
+
+    if (filteredVets.isEmpty()) {
+        println("No vets found with at least $yearsOfExperience years of experience.")
+    } else {
+        println("Vets with at least $yearsOfExperience years of experience:")
+        println(vetAPI.formatListString(filteredVets))
+    }
+}
+
 fun saveAll() {
     try {
         logger.info { "Saving data..." }

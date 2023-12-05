@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test
 import persistence.XMLSerializer
 import java.io.File
 import java.time.LocalDate
+import java.time.Period
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
@@ -256,6 +257,69 @@ class VetAPITest {
         fun `numberOfVets returns the total number of vets in the ArrayList`() {
             assertEquals(4, populatedVets!!.numberOfVets())
             assertEquals(0, emptyVets!!.numberOfVets())
+        }
+    }
+
+    @Nested
+    inner class FilterVetsByExperience {
+        @Test
+        fun `filter vets by experience - should return vets with at least 2 years of experience`() {
+            val filteredVets = populatedVets!!.filterVetsByExperience(2)
+            val currentDate = LocalDate.now()
+
+            val expectedVets = listOf(
+                vet1,
+                vet2,
+                vet3,
+                vet4
+            ).filter {
+                val years = Period.between(it!!.dateQualified, currentDate).years
+                years >= 2
+            }
+
+            println("Expected vets: $expectedVets")
+            println("Filtered vets: $filteredVets")
+
+            assertEquals(expectedVets.size, filteredVets.size)
+            assertEquals(expectedVets, filteredVets)
+        }
+
+        @Test
+        fun `filter vets by experience - should return vets with at least 1 year of experience`() {
+            val filteredVets = populatedVets!!.filterVetsByExperience(1)
+            val currentDate = LocalDate.now()
+
+            val expectedVets = listOf(
+                vet1,
+                vet2,
+                vet3,
+                vet4
+            ).filter {
+                val years = Period.between(it!!.dateQualified, currentDate).years
+                years >= 1
+            }
+
+            assertEquals(expectedVets.size, filteredVets.size)
+            assertEquals(expectedVets, filteredVets)
+        }
+
+        @Test
+        fun `filter vets by experience - should return empty list if no vets have 5 years of experience`() {
+            val filteredVets = populatedVets!!.filterVetsByExperience(5)
+            val currentDate = LocalDate.now()
+
+            val expectedVets = listOf(
+                vet1,
+                vet2,
+                vet3,
+                vet4
+            ).filter {
+                val years = Period.between(it!!.dateQualified, currentDate).years
+                years >= 5
+            }
+
+            assertEquals(expectedVets.size, filteredVets.size)
+            assertEquals(expectedVets, filteredVets)
         }
     }
 }

@@ -4,6 +4,8 @@ import models.Pet
 import models.Vet
 import persistence.Serializer
 import utils.Utilities
+import java.time.LocalDate
+import java.time.Period
 
 class VetAPI(serializerType: Serializer) {
     private var serializer: Serializer = serializerType
@@ -76,6 +78,16 @@ class VetAPI(serializerType: Serializer) {
         }
 
         return false
+    }
+
+    fun filterVetsByExperience(yearsOfExperience: Int): List<Vet> {
+        val currentDate = LocalDate.now()
+        return vets.filter { vet ->
+            vet.dateQualified.let { dateQualified ->
+                val years = Period.between(dateQualified, currentDate).years
+                years >= yearsOfExperience
+            } ?: false // Filter out vets with null dateQualified values
+        }
     }
 
     fun isValidIndex(index: Int): Boolean {
