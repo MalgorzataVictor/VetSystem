@@ -106,6 +106,7 @@ fun runPetMenu() {
             5 -> numberOfPets()
             6 -> searchPet()
             7 -> sendNotification()
+            8 -> updateVaccination()
             0 -> runMainMenu()
             else -> Utilities.logggerWarnFormat()
         }
@@ -338,6 +339,25 @@ fun sendNotification() {
             "VACCINATION REMINDER \uD83D\uDC89 ❗",
             "We are reminding about vaccination for ${pet.name}.\n Please book an appointment with our Clinic \uD83D\uDC15"
         )
+    }
+}
+
+fun updateVaccination() {
+    listAllPets()
+    if (petAPI.numberOfPets() > 0) {
+        val index = readNextInt(" Enter the index of the pet to update it vaccination ")
+        if (petAPI.isValidIndex(index)) {
+            if (petAPI.updateVaccination(index)) {
+                println()
+                loggerInfoSuccessful()
+            } else {
+                println()
+                loggerInfoUnsuccessful()
+            }
+        } else {
+            println()
+            logger.warn { " There are no pets with this index number or the pet is vaccinated." }
+        }
     }
 }
 
