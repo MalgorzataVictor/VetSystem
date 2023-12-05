@@ -7,6 +7,10 @@ plugins {
     jacoco
     // Plugin for Ktlint
     id("org.jlleitschuh.gradle.ktlint") version "11.3.1"
+    // plugin for ear
+    ear
+    // dependency updates
+    id("com.github.ben-manes.versions") version "0.39.0"
     application
 }
 
@@ -39,6 +43,27 @@ dependencies {
 
     // for Mordant Interface
     implementation("com.github.ajalt.mordant:mordant:2.2.0")
+
+    // dependencies for logging
+    earlib("io.github.microutils:kotlin-logging:3.0.5")
+    earlib("org.slf4j:slf4j-simple:2.0.9")
+
+    // For Streaming to XML and JSON
+    earlib("com.thoughtworks.xstream:xstream:1.4.18")
+    earlib("org.codehaus.jettison:jettison:1.4.1")
+
+    // For generating a Dokka Site from KDoc
+    earlib("org.jetbrains.dokka:dokka-gradle-plugin:1.9.10")
+
+    // for Gmail API
+    earlib("com.google.api-client:google-api-client:2.2.0")
+    earlib("com.google.auth:google-auth-library-oauth2-http:1.20.0")
+    earlib("com.google.oauth-client:google-oauth-client-jetty:1.34.1")
+    earlib("com.google.apis:google-api-services-gmail:v1-rev20220404-2.0.0")
+    earlib("com.sun.mail:javax.mail:1.6.2")
+
+    // for Mordant Interface
+    earlib("com.github.ajalt.mordant:mordant:2.2.0")
 }
 
 tasks.test {
@@ -64,4 +89,15 @@ tasks.jar {
     from({
         configurations.runtimeClasspath.get().filter { it.name.endsWith("jar") }.map { zipTree(it) }
     })
+}
+
+tasks.ear {
+    libDirName = "APP-INF/lib" // put dependent libraries into APP-INF/lib inside the generated EAR
+    deploymentDescriptor { // custom entries for application.xml:
+        applicationName = "Vet System"
+        initializeInOrder = true
+        displayName = "VetSystemEar" // defaults to project.name
+        description = "My customized EAR for the Gradle documentation"
+    }
+    manifest.attributes["Main-Class"] = "MainKt"
 }
