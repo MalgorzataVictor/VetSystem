@@ -82,7 +82,6 @@ object ValidateInput {
 
             if (!isEmailValid) {
                 println("Please enter a valid email address.")
-
             }
         } while (!isEmailValid)
 
