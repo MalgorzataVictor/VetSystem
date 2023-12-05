@@ -17,11 +17,8 @@ import utils.ScannerInput.readNextLine
 import utils.Utilities
 import utils.Utilities.loggerInfoSuccessful
 import utils.Utilities.loggerInfoUnsuccessful
-import utils.Utilities.logggerWarnFormat
+import utils.Utilities.loggerWarnFormat
 import utils.ValidateInput
-import utils.ValidateInput.getEmailFromUser
-import utils.ValidateInput.readValidPosition
-import utils.ValidateInput.validatePPSInput
 import java.io.File
 import kotlin.collections.ArrayList
 import kotlin.system.exitProcess
@@ -71,7 +68,7 @@ fun runMainMenu() {
             2 -> runVetMenu()
             3 -> runOwnerMenu()
             0 -> exitApp()
-            else -> logggerWarnFormat()
+            else -> loggerWarnFormat()
         }
     } while (true)
 }
@@ -117,7 +114,7 @@ fun runPetMenu() {
             8 -> updateVaccination()
             9 -> sortPetsByAge()
             0 -> runMainMenu()
-            else -> logggerWarnFormat()
+            else -> loggerWarnFormat()
         }
     } while (true)
 }
@@ -161,7 +158,7 @@ fun runVetMenu() {
             7 -> filterVetsByExperience()
             8 -> searchBySpecialisation()
             0 -> runMainMenu()
-            else -> logggerWarnFormat()
+            else -> loggerWarnFormat()
         }
     } while (true)
 }
@@ -201,7 +198,7 @@ fun runOwnerMenu() {
             5 -> numberOfOwners()
             6 -> searchOwner()
             0 -> runMainMenu()
-            else -> logggerWarnFormat()
+            else -> loggerWarnFormat()
         }
     } while (true)
 }
@@ -255,7 +252,10 @@ fun addVet() {
     }
     while (input != "F")
     val salary = readNextDouble("Enter Vet Salary: ")
-    val position = Utilities.capitalizeFirstLetter(readValidPosition("Enter Vet Position (Junior/Senior): "))
+
+    var position: String
+    do { position = Utilities.capitalizeFirstLetter(readNextLine("Enter Vet Position (Junior/Senior): ")) }
+    while (!Utilities.isValidPosition(position))
 
     val isAdded = vetAPI.addVet(
         Vet(
@@ -278,10 +278,17 @@ fun addVet() {
 }
 
 fun addOwner() {
-    val pps = validatePPSInput("Enter Owner PPS: ")
+    var pps: String
+    do {
+        pps = readNextLine("Enter Owner PPS: ")
+    } while (!ValidateInput.isValidPPS(pps))
     val name = Utilities.capitalizeFirstLetter(readNextLine("Enter Owner Name: "))
     val phoneNumber = readNextLine("Enter Owner Phone Number: ")
-    val email = getEmailFromUser("Enter Owner Email: ")
+
+    var email: String
+    do {
+        email = readNextLine("Enter Owner Email: ")
+    } while (!ValidateInput.isEmailValid(email))
 
     val isAdded = ownerAPI.addOwner(
         Owner(
@@ -472,7 +479,9 @@ fun updateVet() {
             }
             while (input != "F")
             val salary = readNextDouble("Enter Vet Salary: ")
-            val position = Utilities.capitalizeFirstLetter(readValidPosition("Enter Vet Position (Junior/Senior): "))
+            var position: String
+            do { position = Utilities.capitalizeFirstLetter(readNextLine("Enter Vet Position (Junior/Senior): ")) }
+            while (!Utilities.isValidPosition(position))
 
             if (vetAPI.updateVet(
                     indexToUpdate,
@@ -496,10 +505,16 @@ fun updateOwner() {
     listAllOwners()
     val indexToUpdate = readNextInt("Enter the index of the Owner to update: ")
     if (vetAPI.isValidIndex(indexToUpdate)) {
-        val pps = validatePPSInput("Enter Owner PPS: ")
+        var pps: String
+        do {
+            pps = readNextLine("Enter Owner PPS: ")
+        } while (!ValidateInput.isValidPPS(pps))
         val name = Utilities.capitalizeFirstLetter(readNextLine("Enter Owner Name: "))
         val phoneNumber = readNextLine("Enter Owner Phone Number: ")
-        val email = getEmailFromUser("Enter Owner Email: ")
+        var email: String
+        do {
+            email = readNextLine("Enter Owner Email: ")
+        } while (!ValidateInput.isEmailValid(email))
 
         if (ownerAPI.updateOwner(
                 indexToUpdate,
@@ -537,7 +552,7 @@ fun sortPetsByAge() {
         when (readNextInt("")) {
             1 -> sortPetsYoungestToOldest()
             2 -> sortPetsOldestToYoungest()
-            else -> logggerWarnFormat()
+            else -> loggerWarnFormat()
         }
     } else {
         println()

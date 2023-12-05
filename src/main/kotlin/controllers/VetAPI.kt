@@ -18,13 +18,6 @@ class VetAPI(serializerType: Serializer) {
         return vets.last().vetID + 1
     }
 
-    fun listAllVets(): String =
-        if (vets.isEmpty()) {
-            "No vets stored"
-        } else {
-            formatListString(vets)
-        }
-
     fun getAllVets(): ArrayList<Vet> {
         return vets
     }
@@ -95,13 +88,14 @@ class VetAPI(serializerType: Serializer) {
     }
 
     fun assignPetToVet(index: Int, pet: Pet): Boolean? {
+        println(index)
+        println(getAllVets().size)
+        if (index >= getAllVets().size.minus(1) || findVetByIndex(index)?.patientList?.filter { it == pet.petID }!!.isNotEmpty()) {
+            return false
+        }
         return findVetByIndex(index)?.patientList?.add(pet.petID)
     }
 
-    fun unAssignPetFromVet(oldIndex: Int, newIndex: Int, pet: Pet) {
-        findVetByIndex(oldIndex)?.patientList?.remove(pet.petID)
-        findVetByIndex(newIndex)?.patientList?.add(pet.petID)
-    }
     fun searchVetSpecialisation(specialisation: String): List<Vet> {
         return vets.filter { vet ->
             vet.specialisation.contains(specialisation)

@@ -29,64 +29,9 @@ object ValidateInput {
     }
 
     @JvmStatic
-    private fun isValidDOBFormat(input: String): Boolean {
-        val regex = """^\d{4}-\d{2}-\d{2}$""".toRegex()
-        return regex.matches(input)
-    }
-
-    @JvmStatic
-    fun readValidPosition(prompt: String?): String {
-        print(prompt)
-        var input = readNextLine(prompt)
-        do {
-            if (Utilities.isValidPosition(input)) {
-                return input
-            } else {
-                print("❗ Invalid position $input.  Please try again: ")
-                input = readNextLine(prompt)
-            }
-        } while (true)
-    }
-
-    @JvmStatic
-    fun validatePPSInput(prompt: String): String {
-        var validPPS = false
-        var pps = ""
-
-        do {
-            val input = readNextLine(prompt)
-            if (isValidPPS(input)) {
-                pps = input
-                validPPS = true
-            } else {
-                println("Invalid PPS format. PPS Number should be 7 numbers followed by either one or two letters.")
-            }
-        } while (!validPPS)
-
-        return pps
-    }
-
-    @JvmStatic
     fun isValidPPS(pps: String): Boolean {
         val regex = """^\d{7}[A-Za-z]{1,2}$""".toRegex()
         return regex.matches(pps)
-    }
-
-    @JvmStatic
-    fun getEmailFromUser(prompt: String): String {
-        var email: String
-        var isEmailValid: Boolean
-
-        do {
-            email = readNextLine(prompt)
-            isEmailValid = isEmailValid(email)
-
-            if (!isEmailValid) {
-                println("Please enter a valid email address.")
-            }
-        } while (!isEmailValid)
-
-        return email
     }
 
     @JvmStatic

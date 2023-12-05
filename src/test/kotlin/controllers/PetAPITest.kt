@@ -130,6 +130,79 @@ class PetAPITest {
     }
 
     @Nested
+    inner class SearchByName {
+
+        @Test
+        fun `search pets by name returns no pets when no pets with that name exist`() {
+            assertEquals(5, populatedPets!!.numberOfPets())
+            val searchResults = populatedPets!!.searchByName("no results expected")
+            assertTrue(searchResults.isEmpty())
+
+            // Searching an empty collection
+            assertEquals(0, emptyPets!!.numberOfPets())
+            assertTrue(emptyPets!!.searchByName("").isEmpty())
+        }
+
+        @Test
+        fun `search notes by title returns notes when notes with that title exist`() {
+            assertEquals(5, populatedPets!!.numberOfPets())
+
+            // Searching a populated collection for a full name that exists (case matches exactly)
+            var searchResults = populatedPets!!.searchByName("Cupcake")
+            assertTrue(searchResults.contains("Cupcake"))
+            assertFalse(searchResults.contains("Toothless"))
+
+            // Searching a populated collection for a partial name that exists (case doesn't match)
+            searchResults = populatedPets!!.searchByName("cUp")
+            assertTrue(searchResults.contains("Cupcake"))
+            assertFalse(searchResults.contains("Daisy"))
+        }
+    }
+
+    @Nested
+    inner class GetAllPets {
+
+        @Test
+        fun `getAllPets returns all pets`() {
+            val expectedPets = listOf(
+                dog1!!,
+                dog2!!,
+                cat1!!,
+                cat2!!,
+                bunny1!!
+            )
+            val allPets = populatedPets!!.getAllPets()
+
+            assertEquals(expectedPets, allPets)
+        }
+    }
+
+    @Nested
+    inner class ListAllPets {
+
+        @Test
+        fun `listAllPets returns formatted pet list when pets are present`() {
+            val expectedFormattedPets =
+                "0: PetID: 1, Name: Cupcake, Breed: Dog, DOB: 2022-02-24, Vaccinated: false, VetID: 1, OwnerPPS: 12345a\n" +
+                    "1: PetID: 2, Name: Toothless, Breed: Dog, DOB: 2021-05-17, Vaccinated: false, VetID: 2, OwnerPPS: 54321b\n" +
+                    "2: PetID: 3, Name: Speedy, Breed: Cat, DOB: 2020-12-12, Vaccinated: true, VetID: 3, OwnerPPS: 12543c\n" +
+                    "3: PetID: 4, Name: Daisy, Breed: Cat, DOB: 2023-11-30, Vaccinated: true, VetID: 2, OwnerPPS: 12345d\n" +
+                    "4: PetID: 5, Name: Stefan, Breed: Bunny, DOB: 2022-09-09, Vaccinated: false, VetID: 4, OwnerPPS: 54123e"
+
+            val formattedPets = populatedPets!!.listAllPets()
+
+            assertEquals(expectedFormattedPets, formattedPets)
+        }
+
+        @Test
+        fun `listAllPets returns 'No pets stored' when no pets are present`() {
+            val formattedPets = emptyPets!!.listAllPets()
+
+            assertEquals("No pets stored", formattedPets)
+        }
+    }
+
+    @Nested
     inner class UpdatePets {
         @Test
         fun `updating a pet that does not exist returns false`() {
@@ -151,6 +224,7 @@ class PetAPITest {
                     Pet(6, "Buba", "Bunny", LocalDate.of(2020, 7, 6), false, 2, "54123e")
                 )
             )
+            assertFalse(emptyPets!!.updatePet(0, null))
         }
 
         @Test
@@ -171,6 +245,14 @@ class PetAPITest {
             assertEquals("Update", populatedPets!!.findPet(4)!!.name)
             assertEquals("bunny", populatedPets!!.findPet(4)!!.breed)
             assertEquals(false, populatedPets!!.findPet(4)!!.isVaccinated)
+            assertFalse(emptyPets!!.updatePet(0, null))
+        }
+
+        @Test
+        fun `updating a pet with null returns false`() {
+            assertFalse(populatedPets!!.updatePet(0, null))
+            assertFalse(populatedPets!!.updatePet(-1, null))
+            assertFalse(emptyPets!!.updatePet(0, null))
         }
     }
 
