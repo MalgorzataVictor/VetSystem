@@ -1,5 +1,6 @@
 package utils
 
+import utils.ScannerInput.readNextLine
 import java.time.LocalDate
 import java.util.Scanner
 
@@ -26,6 +27,7 @@ object ValidateInput {
         } while (true)
     }
 
+    @JvmStatic
     private fun isValidDOBFormat(input: String): Boolean {
         val regex = """^\d{4}-\d{2}-\d{2}$""".toRegex()
         return regex.matches(input)
@@ -36,12 +38,36 @@ object ValidateInput {
         print(prompt)
         var input = Scanner(System.`in`).nextLine()
         do {
-            if (Utilities.isValidPosition(input))
+            if (Utilities.isValidPosition(input)) {
                 return input
-            else {
+            } else {
                 print("❗ Invalid position $input.  Please try again: ")
                 input = Scanner(System.`in`).nextLine()
             }
         } while (true)
+    }
+
+    @JvmStatic
+    fun validatePPSInput(prompt: String): String {
+        var validPPS = false
+        var pps: String = ""
+
+        do {
+            val input = readNextLine(prompt)
+            if (isValidPPS(input)) {
+                pps = input
+                validPPS = true
+            } else {
+                println("Invalid PPS format. PPS Number should be 7 numbers followed by either one or two letters.")
+            }
+        } while (!validPPS)
+
+        return pps
+    }
+
+    @JvmStatic
+    fun isValidPPS(pps: String): Boolean {
+        val regex = """^\d{7}[A-Za-z]{1,2}$""".toRegex()
+        return regex.matches(pps)
     }
 }

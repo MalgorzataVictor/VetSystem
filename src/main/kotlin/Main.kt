@@ -20,8 +20,8 @@ import utils.Utilities.loggerInfoUnsuccessful
 import utils.Utilities.logggerWarnFormat
 import utils.ValidateInput
 import utils.ValidateInput.readValidPosition
+import utils.ValidateInput.validatePPSInput
 import java.io.File
-import java.time.LocalDate
 import kotlin.collections.ArrayList
 import kotlin.system.exitProcess
 
@@ -268,7 +268,7 @@ fun addVet() {
 }
 
 fun addOwner() {
-    val PPS = readNextInt("Enter Owner PPS: ")
+    val PPS = validatePPSInput("Enter Owner PPS: ")
     val name = Utilities.capitalizeFirstLetter(readNextLine("Enter Owner Name: "))
     val phoneNumber = Utilities.capitalizeFirstLetter(readNextLine("Enter Owner Phone Number: "))
     val email = Utilities.capitalizeFirstLetter(readNextLine("Enter Owner Email: "))
@@ -429,7 +429,7 @@ fun updatePet() {
             val DOB = ValidateInput.readValidDOB("Enter Pet DOB (YYYY-MM-DD format): ")
             if (petAPI.updatePet(
                     indexToUpdate,
-                    Pet(0, name, breed, DOB, false, 0, 0)
+                    Pet(0, name, breed, DOB, false, 0, "0000000AB")
                 )
             ) {
                 println()
@@ -486,7 +486,7 @@ fun updateOwner() {
     listAllOwners()
     val indexToUpdate = readNextInt("Enter the index of the Owner to update: ")
     if (vetAPI.isValidIndex(indexToUpdate)) {
-        val PPS = readNextInt("Enter Owner PPS: ")
+        val PPS = validatePPSInput("Enter Owner PPS: ")
         val name = Utilities.capitalizeFirstLetter(readNextLine("Enter Owner Name: "))
         val phoneNumber = Utilities.capitalizeFirstLetter(readNextLine("Enter Owner Phone Number: "))
         val email = Utilities.capitalizeFirstLetter(readNextLine("Enter Owner email: "))

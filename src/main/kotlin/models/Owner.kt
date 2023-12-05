@@ -1,7 +1,7 @@
 package models
 
 data class Owner(
-    var PPS: Int,
+    var PPS: String,
     var name: String,
     var phoneNumber: String,
     var email: String,

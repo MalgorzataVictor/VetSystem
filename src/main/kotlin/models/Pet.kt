@@ -9,7 +9,7 @@ data class Pet(
     var DOB: LocalDate,
     var isVaccinated: Boolean,
     var vetID: Int,
-    var ownerPPS: Int
+    var ownerPPS: String
 
 ) {
     override fun toString(): String {
