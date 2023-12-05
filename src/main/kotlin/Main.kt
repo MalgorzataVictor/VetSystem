@@ -18,6 +18,7 @@ import utils.Utilities
 import utils.Utilities.loggerInfoSuccessful
 import utils.Utilities.loggerInfoUnsuccessful
 import utils.Utilities.logggerWarnFormat
+import utils.ValidateInput
 import java.io.File
 import java.time.LocalDate
 import kotlin.collections.ArrayList
@@ -201,8 +202,7 @@ fun runOwnerMenu() {
 fun addPet() {
     val name = Utilities.capitalizeFirstLetter(readNextLine("Enter Pet Name: "))
     val breed = Utilities.capitalizeFirstLetter(readNextLine("Enter Pet Breed: "))
-    val dobInput = readNextLine("Enter Pet DOB (YYYY-MM-DD format): ").split("-")
-    val DOB = LocalDate.of(dobInput[0].toInt(), dobInput[1].toInt(), dobInput[2].toInt())
+    val DOB = ValidateInput.readValidDOB("Enter Pet DOB (YYYY-MM-DD format): ")
     println()
     listAllVets()
     val vetID = readNextInt("Enter index of Vet who you want to assign: ")
@@ -233,8 +233,7 @@ fun addPet() {
 
 fun addVet() {
     val name = Utilities.capitalizeFirstLetter(readNextLine("Enter Vet Name: "))
-    val dobInput = readNextLine("Enter Date Qualified (YYYY-MM-DD format): ").split("-")
-    val dateQualified = LocalDate.of(dobInput[0].toInt(), dobInput[1].toInt(), dobInput[2].toInt())
+    val dateQualified = ValidateInput.readValidDOB("Enter Date Qualified (YYYY-MM-DD format): ")
     val specialisations: MutableList<String> = mutableListOf()
     var input: String
     do {
@@ -426,8 +425,7 @@ fun updatePet() {
         if (petAPI.isValidIndex(indexToUpdate)) {
             val name = Utilities.capitalizeFirstLetter(readNextLine("Enter Pet Name: "))
             val breed = Utilities.capitalizeFirstLetter(readNextLine("Enter Pet Breed: "))
-            val dobInput = readNextLine("Enter Pet DOB (YYYY-MM-DD format): ").split("-")
-            val DOB = LocalDate.of(dobInput[0].toInt(), dobInput[1].toInt(), dobInput[2].toInt())
+            val DOB = ValidateInput.readValidDOB("Enter Pet DOB (YYYY-MM-DD format): ")
             if (petAPI.updatePet(
                     indexToUpdate,
                     Pet(0, name, breed, DOB, false, 0, 0)
@@ -452,8 +450,7 @@ fun updateVet() {
         val indexToUpdate = readNextInt("Enter the index of the Vet to update: ")
         if (vetAPI.isValidIndex(indexToUpdate)) {
             val name = Utilities.capitalizeFirstLetter(readNextLine("Enter Vet Name: "))
-            val dobInput = readNextLine("Enter Vet DOB (YYYY-MM-DD format): ").split("-")
-            val dateQualified = LocalDate.of(dobInput[0].toInt(), dobInput[1].toInt(), dobInput[2].toInt())
+            val dateQualified = ValidateInput.readValidDOB("Enter Vet DOB (YYYY-MM-DD format): ")
             val specialisations: MutableList<String> = mutableListOf()
             var input: String
             do {
